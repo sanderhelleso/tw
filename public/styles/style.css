@@ -23,6 +23,11 @@ nav {
 	background-attachment: fixed;
 }
 
+nav #logo {
+	color: #7e57c2;
+	font-weight: 100;
+}
+
 nav ul li a {
 	color: #757575;
 }
@@ -127,4 +132,77 @@ nav ul li a {
 	background-color: #7e57c2;
 	color: white;
 	border: 1px solid #7e57c2;
+}
+
+#signupModal {
+	background-color: #f5f5f5;
+	padding-bottom: 15vh;
+	
+}
+
+#exitSignupModal {
+	padding: 2%;
+}
+
+#exitSignupModal:hover {
+	color: #7e57c2;
+}
+
+#signupModal h3 {
+	margin-top: 5vh;
+	font-weight: 100;
+	font-size: 50px;
+	margin-bottom: 5vh;
+}
+
+#signupModal h5 {
+	font-size: 20px;
+	color: #616161 ;
+	font-weight: 100;
+	margin-bottom: 10vh;
+}
+
+#nameRow, #aboutRow, #passwordRow {
+	margin-bottom: 5vh;
+}
+
+#emailHelp {
+	font-size: 11px;
+}
+
+#signUpBtnCont {
+	padding: 0;
+}
+
+#signUpBtn {
+	margin-top: 5vh;
+	border: 1px solid #7e57c2;
+	background-color: #7e57c2;
+	font-size: 20px;
+	color: white;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	margin-bottom: 5vh;
+	transition: all 0.3s;
+}
+
+#signUpBtn:hover {
+	background-color: #b388ff;
+	border: 1px solid #b388ff;
+}
+
+
+
+#policy {
+	font-size: 14px;
+	color: #9e9e9e;
+}
+
+#policy a {
+	color: #7e57c2;
+	font-weight: 500;
+}
+
+.form-control:focus {
+	border: 1px solid #7e57c2;
+  	box-shadow: none;
 }

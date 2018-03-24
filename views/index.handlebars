@@ -12,7 +12,7 @@
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg navbar-light bg-light z-depth-1">
-		<a class="navbar-brand" href="#">Logo goes here</a>
+		<a id="logo" class="navbar-brand" href="#"></a>
 		<div class="collapse navbar-collapse justify-content-end">
 			<ul class="navbar-nav">
 				<li class="nav-item dropdown">
@@ -27,17 +27,79 @@
 			        </div>
 			    </li>
 				<li><a id="login" class="btn" href="#">Login</a></li>
-				<li><a id="getStarted" class="btn" href="#">Get Started</a></li>
+				<li><a id="getStarted" class="btn" href="#" data-toggle="modal" data-target=".signup-modal-lg">Get Started</a></li>
 			</ul>
 		</div>
 	</nav>
 	<section id="mainSection">
+		<!-- GET STARTED MODAL-->
+		<div class="modal fade signup-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+		  <div class="modal-dialog modal-lg">
+		    <div id="signupModal" class="modal-content">
+                	<button id="exitSignupModal" type="button" class="close text-right" data-dismiss="modal" aria-label="Close"><i data-feather="x"></i>
+                	</button>
+                <h3 class="text-center">Sign up to *NAME*</h3>
+                <h5 class="text-center">and start experience the next level of project management today</h5>
+                <form>
+                	<div class="container">
+					  <div id="nameRow" class="row justify-content-center">
+					    <div class="col col-lg-4">
+					    	<label for="firstName">First Name</label>
+					      	<input id="firstName" type="text" class="form-control" placeholder="Jared">
+					    </div>
+					    <div class="col col-lg-4">
+					    	<label for="lastName">First Name</label>
+					     	<input id="lastName" type="text" class="form-control" placeholder="Dunn">
+					    </div>
+					  </div>
+					  <div id="aboutRow" class="row justify-content-center">
+					  	<div class="col col-lg-4">
+					    	<label for="email">Email address</label>
+						    <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="jared@piedpiper.com">
+						    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+					    </div>
+					    <div class="col col-lg-4">
+					    	<label for="singupSelect">I am a..</label>
+						    <select class="form-control" id="signupSelect">
+						      <option>Project Manager</option>
+						      <option>Employee</option>
+						      <option>Student</option>
+						      <option>None of the above</option>
+						    </select>
+					    </div>
+					  </div>
+					  <div id="passwordRow" class="row justify-content-center">
+					  	<div class="col col-lg-4">
+					    	<label for="password">Password</label>
+    						<input type="password" class="form-control" id="password" placeholder="Password">
+					    </div>
+					    <div class="col col-lg-4">
+					    	<label for="confirmPassword">Confirm Password</label>
+    						<input type="password" class="form-control" id="confirmPassword" placeholder="Confirm password">
+					    </div>
+					  </div>
+					  <div id="signupRow" class="row justify-content-center">
+					  	<div id="signUpBtnCont" class="col col-lg-3">
+					  		<a id="signUpBtn" class="btn col col-lg-12" href="#">Sign me up!</a>
+					  	</div>
+					  </div>
+					   <div class="row justify-content-center">
+					  	<div class="col col-lg-8">
+					  		<p id="policy">By clicking sign up, I agree to the *NAME* <a href="#"> Privacy Policy</a> and <a href="#">Terms of Service</a>.</p>
+					  	</div>
+					  </div>
+				  </div>
+				</form>
+            </div>
+		    </div>
+		  </div>
+		</div>
 		<div id="particles-js">
 			<div id="headingCont">
 				<h1>The future is now</h1>
 				<p>The way we do projects, changed forever</p>
 				<a id="discoverMain" class="btn" href="#">Discover</a></li>
-				<a id="getStartedMain" class="btn" href="#">Get Started</a></li>
+				<a id="getStartedMain" class="btn" href="#" data-toggle="modal" data-target=".signup-modal-lg">Get Started</a></li>
 			</div>
 		</div>
 	</section>
