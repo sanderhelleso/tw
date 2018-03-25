@@ -163,7 +163,7 @@ nav ul li a {
 }
 
 #nameRow, #aboutRow, #passwordRow {
-	margin-bottom: 5vh;
+	margin-bottom: 2.5vh;
 }
 
 #emailHelp {
@@ -190,8 +190,6 @@ nav ul li a {
 	border: 1px solid #b388ff;
 }
 
-
-
 #policy {
 	font-size: 14px;
 	color: #9e9e9e;
@@ -205,4 +203,28 @@ nav ul li a {
 .form-control:focus {
 	border: 1px solid #7e57c2;
   	box-shadow: none;
+}
+
+.formError {
+	font-size: 12px;
+	padding-top: 5px;
+	color: #ef5350;
+	opacity: 0;
+	transition: all 0.5s;
+}
+
+form .col label {
+	width: 100%;
+}
+
+form .col svg {
+	color: #66bb6a;
+	text-shadow: 2px 2px 4px #000000;
+	float: right;
+	opacity: 0;
+	transition: 0.5s;
+}
+
+#selectDisabled {
+	background-color: #e0e0e0;
 }

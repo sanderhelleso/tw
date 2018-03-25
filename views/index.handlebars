@@ -45,38 +45,45 @@
                 	<div class="container">
 					  <div id="nameRow" class="row justify-content-center">
 					    <div class="col col-lg-4">
-					    	<label for="firstName">First Name</label>
+					    	<label for="firstName">First Name  <i class="formCheckIcon" data-feather="check"></i></label>
 					      	<input id="firstName" type="text" class="form-control" placeholder="Jared">
+					      	<p id="firstNameError" class="formError"></p>
 					    </div>
 					    <div class="col col-lg-4">
-					    	<label for="lastName">First Name</label>
+					    	<label for="lastName">Last Name <i class="formCheckIcon" data-feather="check"></i></label>
 					     	<input id="lastName" type="text" class="form-control" placeholder="Dunn">
+					     	<p id="lastNameError" class="formError"></p>
 					    </div>
 					  </div>
 					  <div id="aboutRow" class="row justify-content-center">
 					  	<div class="col col-lg-4">
-					    	<label for="email">Email address</label>
+					    	<label for="email">Email address <i class="formCheckIcon" data-feather="check"></i></label>
 						    <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="jared@piedpiper.com">
 						    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+						    <p id="emailError" class="formError"></p>
 					    </div>
 					    <div class="col col-lg-4">
-					    	<label for="singupSelect">I am a..</label>
+					    	<label for="singupSelect">I am a.. <i class="formCheckIcon" data-feather="check"></i></label>
 						    <select class="form-control" id="signupSelect">
+						      <option id="selectDisabled">Select an option</option>
 						      <option>Project Manager</option>
 						      <option>Employee</option>
 						      <option>Student</option>
 						      <option>None of the above</option>
 						    </select>
+						    <p id="selectError" class="formError"></p>
 					    </div>
 					  </div>
 					  <div id="passwordRow" class="row justify-content-center">
 					  	<div class="col col-lg-4">
-					    	<label for="password">Password</label>
+					    	<label for="password">Password <i class="formCheckIcon" data-feather="check"></i></label>
     						<input type="password" class="form-control" id="password" placeholder="Password">
+    						<p id="passwordError" class="formError"></p>
 					    </div>
 					    <div class="col col-lg-4">
-					    	<label for="confirmPassword">Confirm Password</label>
+					    	<label for="confirmPassword">Confirm Password <i class="formCheckIcon" data-feather="check"></i></label>
     						<input type="password" class="form-control" id="confirmPassword" placeholder="Confirm password">
+    						<p id="confirmPasswordError" class="formError"></p>
 					    </div>
 					  </div>
 					  <div id="signupRow" class="row justify-content-center">
