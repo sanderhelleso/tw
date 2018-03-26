@@ -1,0 +1,67 @@
+#dashNav {
+	background-color: #e8eaf6;
+}
+
+#dashboardSection {
+	background-color: #e8eaf6;
+	height: 100vh;
+	z-index: 10;
+}
+
+#userAccount {
+	border-radius: 4px;
+	color: #5c6bc0;
+	transition: all 0.3s;
+}
+
+#userAccount:focus {
+	background-color: #8c9eff;
+	color: white;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+#userAccount .feather {
+	width: 15px; 
+	height: 15px; 
+	stroke: currentColor; 
+	stroke-width: 2; 
+	stroke-linecap: round; 
+	stroke-linejoin: round; 
+	fill: none;
+	opacity: 0.8;
+}
+
+#userAvatar {
+    vertical-align: middle;
+    width: 27.5px;
+    height: 27.5px;
+    border-radius: 50%;
+    margin-top: -5px;
+    margin-right: 5px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19);
+}
+
+#userAccountMenu {
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+.dropdown-item .feather {
+	width: 20px; 
+	height: 20px; 
+	stroke: #8c9eff; 
+	stroke-width: 2; 
+	stroke-linecap: round; 
+	stroke-linejoin: round; 
+	fill: none;
+	float: left;
+	margin-top: 2.5px;
+	margin-right: 10px;
+	text-shadow: 2px 2px 4px #000000;
+}
+
+.dropdown-item:hover {
+	color: #8c9eff;
+	background-color: white;
+}

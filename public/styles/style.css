@@ -67,7 +67,7 @@ body {
 	background-attachment: fixed;
 }
 
-nav {
+#nav {
 	background: linear-gradient(
     rgba(20,20,20, .6), 
     rgba(20,20,20, .6)),
@@ -77,12 +77,12 @@ nav {
 	background-attachment: fixed;
 }
 
-nav #logo {
+#nav #logo {
 	color: #7e57c2;
 	font-weight: 100;
 }
 
-nav ul li a {
+#nav ul li a {
 	color: #757575;
 }
 
@@ -110,7 +110,7 @@ nav ul li a {
 	transition: all 0.3s;
 }
 
-.dropdown-item:hover {
+.ddi:hover {
 	color: #7e57c2;
 	background-color: white;
 	border-left: 7.5px solid #7e57c2;

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Team Work App (Name comming)</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="styles/animate.css">
+	<link rel="stylesheet" type="text/css" href="styles/style.css">
+	<link rel="stylesheet" type="text/css" href="styles/dashboard.css">
+	<script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+	<script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<script type="text/javascript" src="scripts/dashboard.js"></script>
+</head>
+<body id="body" class="animated">
+	<div id="loadingCover" class="animated">
+		<h5 id="loadingSlogan" class="loadingSlogan animated fadeInUp">Counting Stars</h5>
+	</div>
+	<section id="dashboardSection">
+		<nav id="dashNav" class="navbar navbar-expand-lg">
+		<div class="collapse navbar-collapse justify-content-left">
+			<ul class="navbar-nav">
+				<li class="nav-item dropdown">
+			        <a id="userAccount" class="nav-link" href="#"  role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			      	</a>
+			        <div id="userAccountMenu" class="dropdown-menu dropleft" aria-labelledby="userAccount">
+			          <a class="dropdown-item" href="#"><i data-feather="plus-square"></i> New Project</a>
+			          <div class="dropdown-divider"></div>
+			          <a id="signOut" class="dropdown-item" href="#"><i data-feather="log-out"></i> Sign Out</a>
+			        </div>
+			    </li>
+			</ul>
+		</div>
+	</nav>
+	</section>
+</body>
+</html>
