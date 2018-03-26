@@ -432,3 +432,7 @@ form .col svg {
 #successLoginMessage p {
 	margin-bottom: 0;
 }
+
+#forgotPasswordMessage {
+	display: none;
+}

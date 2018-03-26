@@ -24,6 +24,7 @@ function start() {
     document.getElementById("loginBtn").addEventListener("click", login);
     document.getElementById("successLogin").addEventListener("click", openLogin);
 	document.getElementById("noAccount").addEventListener("click", openSignup);
+	document.getElementById("forgotPassword").addEventListener("click", forgotPassword);
 
 
     // get form elements
@@ -438,5 +439,25 @@ function login() {
     	document.getElementById("loginErrorMessage").style.display = "block";
     	document.getElementById("loginErrorMessage").classList.add("bounceIn");
     	document.getElementById("loginErrorMessage").innerHTML = error.message;
+	});
+}
+
+function forgotPassword() {
+	document.getElementById("forgotPasswordMessage").classList.remove("fadeIn");
+	var auth = firebase.auth();
+	var emailAddress = document.getElementById("loginEmail").value;
+
+	auth.sendPasswordResetEmail(emailAddress).then(function() {
+		document.getElementById("forgotPasswordMessage").classList.add("fadeIn");
+		document.getElementById("forgotPasswordMessage").style.display = "block";
+		document.getElementById("forgotPasswordMessage").classList.remove("alert-danger") + document.getElementById("forgotPasswordMessage").classList.add("alert-success");
+		document.getElementById("forgotPasswordMessage").innerHTML = "An email has been sendt to <strong>" + emailAddress + "</strong> containing instructions on how to reset your password!";
+		document.getElementById("forgotPassword").style.display = "none";
+	  // Email sent.
+	}).catch(function(error) {
+		document.getElementById("forgotPasswordMessage").classList.add("fadeIn");
+		document.getElementById("forgotPasswordMessage").style.display = "block";
+		document.getElementById("forgotPasswordMessage").classList.remove("alert-success") + document.getElementById("forgotPasswordMessage").classList.add("alert-danger");
+		document.getElementById("forgotPasswordMessage").innerHTML = error.message;
 	});
 }
