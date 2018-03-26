@@ -1,2 +1,2 @@
 # tw
-Application for easy project controll
+Application for easy project management
