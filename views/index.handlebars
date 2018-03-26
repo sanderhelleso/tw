@@ -3,6 +3,7 @@
 <head>
 	<title>Team Work App (Name comming)</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="styles/animate.css">
 	<link rel="stylesheet" type="text/css" href="styles/style.css">
 	<script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
@@ -11,7 +12,10 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	<script type="text/javascript" src="scripts/index.js"></script>
 </head>
-<body>
+<body id="body" class="animated">
+	<div id="loadingCover" class="animated">
+		<h5 id="loadingSlogan" class="loadingSlogan animated fadeInUp">Counting Stars</h5>
+	</div>
 	<nav class="navbar navbar-expand-lg navbar-light bg-light z-depth-1">
 		<a id="logo" class="navbar-brand" href="#"></a>
 		<div class="collapse navbar-collapse justify-content-end">
@@ -27,44 +31,45 @@
 			          <a class="dropdown-item" href="#">About</a>
 			        </div>
 			    </li>
-				<li><a id="login" class="btn" href="#">Login</a></li>
+			    <li><a id="dashboard" class="btn" href="#">Dashboard <i data-feather="arrow-right"></i></a></li>
+				<li><a id="login" class="btn" href="#" data-toggle="modal" data-target=".login-modal-lg">Log In</a></li>
 				<li><a id="getStarted" class="btn" href="#" data-toggle="modal" data-target=".signup-modal-lg">Get Started</a></li>
 			</ul>
 		</div>
 	</nav>
-	<section id="mainSection">
+	<section id="mainSection" class="animated">
 		<!-- GET STARTED MODAL-->
-		<div class="modal fade signup-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="static">
+		<div class="modal fade signupModal signup-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="static">
 		  <div class="modal-dialog modal-lg">
 		    <div id="signupModal" class="modal-content">
-                	<button id="exitSignupModal" type="button" class="close text-right" data-dismiss="modal" aria-label="Close"><i data-feather="x"></i>
-                	</button>
-                <h3 class="text-center">Sign up to *NAME*</h3>
+                <button id="exitSignupModal" type="button" class="close text-right" data-dismiss="modal" aria-label="Close"><i data-feather="x"></i>
+                </button>
+                <h3 class="text-center">Sign Up</h3>
                 <h5 class="text-center">and start experience the next level of project management today</h5>
-                <form>
+                <form id="signupForm">
                 	<div class="container">
 					  <div id="nameRow" class="row justify-content-center">
 					    <div class="col col-lg-4">
 					    	<label for="firstName">First Name  <i class="formCheckIcon" data-feather="check"></i></label>
-					      	<input id="firstName" type="text" class="form-control" placeholder="Jared">
+					      	<input id="firstName" type="text" class="form-control formInput" placeholder="Jared" autocomplete="off">
 					      	<p id="firstNameError" class="formError"></p>
 					    </div>
 					    <div class="col col-lg-4">
 					    	<label for="lastName">Last Name <i class="formCheckIcon" data-feather="check"></i></label>
-					     	<input id="lastName" type="text" class="form-control" placeholder="Dunn">
+					     	<input id="lastName" type="text" class="form-control formInput" placeholder="Dunn" autocomplete="off">
 					     	<p id="lastNameError" class="formError"></p>
 					    </div>
 					  </div>
 					  <div id="aboutRow" class="row justify-content-center">
 					  	<div class="col col-lg-4">
-					    	<label for="email">Email address <i class="formCheckIcon" data-feather="check"></i></label>
-						    <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="jared@piedpiper.com">
+					    	<label for="email">Email Address <i class="formCheckIcon" data-feather="check"></i></label>
+						    <input type="email" class="form-control formInput" id="email" aria-describedby="emailHelp" placeholder="jared@piedpiper.com" autocomplete="off">
 						    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
 						    <p id="emailError" class="formError"></p>
 					    </div>
 					    <div class="col col-lg-4">
 					    	<label for="singupSelect">I am a.. <i class="formCheckIcon" data-feather="check"></i></label>
-						    <select class="form-control" id="signupSelect">
+						    <select class="form-control formInput" id="signupSelect">
 						      <option id="selectDisabled">Select an option</option>
 						      <option>Project Manager</option>
 						      <option>Employee</option>
@@ -77,12 +82,12 @@
 					  <div id="passwordRow" class="row justify-content-center">
 					  	<div class="col col-lg-4">
 					    	<label for="password">Password <i class="formCheckIcon" data-feather="check"></i></label>
-    						<input type="password" class="form-control" id="password" placeholder="Password">
+    						<input type="password" class="form-control formInput" id="password" placeholder="Password" autocomplete="off">
     						<p id="passwordError" class="formError"></p>
 					    </div>
 					    <div class="col col-lg-4">
 					    	<label for="confirmPassword">Confirm Password <i class="formCheckIcon" data-feather="check"></i></label>
-    						<input type="password" class="form-control" id="confirmPassword" placeholder="Confirm password">
+    						<input type="password" class="form-control formInput" id="confirmPassword" placeholder="Confirm password" autocomplete="off">
     						<p id="confirmPasswordError" class="formError"></p>
 					    </div>
 					  </div>
@@ -91,21 +96,74 @@
 					  		<a id="signUpBtn" class="btn col col-lg-12" href="#">Sign me up!</a>
 					  	</div>
 					  </div>
-					   <div class="row justify-content-center">
+					  <div class="row justify-content-center">
 					  	<div class="col col-lg-8">
 					  		<p id="policy">By clicking sign up, I agree to the *NAME* <a href="#"> Privacy Policy</a> and <a href="#">Terms of Service</a>.</p>
 					  	</div>
 					  </div>
+					   <div class="row justify-content-center">
+						<div id="successLoginCont" class="col col-lg-8 alert alert-success animated fadeIn" role="alert">
+						  <h4 class="alert-heading">Well done!</h4>
+						  <p>Aww yeah, you successfully created an account!</p>
+						  <hr>
+						  <p class="mb-0"><strong><a id="successLogin" href="#">Click here</a></strong> to log in and start building amazing projects!</p>
+						</div>
+						<img id="successImg" src="img/cheering.png" class="img-fluid col col-lg-6 animated fadeIn" alt="You successfully created an account!">
+					  	<div id="errorMessage" class="col col-lg-6 alert alert-danger animated" role="alert"></div>
+					  </div>
+					  <div class="progress row justify-content-center">
+						<div id="signupProgress" class="progress-bar progress-bar-striped progress-bar-animated col col-lg-8 animated" role="progressbar" aria-valuenow="100">
+						Creating account...
+					  </div>
 				  </div>
 				</form>
-            </div>
+              </div>
+		    </div>
+		  </div>
+		</div>
+		
+		<!-- LOGIN MODAL -->
+		<div class="modal fade loginModal login-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="static">
+		  <div class="modal-dialog modal-lg">
+		    <div id="loginModal" class="modal-content">
+                <button id="exitLoginModal" type="button" class="close text-right" data-dismiss="modal" aria-label="Close"><i data-feather="x"></i>
+                </button>
+                <h3 class="text-center">Log In</h3>
+                <h5 class="text-center">you are only a few clicks away to change the world</h5>
+                <div class="row justify-content-center">
+	            	<div class="col col-lg-8">
+						<label for="loginEmail">Email Address</label>
+						<input type="email" class="form-control form-control-lg" id="loginEmail" aria-describedby="emailHelp" placeholder="jared@piedpiper.com" autocomplete="off">
+						<p id="loginEmailError" class="formError"></p>
+					</div>
+					<div class="col col-lg-8">
+					    <label for="loginPassword">Password</i></label>
+    					<input type="password" class="form-control form-control-lg" id="loginPassword" placeholder="Password" autocomplete="off">
+    					<p id="loginPasswordError" class="formError"></p>
+					</div>
+					<div id="loginBtnCont" class="col col-lg-8">
+					  	<a id="loginBtn" class="btn col col-lg-12" href="#">Log In</a>
+					</div>
+					<div id="successLoginMessage" class="col col-lg-8 alert alert-success animated fadeIn text-center" role="alert">
+						<p>Login succesfull! <i data-feather="check"></i></p>
+					</div>
+					<div id="loginErrorMessage" class="col col-lg-6 alert alert-danger animated" role="alert"></div>
+					<div id="loginProgress" class="progress-bar progress-bar-striped progress-bar-animated col col-lg-8 animated" role="progressbar" aria-valuenow="100">
+						Logging in...
+					</div>
+					<div class="col col-lg-8 text-center">
+					  	<a id="forgotPassword" href="#">Forgot Password?</a>
+					  	<p id="noAccountP">Don’t have an account? <a id="noAccount" href="#"> Sign Up</a></p>
+					</div>
+				</div>
 		    </div>
 		  </div>
 		</div>
 		<div id="particles-js">
 			<div id="headingCont">
-				<h1>The future is now</h1>
-				<p>The way we do projects, changed forever</p>
+				<h1 id="mainHeading" class="animated">The future is now</h1>
+				<p id="mainSlogan" class="animated">The way we do projects, changed forever</p>
+				<a id="dashboardMain" class="btn animated" href="#">Dashboard <i data-feather="arrow-right"></i></a></li>
 				<a id="discoverMain" class="btn" href="#">Discover</a></li>
 				<a id="getStartedMain" class="btn" href="#" data-toggle="modal" data-target=".signup-modal-lg">Get Started</a></li>
 			</div>
