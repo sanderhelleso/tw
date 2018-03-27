@@ -1,11 +1,22 @@
 window.onload = start;
+window.onresize = function(event) {
+    // set width of fixed friendlist heading
+	var width = document.getElementsByClassName("friendsList")[0].offsetWidth;
+	document.getElementById("friendsListHeadingCont").style.width = width + "px";
+};
 
 // GLOBALS USED WITHIN APP
 var accountRef;
 var uidKey;
+
 var notificationRef;
-var loadNotification;
+var socialRef;
+
+var loadSocial
+
 var notificationStatus;
+var availablityModeStatus;
+var availabilityModeCheck;
 function start() {
 
 	// init firebase
@@ -18,6 +29,13 @@ function start() {
 	    messagingSenderId: "744116401403"
 	};
 	firebase.initializeApp(config);
+	$(document).ready(function(){
+    	$('[data-toggle="tooltip"]').tooltip();   
+	});
+
+	// set width of fixed friendlist heading
+	var width = document.getElementsByClassName("friendsList")[0].offsetWidth;
+	document.getElementById("friendsListHeadingCont").style.width = width + "px";
 
 	// load user
 	firebase.auth().onAuthStateChanged(function(user) {
@@ -31,11 +49,18 @@ function start() {
 		    	feather.replace();
 
 		    	// load notification status
-		    	loadNotification = true;
 		    	notificationRef = firebase.database().ref("accounts/" + uidKey + "/notifications");
 		    	notificationRef.once("value", function(snapshot) {
 		    		notificationStatus = snapshot.val().Notification_Status;
 		    		toggleNotifications();
+		    	});
+
+		    	// load social data
+		    	socialRef = firebase.database().ref("accounts/" + uidKey + "/social");
+		    	socialRef.once("value", function(snapshot) {
+		    		availabilityModeStatus = snapshot.val().Mode;
+		    		console.log(snapshot.val());
+		    		availabilityMode();
 		    	});
 				
 		    	// fade in dashboard
@@ -57,6 +82,9 @@ function start() {
 
 	// notifications
 	document.getElementById("notificationsOff").addEventListener("click", toggleNotifications);
+
+	// availablity mode
+	document.getElementById("toggleMode").addEventListener("click", availabilityMode);
 }
 
 // sign out
@@ -97,7 +125,7 @@ function toggleNotifications() {
 	var line = notificationsOff.childNodes[0].childNodes[1];
 	var notification = document.getElementById("notification");
 	if (notification.classList.contains("feather-bell")) {
-		if (notificationStatus === "off" || notificationStatus === false) {
+		if (notificationStatus === "off" || notificationStatus === true) {
 			notificationsOff.classList.remove("feather-bell-off");
 			notificationsOff.classList.add("feather-bell");
 			notificationsOff.childNodes[0].childNodes[0].outerHTML = notification.childNodes[0].outerHTML;
@@ -117,7 +145,7 @@ function toggleNotifications() {
 
 	// if notification is off
 	else {
-		if (notificationStatus === "on" || notificationStatus === false) {
+		if (notificationStatus === "on" || notificationStatus === true) {
 			notificationsOff.classList.remove("feather-bell");
 			notificationsOff.classList.add("feather-bell-off");
 			notificationsOff.childNodes[0].childNodes[0].outerHTML = notification.childNodes[0].outerHTML;
@@ -135,6 +163,61 @@ function toggleNotifications() {
 		}
 	}
 // controll check on load
-notificationStatus = false;
-loadNotification = false;
+notificationStatus = true;
+}
+
+// toggle availability mode / online status
+function availabilityMode() {
+
+	// check if funcion is loaded or clicked on event
+	if (loadSocial === true) {
+		socialRef.once("value", function(snapshot) {
+			availabilityModeStatus = snapshot.val().Mode;
+		});
+	}
+
+	// mode toggle button
+	var public = document.getElementById("onlineStatusIcon");
+	var ghost = document.getElementById("onlineStatusIcon2");
+	var toogleBtnCont = public.parentElement;
+
+	// set mode to ghost if public and event is clicked
+	if (availabilityModeStatus === "publicmode") {
+		public.style.display = "block";
+		ghost.style.display = "none";
+		toogleBtnCont.removeAttribute("data-original-title");
+		toogleBtnCont.setAttribute("data-original-title", "Publicmode");
+
+		if (loadSocial === true) {
+			public.style.display = "none";
+			toogleBtnCont.removeAttribute("data-original-title");
+			toogleBtnCont.setAttribute("data-original-title", "Ghostmode");
+			ghost.style.display = "block";
+			socialRef.set({
+				Mode: "ghostmode"
+			});
+		}
+	}
+
+	// set mode to public if ghost and event is clicked
+	else {
+		if (availabilityModeStatus === "ghostmode") {
+			ghost.style.display = "block";
+			public.style.display = "none";
+			toogleBtnCont.removeAttribute("data-original-title");
+			toogleBtnCont.setAttribute("data-original-title", "Ghostmode");
+
+			if (loadSocial === true) {
+				ghost.style.display = "none";
+				public.style.display = "block";
+				toogleBtnCont.removeAttribute("data-original-title");
+				toogleBtnCont.setAttribute("data-original-title", "Publicmode");
+				socialRef.set({
+					Mode: "publicmode"
+				});
+			}
+		}
+	}
+	loadSocial = true;
+	availabilityModeCheck = false;
 }

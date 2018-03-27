@@ -252,3 +252,68 @@
 	width: 18px;
 	height: 18px;
 }
+
+.friendOptions {
+	margin-top: 5px;
+}
+
+.friendOptions .feather {
+	width: 20px;
+	height: 20px;
+	margin-right: 5px;
+	stroke: #8c9eff;
+}
+
+.friendOptions .feather:hover {
+	stroke: #7c4dff;
+}
+
+.friendContHeading {
+	margin-bottom: 0;
+}
+
+.friendsListHeading {
+	background-color: #8c9eff;
+	color: #fafafa;
+	z-index: 100;
+	padding-bottom: 20px;
+}
+
+.friendsListHeading:hover {
+	background-color: #8c9eff;
+	color: #fafafa;
+}
+
+.friendsListHeading:focus {
+	background-color: #8c9eff;
+	color: #fafafa;
+	z-index: 100;
+}
+
+.friendsListHeading .feather {
+	stroke: #fafafa;
+	width: 22px;
+	height: 22px;
+	margin-right: 0;
+}
+
+.friendsListHeading #onlineStatusIcon2 {
+	display: none;
+}
+
+.friendsListHeading .feather:hover {
+	opacity: 0.7;
+	stroke: white;
+}
+
+#friendsListHeadingCont {
+	position: fixed;
+	z-index: 100;
+}
+
+#friendsListCont {
+	padding-top: 60px;
+}
+
+#filterFriendsCont {
+}

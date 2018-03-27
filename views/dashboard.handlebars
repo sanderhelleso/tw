@@ -10,6 +10,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
 	<script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://unpkg.com/popper.js/dist/umd/popper.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	<script type="text/javascript" src="scripts/dashboard.js"></script>
 </head>
@@ -63,13 +64,23 @@
 	  			<div id="socialMain" class="col col-lg-9">
 	  			</div>
 	  			<div id="socialAside" class="col col-lg-3">
-	  				<div class="list-group friendsList">
+	  				<div id="friendsListHeadingCont" class="list-group">
+	  					<a href="#" class="list-group-item list-group-item-action flex-column align-items-start friendsListHeading">
+					    <div class="d-flex w-100 justify-content-between">
+					      <h5 class="mb-1 friendContHeading">Friends</h5>
+					      <small class="friendOptions"><span id="toggleMode" data-toggle="tooltip" data-placement="top"><i id="onlineStatusIcon" data-feather="eye"></i><i id="onlineStatusIcon2" data-feather="eye-off"></i></span>
+					      </small>
+					    </div>
+					  </a>
+					</div>
+					<div id="friendsListCont" class="list-group">
 					  <a href="#" class="list-group-item list-group-item-action flex-column align-items-start friendsList">
 					    <div class="d-flex w-100 justify-content-between">
 					      <h5 class="mb-1 friendName">John Doe</h5>
 					      <small class="online"><i data-feather="circle"></i></small>
 					    </div>
 					    <p class="mb-1 friendEmail">johndoe@hotmail.com</p>
+					    <small class="friendOptions"><i data-feather="mail"></i> <i data-feather="message-circle"></i> <i class="friendSettings" data-feather="settings"></i></small>
 					  </a>
 					  <a href="#" class="list-group-item list-group-item-action flex-column align-items-start friendsList">
 					    <div class="d-flex w-100 justify-content-between">
@@ -77,6 +88,7 @@
 					      <small class="online"><i data-feather="circle"></i></small>
 					    </div>
 					    <p class="mb-1 friendEmail">olanord@outlook.com</p>
+					     <small class="friendOptions"><i data-feather="mail"></i> <i data-feather="message-circle"></i> <i class="friendSettings" data-feather="settings"></i></small>
 					  </a>
 					  <a href="#" class="list-group-item list-group-item-action flex-column align-items-start friendsList">
 					    <div class="d-flex w-100 justify-content-between">
@@ -84,6 +96,7 @@
 					      <small class="online"><i data-feather="circle"></i></small>
 					    </div>
 					    <p class="mb-1 friendEmail">janeausten@gmail.com</p>
+					     <small class="friendOptions"><i data-feather="mail"></i> <i data-feather="message-circle"></i> <i class="friendSettings" data-feather="settings"></i></small>
 					  </a>
 					  <a href="#" class="list-group-item list-group-item-action flex-column align-items-start friendsList">
 					    <div class="d-flex w-100 justify-content-between">
@@ -91,6 +104,7 @@
 					      <small class="away"><i data-feather="circle"></i></small>
 					    </div>
 					    <p class="mb-1 friendEmail">ericjohn@hotmail.com</p>
+					     <small class="friendOptions"><i data-feather="mail"></i> <i data-feather="message-circle"></i> <i class="friendSettings" data-feather="settings"></i></small>
 					  </a>
 					  <a href="#" class="list-group-item list-group-item-action flex-column align-items-start friendsList">
 					    <div class="d-flex w-100 justify-content-between">
@@ -98,6 +112,7 @@
 					      <small class="away"><i data-feather="circle"></i></small>
 					    </div>
 					    <p class="mb-1 friendEmail">evakapi@hotmail.com</p>
+					     <small class="friendOptions"><i data-feather="mail"></i> <i data-feather="message-circle"></i> <i class="friendSettings" data-feather="settings"></i></small>
 					  </a>
 					  <a href="#" class="list-group-item list-group-item-action flex-column align-items-start friendsList">
 					    <div class="d-flex w-100 justify-content-between">
@@ -105,6 +120,7 @@
 					      <small class="offline"><i data-feather="circle"></i></small>
 					    </div>
 					    <p class="mb-1 friendEmail">dwaynejohnsen@gmail.com</p>
+					     <small class="friendOptions"><i data-feather="mail"></i> <i data-feather="message-circle"></i> <i class="friendSettings" data-feather="settings"></i></small>
 					  </a>
 					  <a href="#" class="list-group-item list-group-item-action flex-column align-items-start friendsList">
 					    <div class="d-flex w-100 justify-content-between">
@@ -112,6 +128,7 @@
 					      <small class="offline"><i data-feather="circle"></i></small>
 					    </div>
 					    <p class="mb-1 friendEmail">juliagarner@outlook.com</p>
+					     <small class="friendOptions"><i data-feather="mail"></i> <i data-feather="message-circle"></i> <i class="friendSettings" data-feather="settings"></i></small>
 					  </a>
 					  <a href="#" class="list-group-item list-group-item-action flex-column align-items-start friendsList">
 					    <div class="d-flex w-100 justify-content-between">
@@ -119,6 +136,16 @@
 					      <small class="offline"><i data-feather="circle"></i></small>
 					    </div>
 					    <p class="mb-1 friendEmail">yvonnehelga@gmail.com</p>
+					     <small class="friendOptions"><i data-feather="mail"></i> <i data-feather="message-circle"></i> <i class="friendSettings" data-feather="settings"></i></small>
+					  </a>
+					</div>
+					<div id="filterFriendsCont" class="list-group">
+	  				  <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+					    <div class="d-flex w-100 justify-content-between">
+					      <h5 class="mb-1 friendContHeading">Friends</h5>
+					      <small class="friendOptions">
+					      </small>
+					  	</div>
 					  </a>
 					</div>
 	  			</div>
