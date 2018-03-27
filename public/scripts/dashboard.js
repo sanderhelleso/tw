@@ -94,6 +94,10 @@ function start() {
 
 	// filter friends
 	document.getElementById("filterFriends").addEventListener("keyup", filterFriends);
+
+	// set amount of online friends
+	var online = document.getElementsByClassName("online").length;
+	document.getElementById("amountOnline").innerHTML = online + " online";
 }
 
 // sign out
@@ -237,6 +241,10 @@ function positionSearchbar() {}
 // hide / show searchbar for friendslist
 function showSearchbarFriends() {
 	var searchbar = document.getElementById("filterFriends");
+	this.style.pointerEvents = "none";
+	setTimeout(function() {
+		document.getElementById("toggleSearch").style.pointerEvents = "auto";
+	},  1000);
 
 	if (searchbar.style.display === "block") {
 		document.getElementById("friendsListCont").style.paddingTop = "80px";
