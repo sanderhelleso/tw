@@ -61,7 +61,22 @@
 	text-shadow: 2px 2px 4px #000000;
 }
 
+.dropdown-item {
+	padding-bottom: 10px;
+	padding-top: 10px;
+}
+
 .dropdown-item:hover {
 	color: #8c9eff;
 	background-color: white;
+}
+
+#signOut {
+	border-bottom: 0;
+	padding-bottom: 5px;
+	padding-top: 5px;
+}
+
+#newProject {
+	padding-top: 5px;
 }

@@ -46,7 +46,7 @@ function start() {
 	// check user
 	checkUser();
 
-	// Log out
+	// sign out
 	/*firebase.auth().signOut().then(function() {
 		console.log('Signed Out');
 	}, function(error) {

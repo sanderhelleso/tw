@@ -36,6 +36,9 @@ function start() {
 
 	// sign out listener
 	document.getElementById("signOut").addEventListener("click", signOut);
+
+	// user menu
+	document.getElementById("userAccount").addEventListener("click", openMenu);
 }
 
 // sign out
@@ -47,7 +50,7 @@ function signOut() {
 		document.getElementById("loadingSlogan").innerHTML = "Signed out succesfully";
 		setTimeout(function() {
 			window.location.replace("/");
-		},  1500);
+		},  1000);
 	}, function(error) {
 		document.getElementById("loadingSlogan").innerHTML = error.message;
 		setTimeout(function() {
@@ -56,4 +59,12 @@ function signOut() {
 		    document.getElementById("body").classList.add("fadeIn");
 		},  2000);
 	});
+}
+
+// styles for user dropdown menu
+function openMenu() {
+	document.getElementById("userAccountMenu").classList.add("fadeIn");
+	setTimeout(function() {
+		document.getElementById("userAccountMenu").classList.remove("fadeIn");
+	}, 600);
 }
