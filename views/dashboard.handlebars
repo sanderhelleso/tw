@@ -34,8 +34,97 @@
 			        </div>
 			    </li>
 			</ul>
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item dropdown">
+			        <i id="notification" data-feather="bell" class="nav-link" href="#"  role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+			      	</a>
+			        <div id="notificationMenu" class="dropdown-menu dropdown-menu-right animated" aria-labelledby="menu">
+			          <p class="dropdown-item">Notifications</p>
+			          <div class="dropdown-divider"></div>
+			          <a id="notificationPlaceholder" href="#" class="dropdown-item">No new notifications, you are good to go!</a>
+			          <a id="notificationsOff" href="#" class="dropdown-item"><i data-feather="bell-off"></i> <span>Turn off notifications</span></a>
+			        </div>
+			    </li>
+			    <li><i id="documentation" data-feather="book-open"></i></li>
+			</ul>
 		</div>
 	</nav>
+	<div class="container">
+		<div id="searchCont">	
+			<div class="input-group">
+		      <div class="input-group-prepend">
+		        <span class="input-group-text" id="searchIcon"><i data-feather="search"></i></span>
+		      </div>
+		      <input id="searchDashboard" class="form-control mr-sm-2" type="search" placeholder="Search..." aria-label="Search">
+		    </div>
+	    </div>
+	  	<div id="mainDashboard">
+	  		<div id="social" class="row">
+	  			<div id="socialMain" class="col col-lg-9">
+	  			</div>
+	  			<div id="socialAside" class="col col-lg-3">
+	  				<div class="list-group friendsList">
+					  <a href="#" class="list-group-item list-group-item-action flex-column align-items-start friendsList">
+					    <div class="d-flex w-100 justify-content-between">
+					      <h5 class="mb-1 friendName">John Doe</h5>
+					      <small class="online"><i data-feather="circle"></i></small>
+					    </div>
+					    <p class="mb-1 friendEmail">johndoe@hotmail.com</p>
+					  </a>
+					  <a href="#" class="list-group-item list-group-item-action flex-column align-items-start friendsList">
+					    <div class="d-flex w-100 justify-content-between">
+					      <h5 class="mb-1 friendName">Ola Nord</h5>
+					      <small class="online"><i data-feather="circle"></i></small>
+					    </div>
+					    <p class="mb-1 friendEmail">olanord@outlook.com</p>
+					  </a>
+					  <a href="#" class="list-group-item list-group-item-action flex-column align-items-start friendsList">
+					    <div class="d-flex w-100 justify-content-between">
+					      <h5 class="mb-1 friendName">Jane Austen</h5>
+					      <small class="online"><i data-feather="circle"></i></small>
+					    </div>
+					    <p class="mb-1 friendEmail">janeausten@gmail.com</p>
+					  </a>
+					  <a href="#" class="list-group-item list-group-item-action flex-column align-items-start friendsList">
+					    <div class="d-flex w-100 justify-content-between">
+					      <h5 class="mb-1 friendName">Eric John</h5>
+					      <small class="away"><i data-feather="circle"></i></small>
+					    </div>
+					    <p class="mb-1 friendEmail">ericjohn@hotmail.com</p>
+					  </a>
+					  <a href="#" class="list-group-item list-group-item-action flex-column align-items-start friendsList">
+					    <div class="d-flex w-100 justify-content-between">
+					      <h5 class="mb-1 friendName">Eva Kapi</h5>
+					      <small class="away"><i data-feather="circle"></i></small>
+					    </div>
+					    <p class="mb-1 friendEmail">evakapi@hotmail.com</p>
+					  </a>
+					  <a href="#" class="list-group-item list-group-item-action flex-column align-items-start friendsList">
+					    <div class="d-flex w-100 justify-content-between">
+					      <h5 class="mb-1 friendName">Dwayne Johnsen</h5>
+					      <small class="offline"><i data-feather="circle"></i></small>
+					    </div>
+					    <p class="mb-1 friendEmail">dwaynejohnsen@gmail.com</p>
+					  </a>
+					  <a href="#" class="list-group-item list-group-item-action flex-column align-items-start friendsList">
+					    <div class="d-flex w-100 justify-content-between">
+					      <h5 class="mb-1 friendName">Julia Garner</h5>
+					      <small class="offline"><i data-feather="circle"></i></small>
+					    </div>
+					    <p class="mb-1 friendEmail">juliagarner@outlook.com</p>
+					  </a>
+					  <a href="#" class="list-group-item list-group-item-action flex-column align-items-start friendsList">
+					    <div class="d-flex w-100 justify-content-between">
+					      <h5 class="mb-1 friendName">Yvonne Helga</h5>
+					      <small class="offline"><i data-feather="circle"></i></small>
+					    </div>
+					    <p class="mb-1 friendEmail">yvonnehelga@gmail.com</p>
+					  </a>
+					</div>
+	  			</div>
+	  		</div>
+	  	</div>
+	</div>
 	</section>
 </body>
 </html>
