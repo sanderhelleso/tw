@@ -85,6 +85,15 @@ function start() {
 
 	// availablity mode
 	document.getElementById("toggleMode").addEventListener("click", availabilityMode);
+
+	// fixed search bar for friend list
+	document.getElementById("socialAside").addEventListener("scroll", positionSearchbar);
+
+	// toggle search friends
+	document.getElementById("toggleSearch").addEventListener("click", showSearchbarFriends);
+
+	// filter friends
+	document.getElementById("filterFriends").addEventListener("keyup", filterFriends);
 }
 
 // sign out
@@ -220,4 +229,47 @@ function availabilityMode() {
 	}
 	loadSocial = true;
 	availabilityModeCheck = false;
+}
+
+// not in use for the moment
+function positionSearchbar() {}
+
+// hide / show searchbar for friendslist
+function showSearchbarFriends() {
+	var searchbar = document.getElementById("filterFriends");
+
+	if (searchbar.style.display === "block") {
+		document.getElementById("friendsListCont").style.paddingTop = "80px";
+		searchbar.classList.remove("slideOutUp");
+		searchbar.classList.add("slideOutUp");
+		setTimeout(function() {
+			searchbar.classList.remove("slideOutUp");
+			searchbar.style.display = "none";
+		},  1000);
+	}
+
+	else {
+		document.getElementById("friendsListCont").style.paddingTop = "120px";
+		searchbar.classList.add("slideInDown");
+		searchbar.style.display = "block";
+		setTimeout(function() {
+			searchbar.classList.remove("slideInDown");
+		},  1000);
+	}
+}
+
+// filter out friends
+function filterFriends() {
+	var filter = this.value.toLowerCase();
+	var names = document.getElementsByClassName("friendName");
+	for (var i = 0; i < names.length; i++) {
+		names[i].parentElement.parentElement.classList.add("animated") + names[i].parentElement.parentElement.classList.add("fadeIn");
+		if (names[i].innerHTML.toLowerCase().indexOf(filter) > -1) {
+			names[i].parentElement.parentElement.style.display = "block";
+		}
+
+		else {
+			names[i].parentElement.parentElement.style.display = "none";
+		}
+	}
 }

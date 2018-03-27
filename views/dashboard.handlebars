@@ -68,10 +68,11 @@
 	  					<a href="#" class="list-group-item list-group-item-action flex-column align-items-start friendsListHeading">
 					    <div class="d-flex w-100 justify-content-between">
 					      <h5 class="mb-1 friendContHeading">Friends</h5>
-					      <small class="friendOptions"><span id="toggleMode" data-toggle="tooltip" data-placement="top"><i id="onlineStatusIcon" data-feather="eye"></i><i id="onlineStatusIcon2" data-feather="eye-off"></i></span>
+					      <small class="friendOptions"><small id="toggleSearch"><i id="searchFriends" data-feather="search"></i></small><span id="toggleMode" data-toggle="tooltip" data-placement="top"><i id="onlineStatusIcon" data-feather="eye"></i><i id="onlineStatusIcon2" data-feather="eye-off"></i></span>
 					      </small>
 					    </div>
 					  </a>
+					  <input id="filterFriends" class="form-control animated" type="search" placeholder="Search for friend..." aria-label="Search">
 					</div>
 					<div id="friendsListCont" class="list-group">
 					  <a href="#" class="list-group-item list-group-item-action flex-column align-items-start friendsList">
@@ -137,15 +138,6 @@
 					    </div>
 					    <p class="mb-1 friendEmail">yvonnehelga@gmail.com</p>
 					     <small class="friendOptions"><i data-feather="mail"></i> <i data-feather="message-circle"></i> <i class="friendSettings" data-feather="settings"></i></small>
-					  </a>
-					</div>
-					<div id="filterFriendsCont" class="list-group">
-	  				  <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-					    <div class="d-flex w-100 justify-content-between">
-					      <h5 class="mb-1 friendContHeading">Friends</h5>
-					      <small class="friendOptions">
-					      </small>
-					  	</div>
 					  </a>
 					</div>
 	  			</div>
