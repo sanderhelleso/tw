@@ -29,9 +29,15 @@ function start() {
 	    messagingSenderId: "744116401403"
 	};
 	firebase.initializeApp(config);
+
+	// init tooltips
 	$(document).ready(function(){
     	$('[data-toggle="tooltip"]').tooltip();   
 	});
+
+	// allows dropdown to not dismiss on click
+	$('#friendRequestsMenu').bind('click', function (e) { e.stopPropagation() });
+	// might change $('#notificationMenu').bind('click', function (e) { e.stopPropagation() });
 
 	// set width of fixed friendlist heading
 	var width = document.getElementsByClassName("friendsList")[0].offsetWidth;
@@ -77,6 +83,12 @@ function start() {
 		    			availabilityMode();
 		    		}
 		    	});
+
+		    	// load friend requests
+		    	loadFriendRequests();
+
+		    	// load notifications
+				loadNotifications();
 				
 		    	// fade in dashboard
 		    	document.getElementById("loadingCover").classList.add("fadeOut");
@@ -97,9 +109,6 @@ function start() {
 
 	// notifications
 	document.getElementById("notificationsOff").addEventListener("click", toggleNotifications);
-
-	// load notifications
-	loadNotifications();
 
 	/********************************** SOCIAL *****************************************/
 
@@ -125,24 +134,9 @@ function start() {
 	/********************************* END SOCIAL ************************************/
 }
 
-// sign out
-function signOut() {
-	document.getElementById("loadingCover").classList.add("fadeOut")
-	document.getElementById("loadingCover").style.display = "block";
-	document.getElementById("loadingSlogan").innerHTML = "Signing Out";
-	firebase.auth().signOut().then(function() {
-		document.getElementById("loadingSlogan").innerHTML = "Signed out succesfully";
-		setTimeout(function() {
-			window.location.replace("/");
-		},  1000);
-	}, function(error) {
-		document.getElementById("loadingSlogan").innerHTML = error.message;
-		setTimeout(function() {
-			document.getElementById("loadingCover").classList.add("fadeOut");
-		    document.getElementById("loadingCover").style.display = "none";
-		    document.getElementById("body").classList.add("fadeIn");
-		},  2000);
-	});
+// function to capitalize first letters, used within app
+String.prototype.capitalizeFirstLetter = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1).toLowerCase();
 }
 
 // styles for user dropdown menu
@@ -153,10 +147,80 @@ function openMenu() {
 	}, 600);
 }
 
-function loadNotifications() {
-	console.log(123);
+// load friend requests, run at start
+function loadFriendRequests() {
+	// count to controll flow of divider
+	var count = 0;
+	// request ref
+	var friendRequestRef = firebase.database().ref("accounts/" + uidKey + "/friend_requests");
+	friendRequestRef.once("value", function(snapshot) {
+		// create requests for each value
+		snapshot.forEach((child) => {
+			count++;
+
+			// only create divider if there are more than one request
+			if (count > 1) {
+				// create divider
+				var divider = document.createElement("div");
+				divider.classList.add("dropdown-divider") + divider.classList.add("friendRequestDivider");
+				document.getElementById("friendRequestsMenu").appendChild(divider);
+			}
+
+			// create container
+			var cont = document.createElement("div");
+			cont.classList.add("pendingFriendRequest") + cont.classList.add("animated") + cont.classList.add("fadeIn");
+
+			// create avatar and heading
+			var headingCont = document.createElement("div");
+			var avatar = document.createElement("img");
+			avatar.classList.add("pendingFriendRequestAvatar");
+			avatar.src = "img/avatar.png";
+			var headingSpan = document.createElement("span");
+			headingSpan.classList.add("pendingFriendRequestName");
+			headingSpan.innerHTML = child.val().First_Name.capitalizeFirstLetter() + " " + child.val().Last_Name.capitalizeFirstLetter();
+
+			// set heading
+			headingCont.appendChild(avatar);
+			headingCont.appendChild(headingSpan);
+			cont.appendChild(headingCont);
+
+			// create email and breakline
+			var email = document.createElement("span");
+			email.classList.add("pendingFriendRequestEmail");
+			email.innerHTML = child.val().Email;
+			var br = document.createElement("br");
+
+			// set email and breakline
+			cont.appendChild(email);
+			cont.appendChild(br);
+
+			// create choices - accept / decline
+			var choices = document.createElement("span");
+			choices.innerHTML = document.getElementById("masterRequest").childNodes[1].outerHTML;
+			cont.appendChild(choices);
+
+			// append request to menu and display
+			document.getElementById("friendRequestsMenu").appendChild(cont);
+
+  		});
+
+		// check amount and edit spelling depening on amount
+  		if (count === 1) {
+  			document.getElementById("friendRequestPlaceholder").innerHTML = "You have " + count + " pending friend request";
+  		}
+  		else {
+  			document.getElementById("friendRequestPlaceholder").innerHTML = "You have " + count + " pending friend requests";
+  		}
+	});
+
 }
 
+// load notifications, run at start
+function loadNotifications() {
+	
+}
+
+// toggle on / off notifications
 function toggleNotifications() {
 
 	// notification toggle button
@@ -477,5 +541,25 @@ function sendFriendRequest() {
 		    snackbar.className = "show";
 		    setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
 		}
+	});
+}
+
+// sign out
+function signOut() {
+	document.getElementById("loadingCover").classList.add("fadeOut")
+	document.getElementById("loadingCover").style.display = "block";
+	document.getElementById("loadingSlogan").innerHTML = "Signing Out";
+	firebase.auth().signOut().then(function() {
+		document.getElementById("loadingSlogan").innerHTML = "Signed out succesfully";
+		setTimeout(function() {
+			window.location.replace("/");
+		},  1000);
+	}, function(error) {
+		document.getElementById("loadingSlogan").innerHTML = error.message;
+		setTimeout(function() {
+			document.getElementById("loadingCover").classList.add("fadeOut");
+		    document.getElementById("loadingCover").style.display = "none";
+		    document.getElementById("body").classList.add("fadeIn");
+		},  2000);
 	});
 }

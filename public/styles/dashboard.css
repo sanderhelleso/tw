@@ -193,6 +193,10 @@
 #notificationMenu, #friendRequestsMenu {
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	padding-bottom: 10px;
+	min-width: 300px;
+ 	height: auto;
+    max-height: 60vh;
+    overflow-x: hidden;
 }
 
 #notificationMenu .dropdown-item, #friendRequestsMenu .dropdown-item {
@@ -206,11 +210,89 @@
 
 #notificationMenu #notificationPlaceholder, #friendRequestsMenu #friendRequestPlaceholder {
 	color: #757575;
+	margin-bottom: 1.5vh;
 }
 
 
 #notificationMenu #notificationPlaceholder:hover, #friendRequestMenu #friendRequestPlaceholder:hover {
 	color: #757575;
+}
+
+.pendingFriendRequest {
+	padding: 1.5%;
+	padding-top: 0;
+	padding-left: 6%;
+	margin-bottom: 1.5vh;
+}
+
+.pendingFriendRequest .pendingFriendRequestName {
+	margin-bottom: 0;
+	font-size: 20px;
+	font-weight: 600;
+	color: #212121;
+}
+
+.pendingFriendRequest .pendingFriendRequestEmail {
+	color: #757575;
+	font-size: 14px;
+}
+
+.pendingFriendRequestChoices .feather {
+	margin-top: 2vh;
+	width: 14px;
+	height: 14px;
+}
+
+.pendingFriendRequest span .acceptFriendRequest {
+	padding: 2.5%;
+	background-color: #8c9eff;
+	margin-top: 2vh;
+	border-radius: 2px;
+	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19);
+	color: white;
+	font-size: 12px;
+	margin-right: 5px;
+	transition: all 0.2s;
+}
+
+.pendingFriendRequest span .declineFriendRequest {
+	padding: 2.5%;
+	background-color: #e0e0e0;
+	margin-top: 2vh;
+	border-radius: 2px;
+	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19);
+	color: #424242;
+	font-size: 12px;
+	transition: all 0.2s;
+}
+
+.pendingFriendRequest span .acceptFriendRequest:hover {
+	background-color: #5c6bc0;
+	cursor: pointer;
+}
+
+.pendingFriendRequest span .declineFriendRequest:hover {
+	background-color: #bdbdbd;
+	cursor: pointer;
+}
+
+.pendingFriendRequestAvatar {
+	vertical-align: middle;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19);
+    margin-top: -7.5px;
+    margin-right: 10px;
+}
+
+#masterRequest {
+	display: none;
+}
+
+.friendRequestDivider {
+	margin-top: 17.5px;
+	margin-bottom: 10px;
 }
 
 #social {
