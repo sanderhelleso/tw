@@ -303,6 +303,7 @@ function addFriend() {
 	document.getElementById("searchNewFriend").addEventListener("click", findFriend);
 }
 
+// search through accounts and find matching result
 function findFriend() {
 	var search = document.getElementById("addFriendSearch");
 	if (search.value === "" || search.value === " ") {
@@ -332,7 +333,6 @@ function findFriend() {
 
 		// loop through accounts
   		for (var i = 0; i < arr.length; i++) {
-  			console.log(arr[i]);
   			// exclude signed in user from search
 			if (keys[i] != uidKey) {
 				// check for matches
@@ -393,8 +393,7 @@ function findFriend() {
 				}
 				else {
 					notFoundCount++;
-					if (notFoundCount === arr.length) {
-
+					if (notFoundCount === arr.length - 1) {
 						// show error message
 						document.getElementById("searchNewFriendSuccess").style.display = "none";
 						document.getElementById("searchNewFriendError").classList.add("bounceIn");
