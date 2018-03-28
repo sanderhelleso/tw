@@ -51,16 +51,31 @@ function start() {
 		    	// load notification status
 		    	notificationRef = firebase.database().ref("accounts/" + uidKey + "/notifications");
 		    	notificationRef.once("value", function(snapshot) {
-		    		notificationStatus = snapshot.val().Notification_Status;
-		    		toggleNotifications();
+		    		// set value if first sign in
+		    		if (snapshot.val() === null) {
+		    			notificationRef.update({
+		    				Notification_Status: "on"
+		    			});
+		    		}
+		    		else {
+		    			notificationStatus = snapshot.val().Notification_Status;
+		    			toggleNotifications();
+		    		}
 		    	});
 
 		    	// load social data
 		    	socialRef = firebase.database().ref("accounts/" + uidKey + "/social");
 		    	socialRef.once("value", function(snapshot) {
-		    		availabilityModeStatus = snapshot.val().Mode;
-		    		console.log(snapshot.val());
-		    		availabilityMode();
+		    		// set value if first sign in
+		    		if (snapshot.val() === null ) {
+		    			socialRef.update({
+		    				Mode: "publicmode"
+		    			});
+		    		}
+		    		else {
+		    			availabilityModeStatus = snapshot.val().Mode;
+		    			availabilityMode();
+		    		}
 		    	});
 				
 		    	// fade in dashboard
@@ -83,6 +98,11 @@ function start() {
 	// notifications
 	document.getElementById("notificationsOff").addEventListener("click", toggleNotifications);
 
+	// load notifications
+	loadNotifications();
+
+	/********************************** SOCIAL *****************************************/
+
 	// availablity mode
 	document.getElementById("toggleMode").addEventListener("click", availabilityMode);
 
@@ -101,6 +121,8 @@ function start() {
 	// set amount of online friends
 	var online = document.getElementsByClassName("online").length;
 	document.getElementById("amountOnline").innerHTML = online + " online";
+
+	/********************************* END SOCIAL ************************************/
 }
 
 // sign out
@@ -129,6 +151,10 @@ function openMenu() {
 	setTimeout(function() {
 		document.getElementById("userAccountMenu").classList.remove("fadeIn");
 	}, 600);
+}
+
+function loadNotifications() {
+	console.log(123);
 }
 
 function toggleNotifications() {
@@ -327,6 +353,7 @@ function findFriend() {
 			arr.push(child.val());
 			keys.push(child.key);
   		});
+  		console.log(arr);
 
   		// reset before displaying results
 		document.getElementById("searchResults").innerHTML = "";
@@ -391,6 +418,8 @@ function findFriend() {
 					    scrollTop: $("#searchResults").offset().top,
 					}, 1500);
 				}
+
+				// if no matches were found, display error message
 				else {
 					notFoundCount++;
 					if (notFoundCount === arr.length - 1) {
@@ -407,5 +436,46 @@ function findFriend() {
 				}
 			}
   		}
+  		// init friend request trigger
+		var sendFriendRequestTrigger = document.getElementsByClassName("sendFriendRequest");
+		for (var i = 0; i < sendFriendRequestTrigger.length; i++) {
+			sendFriendRequestTrigger[i].addEventListener("click", sendFriendRequest);
+		}
+
+		// init send friend message trigger
+	});
+}
+
+function sendFriendRequest() {
+	// show snackbar to confirm friend request has been sendt / if a request allready is pening
+	var snackbar = document.getElementById("snackbar")
+	var name = this.parentElement.parentElement.childNodes[0].innerHTML;
+
+	// get user ref for request to be sendt, and who request were sendt from
+	var friendRequestRef = firebase.database().ref("accounts/" + this.parentElement.parentElement.id + "/friend_requests/" + uidKey);
+	friendRequestRef.once("value", function(snapshot) {
+		// if a request is allready sendt
+		if (snapshot.val() != null) {
+			snackbar.innerHTML = "You allready sendt a friend request to " + name.split(" ")[0];
+    		snackbar.className = "show";
+    		setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
+    		return;
+		}
+
+		else {
+			// get info to fill request, send
+			accountRef = firebase.database().ref("accounts/" + uidKey);
+			accountRef.once("value", function(snapshot) {
+				friendRequestRef.update({
+					First_Name: snapshot.val().First_Name,
+					Last_Name: snapshot.val().Last_Name,
+					Email: snapshot.val().Email
+				});
+			});
+
+			snackbar.innerHTML = "A friend request has been sendt to " + name.split(" ")[0];
+		    snackbar.className = "show";
+		    setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
+		}
 	});
 }

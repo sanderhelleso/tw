@@ -30,6 +30,15 @@
 	margin-top: 1.5vh;
 }
 
+#friendRequests {
+	margin-top: 1.5vh;
+	margin-right: 1vw;
+	height: 40px;
+	width: 40px;
+	stroke: #8c9eff;
+	transition: all 0.3s;
+}
+
 #notification {
 	margin-top: 1.5vh;
 	margin-right: 1vw;
@@ -49,7 +58,7 @@
 	padding: 8px;
 }
 
-#notification:hover, #documentation:hover {
+#notification:hover, #documentation:hover, #friendRequests:hover {
 	cursor: pointer;
 }
 
@@ -177,29 +186,30 @@
 	width: 14px;
 }
 
-#notification {
+#notification, #friendRequests {
 	padding-left: 5px;
 }
 
-#notificationMenu {
+#notificationMenu, #friendRequestsMenu {
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	padding-bottom: 10px;
 }
 
-#notificationMenu .dropdown-item {
+#notificationMenu .dropdown-item, #friendRequestsMenu .dropdown-item {
 	margin-bottom: 0;
 }
 
-#notificationMenu p {
+#notificationMenu p, #friendRequestsMenu p {
 	color: #66bb6a;
 	font-size: 18px;
 }
 
-#notificationMenu #notificationPlaceholder {
+#notificationMenu #notificationPlaceholder, #friendRequestsMenu #friendRequestPlaceholder {
 	color: #757575;
 }
 
 
-#notificationMenu #notificationPlaceholder:hover {
+#notificationMenu #notificationPlaceholder:hover, #friendRequestMenu #friendRequestPlaceholder:hover {
 	color: #757575;
 }
 
@@ -429,6 +439,12 @@
 	color: #fafafa;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	min-height: 200px;
+	transition: all 0.5s;
+}
+
+#searchResults div:hover {
+	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+	cursor: pointer;
 }
 
 #searchResults div h5 {
@@ -468,6 +484,55 @@
 	margin-top: 10vh;
 	margin-bottom: 1vh;
 }
+
 #searchResults div .searchResultsIcons .feather {
 	margin: 5px;
+	transition: all 0.3s;
+}
+
+#searchResults div .searchResultsIcons .feather:hover {
+	opacity: 0.5;
+}
+
+#snackbar {
+    visibility: hidden; /* Hidden by default. Visible on click */
+    min-width: 250px; /* Set a default minimum width */
+    background-color: #333; /* Black background color */
+    color: #fff; /* White text color */
+    text-align: center; /* Centered text */
+    border-radius: 2px; /* Rounded borders */
+    padding: 16px; /* Padding */
+    position: fixed; /* Sit on top of the screen */
+    z-index: 1; /* Add a z-index if needed */
+    left: 2%; /* Center the snackbar */
+    bottom: 30px; /* 30px from the bottom */
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+#snackbar.show {
+    visibility: visible;
+
+  	-webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+/* Animations to fade the snackbar in and out */
+@-webkit-keyframes fadein {
+    from {bottom: 0; opacity: 0;} 
+    to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+    from {bottom: 30px; opacity: 1;} 
+    to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
 }
