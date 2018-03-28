@@ -95,6 +95,9 @@ function start() {
 	// filter friends
 	document.getElementById("filterFriends").addEventListener("keyup", filterFriends);
 
+	// add friend event
+	document.getElementById("addFriend").addEventListener("click", addFriend);
+
 	// set amount of online friends
 	var online = document.getElementsByClassName("online").length;
 	document.getElementById("amountOnline").innerHTML = online + " online";
@@ -280,4 +283,130 @@ function filterFriends() {
 			names[i].parentElement.parentElement.style.display = "none";
 		}
 	}
+}
+
+// add friend
+function addFriend() {
+	console.log(123);
+	document.getElementById("socialiconCont").classList.add("bounceOut");
+	setTimeout(function() {
+
+		// hide default container
+		document.getElementById("socialiconCont").style.display = "none";
+		document.getElementById("socialiconCont").classList.remove("bounceOut");
+
+		// show add friend container
+		document.getElementById("addFriendCont").style.display = "block";
+	},  1000);
+
+	// intitialize search
+	document.getElementById("searchNewFriend").addEventListener("click", findFriend);
+}
+
+function findFriend() {
+	var search = document.getElementById("addFriendSearch");
+	if (search.value === "" || search.value === " ") {
+		document.getElementById("searchNewFriendError").classList.add("bounceIn");
+		document.getElementById("searchNewFriendError").innerHTML = "Search cant be empty! Please enter a valid email address or full name."
+		document.getElementById("searchNewFriendError").style.display = "block";
+		setTimeout(function() {
+			document.getElementById("searchNewFriendError").classList.remove("bounceIn");
+		}, 1000);
+		return;
+	}
+
+	// variables used to check if no matches were found before displaying error message
+	var keys = [];
+	var arr = [];
+	var notFoundCount = 0;
+	var foundCount = 0;
+	allAccountsRef = firebase.database().ref("accounts/");
+	allAccountsRef.once("value", function(snapshot) {
+		snapshot.forEach((child) => {
+			arr.push(child.val());
+			keys.push(child.key);
+  		});
+
+  		// reset before displaying results
+		document.getElementById("searchResults").innerHTML = "";
+
+		// loop through accounts
+  		for (var i = 0; i < arr.length; i++) {
+  			console.log(arr[i]);
+  			// exclude signed in user from search
+			if (keys[i] != uidKey) {
+				// check for matches
+				if (search.value.toLowerCase() === arr[i].Email || arr[i].First_Name.toLowerCase() + " " + arr[i].Last_Name.toLowerCase() === search.value.toLowerCase()) {
+					foundCount++;
+
+					// show success message
+					document.getElementById("searchNewFriendError").style.display = "none";
+					document.getElementById("searchNewFriendSuccess").style.display = "block";
+					document.getElementById("searchNewFriendSuccess").innerHTML = "We succesfully found <strong>" + foundCount + "</strong> accounts connected to your search!"; 
+
+					// add scrollbar to container if needed
+					document.getElementById("socialMain").style.overflowY = "scroll";
+
+					// create elements
+					var cont = document.createElement("div");
+					cont.id = keys[i];
+					cont.classList.add("col") + cont.classList.add("col-lg-5") + cont.classList.add("text-center") + cont.classList.add("animated");
+					var name = document.createElement("h5");
+					name.innerHTML = arr[i].First_Name.toUpperCase() + " " + arr[i].Last_Name.toUpperCase();
+					var email = document.createElement("p");
+					email.innerHTML = arr[i].Email.toLowerCase();
+					var avatar = document.createElement("img");
+					avatar.classList.add("searchResultsAvatar");
+					avatar.src = "img/avatar.png";
+					var bio = document.createElement("p");
+					bio.classList.add("bio");
+					var icons = document.createElement("span");
+					icons.classList.add("searchResultsIcons");
+					icons.innerHTML = document.getElementById("masterResult").childNodes[1].innerHTML;
+					console.log(document.getElementById("masterResult").childNodes[1]);
+
+					// append
+					cont.appendChild(name);
+					cont.appendChild(email);
+					cont.appendChild(avatar);
+
+					// check if user got a bio set
+					if (arr[i].Bio != undefined) {
+						bio.innerHTML = arr[i].Bio;
+						cont.appendChild(bio);
+					}
+
+					// if not set default text
+					else {
+						bio.innerHTML = "This user has not set a bio";
+						cont.appendChild(bio);
+					}
+
+					cont.appendChild(icons);
+
+					// display results
+					cont.classList.add("fadeInUp");
+					document.getElementById("searchResults").appendChild(cont);
+					$('#socialMain').animate({
+					    scrollTop: $("#searchResults").offset().top,
+					}, 1500);
+				}
+				else {
+					notFoundCount++;
+					if (notFoundCount === arr.length) {
+
+						// show error message
+						document.getElementById("searchNewFriendSuccess").style.display = "none";
+						document.getElementById("searchNewFriendError").classList.add("bounceIn");
+						document.getElementById("searchNewFriendError").innerHTML = "We could not find any registered account connected to <strong>" + search.value.toUpperCase() + "</strong>.";
+						document.getElementById("searchNewFriendError").style.display = "block";
+						setTimeout(function() {
+							document.getElementById("searchNewFriendError").classList.remove("bounceIn");
+						}, 1000);
+						return;
+					}
+				}
+			}
+  		}
+	});
 }

@@ -60,8 +60,42 @@
 		    </div>
 	    </div>
 	  	<div id="mainDashboard">
+	  		<!-- SOCIAL START -->
 	  		<div id="social" class="row">
 	  			<div id="socialMain" class="col col-lg-9">
+	  				<ul id="socialToolbar">
+	  					<li><span id="addFriend"><i data-feather="user-plus"></i> Add Friend</li></span>
+	  					<li><span><i data-feather="activity"></i> Recent Activities</li></span>
+	  				</ul>
+	  				<div id="socialiconCont" class="row justify-content-center animated">
+	  					<img id="socialicon" src="/img/socialicon.png" class="img-fluid col col-lg-6 animated fadeIn"" alt="Social page icon">
+	  				</div>
+	  				<div id="addFriendCont" class="row justify-content-center animated fadeIn">
+	  					<div id="searchNewFriendCont" class="col col-lg-12">
+	  						<h4 class="text-center">Lets find you a new friend</h4>
+	  						<p class="text-center">search for email address or full name</p>
+	  						<div>	
+								<div class="input-group col-lg-8 offset-lg-2">
+							      <div class="input-group-prepend">
+							        <span id="addFriendSearchIcon" class="input-group-text"><i data-feather="search"></i></span>
+							      </div>
+							      <input id="addFriendSearch" class="form-control mr-sm-2" type="search" placeholder="nelsonbighetti@piedpiper.com" aria-label="Search">
+							    </div>
+						    </div>
+						    <div class="row justify-content-center col col-lg-4 offset-lg-4">
+						    	<h5 id="searchNewFriend" class="text-center col col-lg-10 animated fadeIn">Search <i data-feather="send"></i></h5>
+						    </div>
+						    <div id="searchNewFriendError" class="col col-lg-8 offset-lg-2 alert alert-danger animated bounceIn" role="alert"></div>
+						    <div id="searchNewFriendSuccess" class="col col-lg-8 offset-lg-2 alert alert-success animated fadeIn" role="alert">
+							</div>
+							<!-- SEARCH REULTS -->
+							<div id="masterResult" class=" col col-lg-12 text-center">
+								<span><i data-feather="user-plus"></i> <i data-feather="message-circle"></i></span>
+							</div>
+							<div id="searchResults" class="row searchResults">
+							</div>
+	  					</div>
+	  				</div>
 	  			</div>
 	  			<div id="socialAside" class="col col-lg-3">
 	  				<div id="friendsListHeadingCont" class="list-group">
@@ -142,6 +176,7 @@
 					</div>
 	  			</div>
 	  		</div>
+	  		<!-- END SOCIAL -->
 	  	</div>
 	</div>
 	</section>
