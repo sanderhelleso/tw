@@ -40,7 +40,7 @@
 				<li class="nav-item dropdown">
 			        <i id="friendRequests" data-feather="users" class="nav-link" href="#"  role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
 			      	</a>
-			        <div id="friendRequestsMenu" class="dropdown-menu dropdown-menu-right animated" aria-labelledby="menu">
+			        <div id="friendRequestsMenu" class="dropdown-menu friendRequstsMenu dropdown-menu-right animated" aria-labelledby="menu">
 			          <p class="dropdown-item">Friend Requests</p>
 			          <div class="dropdown-divider"></div>
 			          <a id="friendRequestPlaceholder" href="#" class="dropdown-item">No new friend requests, everything is up to date!</a>
@@ -53,10 +53,11 @@
 			        <i id="notification" data-feather="bell" class="nav-link" href="#"  role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
 			      	</a>
 			        <div id="notificationMenu" class="dropdown-menu dropdown-menu-right animated" aria-labelledby="menu">
+			          <span id="removeNotification"><i data-feather="x-square"></i></span>
 			          <p class="dropdown-item">Notifications</p>
 			          <div class="dropdown-divider"></div>
 			          <a id="notificationPlaceholder" href="#" class="dropdown-item">No new notifications, you are good to go!</a>
-			          <a id="notificationsOff" href="#" class="dropdown-item"><i data-feather="bell-off"></i> <span>Turn off notifications</span></a>
+			          <a id="notificationsOff" href="#" class="dropdown-item"><i data-feather="bell-off"></i> <span>Turn off notifications</span><span></a>
 			        </div>
 			    </li>
 			    <li><i id="documentation" data-feather="book-open"></i></li>

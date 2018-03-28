@@ -218,6 +218,40 @@
 	color: #757575;
 }
 
+#removeNotification {
+	display: none;
+}
+
+.removeNotification {
+	float: right;
+}
+
+.removeNotification .feather {
+	margin-right: 0;
+	opacity: 0.7;
+	transition: all 0.3s;
+}
+
+.removeNotification .feather:hover {
+	cursor: pointer;
+	opacity: 1;
+}
+
+.friendRequestNotificationTime {
+	font-size: 12px;
+	color: #8c9eff;
+}
+
+.notificationMessage {
+	font-size: 16px;
+}
+
+.notificationLink:hover {
+	cursor: pointer;
+}
+
+/***************************** FRIEND REQUESTS **************************************/
+
 .pendingFriendRequest {
 	padding: 1.5%;
 	padding-top: 0;
@@ -290,7 +324,7 @@
 	display: none;
 }
 
-.friendRequestDivider {
+.friendRequestDivider, #notificationDivider {
 	margin-top: 17.5px;
 	margin-bottom: 10px;
 }

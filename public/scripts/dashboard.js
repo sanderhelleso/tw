@@ -151,6 +151,7 @@ function openMenu() {
 function loadFriendRequests() {
 	// count to controll flow of divider
 	var count = 0;
+
 	// request ref
 	var friendRequestRef = firebase.database().ref("accounts/" + uidKey + "/friend_requests");
 	friendRequestRef.once("value", function(snapshot) {
@@ -168,6 +169,7 @@ function loadFriendRequests() {
 
 			// create container
 			var cont = document.createElement("div");
+			cont.id = "friendRequest-" + child.key;
 			cont.classList.add("pendingFriendRequest") + cont.classList.add("animated") + cont.classList.add("fadeIn");
 
 			// create avatar and heading
@@ -217,6 +219,74 @@ function loadFriendRequests() {
 
 // load notifications, run at start
 function loadNotifications() {
+	// count to controll amount message
+	var notificationCount = 0;
+	// ref for friend request notifications
+	var notificationRef = firebase.database().ref("accounts/" + uidKey + "/notifications/friend_request_notifications/");
+	notificationRef.once("value", function(snapshot) {
+		snapshot.forEach((child) => {
+			notificationCount++;
+			console.log(child.val());
+			console.log(child.key);
+
+			// only create divider if there are more than one request
+			if (notificationCount > 1) {
+				// create divider
+				var divider = document.createElement("div");
+				divider.classList.add("dropdown-divider") + divider.classList.add("notificationDivider");
+				document.getElementById("notificationMenu").appendChild(divider);
+			}
+
+			// create notifications
+			var notificationLink = document.createElement("a");
+			notificationLink.classList.add("dropdown-item") + notificationLink.classList.add("notificationLink");
+			notificationLink.id = "friendRequestNotification-" + child.key;
+			notificationLink.href = "#friendRequest-" + child.key;
+
+			// add event listner to open friend request
+			notificationLink.addEventListener("click", openNotification);
+
+			// create and set timestamp
+			var time = document.createElement("span");
+			time.classList.add("friendRequestNotificationTime");
+			time.innerHTML = child.val().timestamp;
+
+			// create remove button
+			var remove = document.createElement("span");
+			remove.classList.add("removeNotification");
+			remove.innerHTML = document.getElementById("removeNotification").childNodes[0].outerHTML;
+			console.log(remove);
+
+			// create breakline
+			var br = document.createElement("br");
+
+			// create and set notification message
+			var notificationMessage = document.createElement("span");
+			notificationMessage.innerHTML = child.val().message;
+			notificationMessage.classList.add("notificationMessage");
+
+			// append in correct order
+			notificationLink.appendChild(time);
+			notificationLink.appendChild(remove);
+			notificationLink.appendChild(br);
+			notificationLink.appendChild(notificationMessage);
+
+			// display notifications
+			document.getElementById("notificationMenu").appendChild(notificationLink);
+  		});
+
+		// check amount and edit spelling depening on amount
+		document.getElementById("notificationPlaceholder").style.display = "none";
+  		if (notificationCount === 1) {
+  			document.getElementById("notificationPlaceholder").innerHTML = "You have " + notificationCount + " pending notification";
+  		}
+  		else {
+  			document.getElementById("notificationPlaceholder").innerHTML = "You have " + notificationCount + " pending notifications";
+  		}
+	});
+}
+
+function openNotification(e) {
 	
 }
 
@@ -507,6 +577,8 @@ function findFriend() {
 		}
 
 		// init send friend message trigger
+		/******* COMMING SOON ***********/
+
 	});
 }
 
@@ -514,9 +586,10 @@ function sendFriendRequest() {
 	// show snackbar to confirm friend request has been sendt / if a request allready is pening
 	var snackbar = document.getElementById("snackbar")
 	var name = this.parentElement.parentElement.childNodes[0].innerHTML;
+	var id = this.parentElement.parentElement.id;
 
 	// get user ref for request to be sendt, and who request were sendt from
-	var friendRequestRef = firebase.database().ref("accounts/" + this.parentElement.parentElement.id + "/friend_requests/" + uidKey);
+	var friendRequestRef = firebase.database().ref("accounts/" + id + "/friend_requests/" + uidKey);
 	friendRequestRef.once("value", function(snapshot) {
 		// if a request is allready sendt
 		if (snapshot.val() != null) {
@@ -527,13 +600,51 @@ function sendFriendRequest() {
 		}
 
 		else {
+
+			// variables to hold detail
+			var firstName;
+			var lastName;
+			var email;
+
+			// get timestamp
+			var now = new Date(); 
+		    var month = now.getMonth()+1; 
+		    var day = now.getDate();
+		    var hour = now.getHours();
+		    var minute = now.getMinutes();
+
+		    // add zeros if needed
+		    if (month.toString().length == 1) {
+		        var month = '0' + month;
+		    }
+		    if (day.toString().length == 1) {
+		        var day = '0' + day;
+		    }   
+		    if (hour.toString().length == 1) {
+		        var hour = '0' + hour;
+		    }
+		    if (minute.toString().length == 1) {
+		        var minute = '0' + minute;
+		    }
+
+		    var dateTime = day + '.' + month + ' ' + hour + ':' + minute;  
+
 			// get info to fill request, send
 			accountRef = firebase.database().ref("accounts/" + uidKey);
 			accountRef.once("value", function(snapshot) {
+				firstName = snapshot.val().First_Name;
+				lastName = snapshot.val().Last_Name;
+				email = snapshot.val().Email;
 				friendRequestRef.update({
-					First_Name: snapshot.val().First_Name,
-					Last_Name: snapshot.val().Last_Name,
-					Email: snapshot.val().Email
+					First_Name: firstName,
+					Last_Name: lastName,
+					Email: email
+				});
+
+				var notificationRef = firebase.database().ref("accounts/" + id + "/notifications/friend_request_notifications/" + uidKey);
+				notificationRef.update({
+					timestamp: dateTime,
+					message: firstName.capitalizeFirstLetter() + " " + lastName.capitalizeFirstLetter() + " has sendt you a friend request!" 
 				});
 			});
 
