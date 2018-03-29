@@ -28,7 +28,7 @@
 			        <div id="userAccountMenu" class="dropdown-menu dropleft animated" aria-labelledby="userAccount">
 			          <a id="newProject" class="dropdown-item" href="#"><i data-feather="plus-square"></i> New Project</a>
 			          <a class="dropdown-item" href="#"><i data-feather="folder"></i> My Projects</a>
-			          <a class="dropdown-item" href="#"><i data-feather="user"></i> Profile</a>
+			          <a id="profileTrigger" class="dropdown-item" href="#"><i data-feather="user"></i> Profile</a>
 			          <a id="socialTrigger" class="dropdown-item" href="#"><i data-feather="globe"></i> Social</a>
 			          <div class="dropdown-divider"></div>
 			          <a id="signOut" class="dropdown-item" href="#"><i data-feather="log-out"></i> Sign Out</a>
@@ -76,6 +76,7 @@
 	    </div>
 	  	<div id="mainDashboard">
 	  		<div id="dashboardContainer" class="row">
+
 	  			<!-- SOCIAL START -->
 	  			<div id="socialMain" class="col col-lg-9 animated">
 	  				<ul id="socialToolbar">
@@ -193,10 +194,30 @@
 					  </a>
 					</div>
 	  			</div>
+	  			<!-- END SOCIAL -->
+
+	  			<!-- PROFILE -->
+	  			<div id="profileCont" class="col col-lg-3">
+	  				<img id="profileImg" src="/img/pbgit.png">
+	  				<h5 id="profileHeading">Sander Hellesø</h5>
+	  				<p id="profileMail">sanderlade@hotmail.com</p>
+	  				<p id="profileLocation"><i data-feather="map-pin"></i> Ålesund, Norway</p>
+	  				<p id="profileJoined"><i data-feather="clock"></i> Joined 22.03.2018</p>
+	  				<div class="dropdown-divider profileDivider"></div>
+	  				<p id="connect">Connect with Sander</p>
+	  				<a id="profileGithub" class="socialMediaLink"><i data-feather="github"></i> Github</a>
+	  				<br>
+	  				<a id="profileLinkedin" class="socialMediaLink"><i data-feather="linkedin"></i> Linekdin</a>
+	  				<br>
+	  				<a id="profileFacebook" class="socialMediaLink"><i data-feather="facebook"></i> Facebook</a>
+	  				<br>
+	  				<a id="profileTwitter" class="socialMediaLink"><i data-feather="twitter"></i> Twitter</a>
+	  			</div>
+
+	  			<!-- END PROFILE -->
 	  		</div>
 	  		<!-- SNACKBAR -->
 			<div id="snackbar">Some text some message..</div>
-	  		<!-- END SOCIAL -->
 	  	</div>
 	</div>
 	</section>

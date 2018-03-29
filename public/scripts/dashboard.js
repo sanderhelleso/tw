@@ -115,7 +115,12 @@ function start() {
 
 	// trigger social events
 	document.getElementById("socialTrigger").addEventListener("click", social);
+
+	// trigger profile events
+	document.getElementById("profileTrigger").addEventListener("click", profile);
 }
+
+/************************** FUNCTIONS USED WITHIN APP *******************************/
 
 // function to capitalize first letters, used within app
 String.prototype.capitalizeFirstLetter = function() {
@@ -130,9 +135,25 @@ function openMenu() {
 	}, 600);
 }
 
+// clear and refresh dashboard on change
+function clear() {
+	var childs = document.getElementById("dashboardContainer").childNodes;
+	for (var i = 0; i < childs.length; i++) {
+		if (childs[i].tagName === "DIV") {
+			childs[i].style.display = "none";
+		}
+	}
+}
+
+/************************* END FUNCTIONS USED WITHIN APP ****************************/
+
+
+
 /********************************** SOCIAL *****************************************/
 function social() {
+	clear();
 
+	// display containers
 	document.getElementById("socialMain").style.display = "block";
 	document.getElementById("socialAside").style.display = "block";
 
@@ -877,3 +898,19 @@ function signOut() {
 }
 
 /********************************* END SOCIAL ************************************/
+
+
+
+
+
+/************************************ PROFILE *************************************/
+function profile() {
+	clear();
+
+	
+}
+
+
+
+
+/********************************* END PROFILE ***********************************/

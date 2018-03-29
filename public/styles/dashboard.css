@@ -645,6 +645,86 @@
     animation: fadein 0.5s, fadeout 0.5s 2.5s;
 }
 
+/*********************************** PROFILE *******************************************/
+
+#profileCont {
+	margin: 2%;
+	max-height: 80vh;
+	overflow: auto;
+}
+
+#profileImg {
+	height: 177px;
+	width: 177px;
+	border-radius: 6px;
+	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19);
+}
+
+#profileHeading {
+	margin-top: 6%;
+	margin-bottom: 0;
+	font-size: 20px;
+}
+
+#profileMail {
+	font-size: 14px;
+	margin-bottom: 8%;
+}
+
+#profileLocation {
+	margin-top: 8%;
+	font-size: 14px;
+	margin-bottom: 2%;
+}
+
+#profileJoined {
+	font-size: 14px;
+	margin-bottom: 4%;
+}
+
+#profileLocation .feather, #profileJoined .feather {
+	height: 16px;
+	width: 16px;
+}
+
+.profileDivider {
+	width: 177px;
+	margin-bottom: 4%;
+}
+
+.socialMediaLink {
+	font-size: 16px;
+}
+
+.socialMediaLink .feather {
+	height: 16px;
+	width: 16px;
+}
+
+#profileGithub .feather {
+	stroke: #b388ff;
+}
+
+#profileLinkedin .feather {
+	stroke: #1976d2;
+}
+
+#profileFacebook .feather {
+	stroke: #0d47a1;
+}
+
+#profileTwitter .feather {
+	stroke: #42a5f5;
+}
+
+#connect {
+	margin-bottom: 4%;
+	font-weight: 500;
+	font-size: 16px;
+}
+
+/*********************************** END PROFILE *************************************/
+
 /* Animations to fade the snackbar in and out */
 @-webkit-keyframes fadein {
     from {bottom: 0; opacity: 0;} 
