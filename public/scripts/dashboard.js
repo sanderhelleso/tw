@@ -732,6 +732,7 @@ function sendFriendRequest() {
 					Email: email
 				});
 
+				// send request and store it
 				var notificationRef = firebase.database().ref("accounts/" + id + "/notifications/friend_request_notifications/" + uidKey);
 				notificationRef.update({
 					timestamp: dateTime,
@@ -739,6 +740,7 @@ function sendFriendRequest() {
 				});
 			});
 
+			// display message
 			snackbar.innerHTML = "A friend request has been sendt to " + name.split(" ")[0];
 		    snackbar.className = "show";
 		    setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);

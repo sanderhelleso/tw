@@ -355,6 +355,7 @@
 	overflow-x: hidden;
 	box-shadow: -3.5px 0px 3.5px -3px #616161;
 	position: relative;
+	padding-right: 14px;
 }
 
 .list-group-item:first-child {
