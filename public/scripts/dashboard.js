@@ -679,72 +679,84 @@ function sendFriendRequest() {
 	var name = this.parentElement.parentElement.childNodes[0].innerHTML;
 	var id = this.parentElement.parentElement.id;
 
-	// get user ref for request to be sendt, and who request were sendt from
-	var friendRequestRef = firebase.database().ref("accounts/" + id + "/friend_requests/" + uidKey);
-	friendRequestRef.once("value", function(snapshot) {
-		// if a request is allready sendt
+	// check if user is allready friend
+	var friendRef = firebase.database().ref("accounts/" + id + "/friends/" + uidKey);
+	friendRef.once("value", function(snapshot) {
+		// check if ref is present
 		if (snapshot.val() != null) {
-			snackbar.innerHTML = "You allready sendt a friend request to " + name.split(" ")[0];
+			snackbar.innerHTML = "You are allready friend with " + name.split(" ")[0];
     		snackbar.className = "show";
     		setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
     		return;
 		}
 
-		else {
+		// get user ref for request to be sendt, and who request were sendt from
+		var friendRequestRef = firebase.database().ref("accounts/" + id + "/friend_requests/" + uidKey);
+		friendRequestRef.once("value", function(snapshot) {
+			// if a request is allready sendt
+			if (snapshot.val() != null) {
+				snackbar.innerHTML = "You allready sendt a friend request to " + name.split(" ")[0];
+	    		snackbar.className = "show";
+	    		setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
+	    		return;
+			}
 
-			// variables to hold detail
-			var firstName;
-			var lastName;
-			var email;
+			else {
 
-			// get timestamp
-			var now = new Date(); 
-		    var month = now.getMonth()+1; 
-		    var day = now.getDate();
-		    var hour = now.getHours();
-		    var minute = now.getMinutes();
+				// variables to hold detail
+				var firstName;
+				var lastName;
+				var email;
 
-		    // add zeros if needed
-		    if (month.toString().length == 1) {
-		        var month = '0' + month;
-		    }
-		    if (day.toString().length == 1) {
-		        var day = '0' + day;
-		    }   
-		    if (hour.toString().length == 1) {
-		        var hour = '0' + hour;
-		    }
-		    if (minute.toString().length == 1) {
-		        var minute = '0' + minute;
-		    }
+				// get timestamp
+				var now = new Date(); 
+			    var month = now.getMonth()+1; 
+			    var day = now.getDate();
+			    var hour = now.getHours();
+			    var minute = now.getMinutes();
 
-		    var dateTime = day + '.' + month + ' ' + hour + ':' + minute;  
+			    // add zeros if needed
+			    if (month.toString().length == 1) {
+			        var month = '0' + month;
+			    }
+			    if (day.toString().length == 1) {
+			        var day = '0' + day;
+			    }   
+			    if (hour.toString().length == 1) {
+			        var hour = '0' + hour;
+			    }
+			    if (minute.toString().length == 1) {
+			        var minute = '0' + minute;
+			    }
 
-			// get info to fill request, send
-			accountRef = firebase.database().ref("accounts/" + uidKey);
-			accountRef.once("value", function(snapshot) {
-				firstName = snapshot.val().First_Name;
-				lastName = snapshot.val().Last_Name;
-				email = snapshot.val().Email;
-				friendRequestRef.update({
-					First_Name: firstName,
-					Last_Name: lastName,
-					Email: email
+			    var dateTime = day + '.' + month + ' ' + hour + ':' + minute;  
+
+				// get info to fill request, send
+				accountRef = firebase.database().ref("accounts/" + uidKey);
+				accountRef.once("value", function(snapshot) {
+					firstName = snapshot.val().First_Name;
+					lastName = snapshot.val().Last_Name;
+					email = snapshot.val().Email;
+					friendRequestRef.update({
+						First_Name: firstName,
+						Last_Name: lastName,
+						Email: email
+					});
+
+					// send request and store it
+					var notificationRef = firebase.database().ref("accounts/" + id + "/notifications/friend_request_notifications/" + uidKey);
+					notificationRef.update({
+						timestamp: dateTime,
+						message: firstName.capitalizeFirstLetter() + " " + lastName.capitalizeFirstLetter() + " has sendt you a friend request!" 
+					});
 				});
 
-				// send request and store it
-				var notificationRef = firebase.database().ref("accounts/" + id + "/notifications/friend_request_notifications/" + uidKey);
-				notificationRef.update({
-					timestamp: dateTime,
-					message: firstName.capitalizeFirstLetter() + " " + lastName.capitalizeFirstLetter() + " has sendt you a friend request!" 
-				});
-			});
-
-			// display message
-			snackbar.innerHTML = "A friend request has been sendt to " + name.split(" ")[0];
-		    snackbar.className = "show";
-		    setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
-		}
+				// display message
+				snackbar.innerHTML = "A friend request has been sendt to " + name.split(" ")[0];
+			    snackbar.className = "show";
+			    setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
+			}
+		});
 	});
 }
 
@@ -753,6 +765,7 @@ function acceptFriendRequest() {
 	// get user key
 	var userKey = this.parentElement.parentElement.parentElement.id.split("-")[1];
 	var friendRef = firebase.database().ref("accounts/" + uidKey + "/friends/" + userKey);
+	var acceptedFriendRef = firebase.database().ref("accounts/" + userKey + "/friends/" + uidKey);
 	var cont = this.parentElement.parentElement.parentElement;
 	
 	// get friend data
@@ -767,6 +780,21 @@ function acceptFriendRequest() {
 			First_Name: firstName,
 			Last_Name: lastName,
 			Email: email
+		});
+
+		// set friend to user who requested to be friend
+		var accountRef = firebase.database().ref("accounts/" + uidKey);
+		accountRef.once("value", function(snapshot) {
+			var firstName = snapshot.val().First_Name;
+			var lastName = snapshot.val().Last_Name;
+			var email = snapshot.val().Email;
+
+			// friend added
+			acceptedFriendRef.update({
+				First_Name: firstName,
+				Last_Name: lastName,
+				Email: email
+			});
 		});
 
 		// remove friend request
