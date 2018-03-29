@@ -37,7 +37,7 @@ function start() {
 
 	// allows dropdown to not dismiss on click
 	$('#friendRequestsMenu').bind('click', function (e) { e.stopPropagation() });
-	// might change $('#notificationMenu').bind('click', function (e) { e.stopPropagation() });
+	$('#notificationMenu').bind('click', function (e) { e.stopPropagation() });
 
 	// set width of fixed friendlist heading
 	var width = document.getElementsByClassName("friendsList")[0].offsetWidth;
@@ -199,6 +199,14 @@ function loadFriendRequests() {
 			// create choices - accept / decline
 			var choices = document.createElement("span");
 			choices.innerHTML = document.getElementById("masterRequest").childNodes[1].outerHTML;
+
+			// init add friend event listenr
+			choices.childNodes[0].childNodes[0].addEventListener("click", acceptFriendRequest);
+
+			// init decline friend event listener
+			choices.childNodes[0].childNodes[2].addEventListener("click", declineFriendRequest);
+
+			// append choices to container
 			cont.appendChild(choices);
 
 			// append request to menu and display
@@ -214,13 +222,13 @@ function loadFriendRequests() {
   			document.getElementById("friendRequestPlaceholder").innerHTML = "You have " + count + " pending friend requests";
   		}
 	});
-
 }
 
+
+// count to controll amount message
+var notificationCount = 0;
 // load notifications, run at start
 function loadNotifications() {
-	// count to controll amount message
-	var notificationCount = 0;
 	// ref for friend request notifications
 	var notificationRef = firebase.database().ref("accounts/" + uidKey + "/notifications/friend_request_notifications/");
 	notificationRef.once("value", function(snapshot) {
@@ -239,7 +247,7 @@ function loadNotifications() {
 
 			// create notifications
 			var notificationLink = document.createElement("a");
-			notificationLink.classList.add("dropdown-item") + notificationLink.classList.add("notificationLink");
+			notificationLink.classList.add("dropdown-item") + notificationLink.classList.add("notificationLink") + notificationLink.classList.add("animated") + notificationLink.classList.add("fadeIn");
 			notificationLink.id = "friendRequestNotification-" + child.key;
 			notificationLink.href = "#friendRequest-" + child.key;
 
@@ -255,7 +263,7 @@ function loadNotifications() {
 			var remove = document.createElement("span");
 			remove.classList.add("removeNotification");
 			remove.innerHTML = document.getElementById("removeNotification").childNodes[0].outerHTML;
-			console.log(remove);
+			remove.addEventListener("click", removeNotification);
 
 			// create breakline
 			var br = document.createElement("br");
@@ -275,19 +283,36 @@ function loadNotifications() {
 			document.getElementById("notificationMenu").appendChild(notificationLink);
   		});
 
-		// check amount and edit spelling depening on amount
-		document.getElementById("notificationPlaceholder").style.display = "none";
-  		if (notificationCount === 1) {
-  			document.getElementById("notificationPlaceholder").innerHTML = "You have " + notificationCount + " pending notification";
-  		}
-  		else {
-  			document.getElementById("notificationPlaceholder").innerHTML = "You have " + notificationCount + " pending notifications";
-  		}
+  		// remove notification placeholder
+  		if (notificationCount >= 1) {
+			document.getElementById("notificationPlaceholder").style.display = "none";
+		}
 	});
 }
 
-function openNotification(e) {
-	
+// open friend request menu on notification click
+function openNotification() {
+
+}
+
+function removeNotification() {
+
+	// remove selected notification
+	var notification = this.parentElement;
+	notification.style.display = "none";
+	notificationCount--;
+	document.getElementsByClassName("notificationDivider")[0].style.display = "none";
+
+	// display default message if no notifications are present
+	if (notificationCount === 0) {
+		document.getElementById("notificationPlaceholder").innerHTML = "No new notifications, you are good to go!";
+		document.getElementById("notificationPlaceholder").style.display = "block";
+	}
+
+	// delete notification
+	var deleteNotificationRef = firebase.database().ref("accounts/" + uidKey + "/notifications/friend_request_notifications/" + this.parentElement.id.split("-")[1]);
+	deleteNotificationRef.remove();
+
 }
 
 // toggle on / off notifications
@@ -295,6 +320,13 @@ function toggleNotifications() {
 
 	// notification toggle button
 	var notificationsOff = document.getElementById("notificationsOff");
+
+	// set static bg color to override bootstrap dropdown-item active effect
+	notificationsOff.style.backgroundColor = "white";
+
+	// notifications
+	var notifications = document.getElementsByClassName("notificationLink");
+	var divider = document.getElementsByClassName("notificationDivider");
 
 	// if notification is on
 	var path = notificationsOff.childNodes[0].childNodes[0].outerHTML;
@@ -312,6 +344,15 @@ function toggleNotifications() {
 			notification.childNodes[0].outerHTML = path;
 			notification.appendChild(line);
 			feather.replace();
+
+			// hide notifications
+			for (var i = 0; i < notifications.length; i++) {
+				notifications[i].style.display = "none";
+			}
+
+			for (var i = 0; i < divider.length; i++) {
+				divider[i].style.display = "none";
+			}
 
 			notificationRef.update({
 				Notification_Status: "off"
@@ -332,14 +373,23 @@ function toggleNotifications() {
 			notification.classList.add("feather-bell");
 			notification.childNodes[0].outerHTML = path;
 			feather.replace();
+
+			// show notifications
+			for (var i = 0; i < notifications.length; i++) {
+				notifications[i].style.display = "block";
+			}
+
+			for (var i = 0; i < divider.length; i++) {
+				divider[i].style.display = "block";
+			}
 	
 			notificationRef.update({
 				Notification_Status: "on"
 			});
 		}
 	}
-// controll check on load
-notificationStatus = true;
+	// controll check on load
+	notificationStatus = true;
 }
 
 // toggle availability mode / online status
@@ -653,6 +703,49 @@ function sendFriendRequest() {
 		    setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
 		}
 	});
+}
+
+// accept friend request
+function acceptFriendRequest() {
+	// get user key
+	var userKey = this.parentElement.parentElement.parentElement.id.split("-")[1];
+	var friendRef = firebase.database().ref("accounts/" + uidKey + "/friends/" + userKey);
+	var cont = this.parentElement.parentElement.parentElement;
+	
+	// get friend data
+	accountRef = firebase.database().ref("accounts/" + userKey);
+	accountRef.once("value", function(snapshot) {
+		var firstName = snapshot.val().First_Name;
+		var lastName = snapshot.val().Last_Name;
+		var email = snapshot.val().Email;
+
+		// friend added
+		friendRef.update({
+			First_Name: firstName,
+			Last_Name: lastName,
+			Email: email
+		});
+
+		// remove friend request
+		cont.style.display = "none";
+		var friendRequestRef = firebase.database().ref("accounts/" + uidKey + "/friend_requests/" + userKey);
+		friendRequestRef.remove();
+
+		// get current amount and update message
+		var amountOfRequests = parseInt(document.getElementById("friendRequestPlaceholder").innerHTML.split(" ")[2]);
+		if (amountOfRequests - 1 === 1) {
+			document.getElementById("friendRequestPlaceholder").innerHTML = "You have " + (amountOfRequests - 1) + " pending friend request";
+		}
+
+		else {
+			document.getElementById("friendRequestPlaceholder").innerHTML = "You have " + (amountOfRequests - 1) + " pending friend requests";
+		}
+	});
+}
+
+// decline friend request
+function declineFriendRequest() {
+	console.log(123);
 }
 
 // sign out

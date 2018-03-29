@@ -224,6 +224,7 @@
 
 .removeNotification {
 	float: right;
+	z-index: 10000;
 }
 
 .removeNotification .feather {
@@ -257,6 +258,10 @@
 	padding-top: 0;
 	padding-left: 6%;
 	margin-bottom: 1.5vh;
+}
+
+.pendingFriendRequest:focus {
+	background-color: grey;
 }
 
 .pendingFriendRequest .pendingFriendRequestName {

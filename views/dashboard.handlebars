@@ -38,12 +38,12 @@
 			<!-- SIDE NAVIGATION -->
 			<ul class="navbar-nav ml-auto">
 				<li class="nav-item dropdown">
-			        <i id="friendRequests" data-feather="users" class="nav-link" href="#"  role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+			        <span id="friendRequestsMenuTrigger" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i id="friendRequests" data-feather="users" class="nav-link" href="#"></i></span>
 			      	</a>
 			        <div id="friendRequestsMenu" class="dropdown-menu friendRequstsMenu dropdown-menu-right animated" aria-labelledby="menu">
 			          <p class="dropdown-item">Friend Requests</p>
 			          <div class="dropdown-divider"></div>
-			          <a id="friendRequestPlaceholder" href="#" class="dropdown-item">No new friend requests, everything is up to date!</a>
+			          <a id="friendRequestPlaceholder" href="#" class="dropdown-item animated fadeIn">No new friend requests, everything is up to date!</a>
 			          <div id="masterRequest" class="pendingFriendRequest">
 						<span class="pendingFriendRequestChoices"><span class="acceptFriendRequest"> <i data-feather="user-check"></i> Accept</span> <span class="declineFriendRequest"> <i data-feather="user-x"></i> Decline </span></span>
 					  </div>
@@ -56,7 +56,7 @@
 			          <span id="removeNotification"><i data-feather="x-square"></i></span>
 			          <p class="dropdown-item">Notifications</p>
 			          <div class="dropdown-divider"></div>
-			          <a id="notificationPlaceholder" href="#" class="dropdown-item">No new notifications, you are good to go!</a>
+			          <a id="notificationPlaceholder" href="#" class="dropdown-item animated fadeIn">No new notifications, you are good to go!</a>
 			          <a id="notificationsOff" href="#" class="dropdown-item"><i data-feather="bell-off"></i> <span>Turn off notifications</span><span></a>
 			        </div>
 			    </li>
