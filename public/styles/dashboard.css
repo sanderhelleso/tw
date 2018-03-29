@@ -482,6 +482,10 @@
 	font-size: 14px;
 }
 
+#masterOnlineIcon, #masterFriendOption {
+	display: none;
+}
+
 #socialicon {
 	width: 500px;
 	height: 350px;

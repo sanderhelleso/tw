@@ -89,6 +89,9 @@ function start() {
 
 		    	// load notifications
 				loadNotifications();
+
+				// load friends
+				loadFriends();
 				
 		    	// fade in dashboard
 		    	document.getElementById("loadingCover").classList.add("fadeOut");
@@ -287,6 +290,44 @@ function loadNotifications() {
   		if (notificationCount >= 1) {
 			document.getElementById("notificationPlaceholder").style.display = "none";
 		}
+	});
+}
+
+function loadFriends() {
+	// get friends
+	var friendsRef = firebase.database().ref("accounts/" + uidKey + "/friends");
+	friendsRef.once("value", function(snapshot) {
+		snapshot.forEach((child) => {
+			console.log(child.val());
+
+			// create elements
+			var cont = document.createElement("a");
+			cont.href = "#";
+			cont.classList.add("list-group-item") + cont.classList.add("list-group-item-action") + cont.classList.add("flex-column") + cont.classList.add("align-items-start") + cont.classList.add("friendsList");
+			var nameCont = document.createElement("div");
+			nameCont.classList.add("d-flex") + nameCont.classList.add("w-100") + nameCont.classList.add("justify-content-between");
+			var name = document.createElement("h5");
+			name.classList.add("mb-1") + name.classList.add("friendName");
+			name.innerHTML = child.val().First_Name;
+			var onlineIcon = document.createElement("small");
+			onlineIcon.classList.add("online");
+			onlineIcon.innerHTML = document.getElementById("masterOnlineIcon").innerHTML;
+
+			nameCont.appendChild(name);
+			nameCont.appendChild(onlineIcon);
+
+			var email = document.createElement("p");
+			email.classList.add("mb-1") + email.classList.add("friendEmail");
+			email.innerHTML = child.val().Email;
+			var options = document.createElement("small");
+			options.classList.add("friendOptions");
+			options.innerHTML = document.getElementById("masterFriendOption").innerHTML;
+
+			cont.appendChild(nameCont);
+			cont.appendChild(email);
+			cont.appendChild(options);
+			document.getElementById("friendsListCont").appendChild(cont);
+		});
 	});
 }
 
