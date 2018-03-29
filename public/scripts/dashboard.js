@@ -113,7 +113,33 @@ function start() {
 	// notifications
 	document.getElementById("notificationsOff").addEventListener("click", toggleNotifications);
 
-	/********************************** SOCIAL *****************************************/
+	// trigger social events
+	document.getElementById("socialTrigger").addEventListener("click", social);
+}
+
+// function to capitalize first letters, used within app
+String.prototype.capitalizeFirstLetter = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1).toLowerCase();
+}
+
+// styles for user dropdown menu
+function openMenu() {
+	document.getElementById("userAccountMenu").classList.add("fadeIn");
+	setTimeout(function() {
+		document.getElementById("userAccountMenu").classList.remove("fadeIn");
+	}, 600);
+}
+
+/********************************** SOCIAL *****************************************/
+function social() {
+
+	document.getElementById("socialMain").style.display = "block";
+	document.getElementById("socialAside").style.display = "block";
+
+    // set width of fixed friendlist heading
+	var width = document.getElementsByClassName("friendsList")[0].offsetWidth;
+	document.getElementById("friendsListHeadingCont").style.width = width + "px";
+
 
 	// availablity mode
 	document.getElementById("toggleMode").addEventListener("click", availabilityMode);
@@ -133,21 +159,6 @@ function start() {
 	// set amount of online friends
 	var online = document.getElementsByClassName("online").length;
 	document.getElementById("amountOnline").innerHTML = online + " online";
-
-	/********************************* END SOCIAL ************************************/
-}
-
-// function to capitalize first letters, used within app
-String.prototype.capitalizeFirstLetter = function() {
-    return this.charAt(0).toUpperCase() + this.slice(1).toLowerCase();
-}
-
-// styles for user dropdown menu
-function openMenu() {
-	document.getElementById("userAccountMenu").classList.add("fadeIn");
-	setTimeout(function() {
-		document.getElementById("userAccountMenu").classList.remove("fadeIn");
-	}, 600);
 }
 
 // load friend requests, run at start
@@ -308,7 +319,7 @@ function loadFriends() {
 			nameCont.classList.add("d-flex") + nameCont.classList.add("w-100") + nameCont.classList.add("justify-content-between");
 			var name = document.createElement("h5");
 			name.classList.add("mb-1") + name.classList.add("friendName");
-			name.innerHTML = child.val().First_Name;
+			name.innerHTML = child.val().First_Name.capitalizeFirstLetter() + " " + child.val().Last_Name.capitalizeFirstLetter();
 			var onlineIcon = document.createElement("small");
 			onlineIcon.classList.add("online");
 			onlineIcon.innerHTML = document.getElementById("masterOnlineIcon").innerHTML;
@@ -337,12 +348,13 @@ function openNotification() {
 }
 
 function removeNotification() {
-
 	// remove selected notification
 	var notification = this.parentElement;
-	notification.style.display = "none";
+	notification.remove();
 	notificationCount--;
-	document.getElementsByClassName("notificationDivider")[0].style.display = "none";
+	if (document.getElementsByClassName("notificationDivider")[0] != undefined) {
+		document.getElementsByClassName("notificationDivider")[0].remove();
+	}
 
 	// display default message if no notifications are present
 	if (notificationCount === 0) {
@@ -538,17 +550,12 @@ function filterFriends() {
 
 // add friend
 function addFriend() {
-	console.log(123);
-	document.getElementById("socialiconCont").classList.add("bounceOut");
-	setTimeout(function() {
 
-		// hide default container
-		document.getElementById("socialiconCont").style.display = "none";
-		document.getElementById("socialiconCont").classList.remove("bounceOut");
+	// hide default container
+	document.getElementById("socialiconCont").style.display = "none";
 
-		// show add friend container
-		document.getElementById("addFriendCont").style.display = "block";
-	},  1000);
+	// show add friend container
+	document.getElementById("addFriendCont").style.display = "block";
 
 	// intitialize search
 	document.getElementById("searchNewFriend").addEventListener("click", findFriend);
@@ -766,7 +773,7 @@ function acceptFriendRequest() {
 	var userKey = this.parentElement.parentElement.parentElement.id.split("-")[1];
 	var friendRef = firebase.database().ref("accounts/" + uidKey + "/friends/" + userKey);
 	var acceptedFriendRef = firebase.database().ref("accounts/" + userKey + "/friends/" + uidKey);
-	var cont = this.parentElement.parentElement.parentElement;
+	var friendCont = this.parentElement.parentElement.parentElement;
 	
 	// get friend data
 	accountRef = firebase.database().ref("accounts/" + userKey);
@@ -782,6 +789,34 @@ function acceptFriendRequest() {
 			Email: email
 		});
 
+		// create friend element and display it in friends list
+		var cont = document.createElement("a");
+		cont.href = "#";
+		cont.classList.add("list-group-item") + cont.classList.add("list-group-item-action") + cont.classList.add("flex-column") + cont.classList.add("align-items-start") + cont.classList.add("friendsList") + cont.classList.add("animated") + cont.classList.add("fadeIn");
+		var nameCont = document.createElement("div");
+		nameCont.classList.add("d-flex") + nameCont.classList.add("w-100") + nameCont.classList.add("justify-content-between");
+		var name = document.createElement("h5");
+		name.classList.add("mb-1") + name.classList.add("friendName");
+		name.innerHTML = firstName.capitalizeFirstLetter() + " " + lastName.capitalizeFirstLetter();
+		var onlineIcon = document.createElement("small");
+		onlineIcon.classList.add("online");
+		onlineIcon.innerHTML = document.getElementById("masterOnlineIcon").innerHTML;
+
+		nameCont.appendChild(name);
+		nameCont.appendChild(onlineIcon);
+
+		var friendEmail = document.createElement("p");
+		friendEmail.classList.add("mb-1") + friendEmail.classList.add("friendEmail");
+		friendEmail.innerHTML = email;
+		var options = document.createElement("small");
+		options.classList.add("friendOptions");
+		options.innerHTML = document.getElementById("masterFriendOption").innerHTML;
+
+		cont.appendChild(nameCont);
+		cont.appendChild(friendEmail);
+		cont.appendChild(options);
+		document.getElementById("friendsListCont").appendChild(cont);
+
 		// set friend to user who requested to be friend
 		var accountRef = firebase.database().ref("accounts/" + uidKey);
 		accountRef.once("value", function(snapshot) {
@@ -795,12 +830,14 @@ function acceptFriendRequest() {
 				Last_Name: lastName,
 				Email: email
 			});
+
+			// remove friend request
+			var friendRequestRef = firebase.database().ref("accounts/" + uidKey + "/friend_requests/" + userKey);
+			friendRequestRef.remove();
 		});
 
-		// remove friend request
-		cont.style.display = "none";
-		var friendRequestRef = firebase.database().ref("accounts/" + uidKey + "/friend_requests/" + userKey);
-		friendRequestRef.remove();
+		// remove request from DOM
+		friendCont.style.display = "none";
 
 		// get current amount and update message
 		var amountOfRequests = parseInt(document.getElementById("friendRequestPlaceholder").innerHTML.split(" ")[2]);
@@ -838,3 +875,5 @@ function signOut() {
 		},  2000);
 	});
 }
+
+/********************************* END SOCIAL ************************************/

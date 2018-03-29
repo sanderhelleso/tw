@@ -334,7 +334,7 @@
 	margin-bottom: 10px;
 }
 
-#social {
+#dashboardContainer {
 	height: 80vh;
 	border-radius: 6px;
 	padding: 0;
@@ -346,6 +346,7 @@
 	border-top-right-radius: 0px;
 	border-bottom-right-radius: 0px;
 	background-color: #fafafa;
+	display: none;
 }
 
 #socialAside {
@@ -356,6 +357,7 @@
 	box-shadow: -3.5px 0px 3.5px -3px #616161;
 	position: relative;
 	padding-right: 14px;
+	display: none;
 }
 
 .list-group-item:first-child {
@@ -426,6 +428,7 @@
 	z-index: 100;
 	padding-bottom: 10px;
 	border: 1px solid #8c9eff;
+	width: 100%;
 }
 
 .friendsListHeading:hover {

@@ -29,7 +29,7 @@
 			          <a id="newProject" class="dropdown-item" href="#"><i data-feather="plus-square"></i> New Project</a>
 			          <a class="dropdown-item" href="#"><i data-feather="folder"></i> My Projects</a>
 			          <a class="dropdown-item" href="#"><i data-feather="user"></i> Profile</a>
-			          <a class="dropdown-item" href="#"><i data-feather="globe"></i> Social</a>
+			          <a id="socialTrigger" class="dropdown-item" href="#"><i data-feather="globe"></i> Social</a>
 			          <div class="dropdown-divider"></div>
 			          <a id="signOut" class="dropdown-item" href="#"><i data-feather="log-out"></i> Sign Out</a>
 			        </div>
@@ -75,14 +75,14 @@
 		    </div>
 	    </div>
 	  	<div id="mainDashboard">
-	  		<!-- SOCIAL START -->
-	  		<div id="social" class="row">
-	  			<div id="socialMain" class="col col-lg-9">
+	  		<div id="dashboardContainer" class="row">
+	  			<!-- SOCIAL START -->
+	  			<div id="socialMain" class="col col-lg-9 animated">
 	  				<ul id="socialToolbar">
 	  					<li><span id="addFriend"><i data-feather="user-plus"></i> Add Friend</li></span>
 	  					<li><span><i data-feather="activity"></i> Recent Activities</li></span>
 	  				</ul>
-	  				<div id="socialiconCont" class="row justify-content-center animated">
+	  				<div id="socialiconCont" class="row justify-content-center">
 	  					<img id="socialicon" src="/img/socialicon.png" class="img-fluid col col-lg-6 animated fadeIn"" alt="Social page icon">
 	  				</div>
 	  				<div id="addFriendCont" class="row justify-content-center animated fadeIn">
@@ -112,7 +112,7 @@
 	  					</div>
 	  				</div>
 	  			</div>
-	  			<div id="socialAside" class="col col-lg-3">
+	  			<div id="socialAside" class="col col-lg-3 animated fadeIn">
 	  				<div id="friendsListHeadingCont" class="list-group">
 	  					<a href="#" class="list-group-item list-group-item-action flex-column align-items-start friendsListHeading">
 					    <div class="d-flex w-100 justify-content-between">
