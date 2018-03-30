@@ -653,11 +653,22 @@
 	overflow: auto;
 }
 
+#mainProfile {
+	max-height: 80vh;
+	overflow: auto;
+}
+
 #profileImg {
 	height: 177px;
 	width: 177px;
 	border-radius: 6px;
 	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19);
+	transition: 0.5s;
+}
+
+#profileImg:hover {
+	opacity: 0.8;
+	cursor: pointer;
 }
 
 #profileHeading {
@@ -721,6 +732,100 @@
 	margin-bottom: 4%;
 	font-weight: 500;
 	font-size: 16px;
+}
+
+#profileTabs {
+	margin-top: 2%;
+	margin-bottom: 2%;
+}
+
+#profileTabs li {
+	margin-right: 10%;
+	padding-bottom: 4%;
+}
+
+#profileTabs li a {
+	text-decoration: none;
+	color: #8c9eff;
+}
+
+#profileTabs a .active {
+	padding-bottom: 20px;
+}
+
+#profileTabs li a:hover {
+	opacity: 0.8;
+}
+
+li .active {
+	
+}
+
+#settingsHeading {
+	margin-bottom: 2%;
+}
+
+#bioTextarea {
+	resize: none;
+}
+
+#avatarUpload {
+	display: none;
+}
+
+.tooltip {
+	font-size: 10px;
+	margin-top: 5px;
+}
+
+#firstNameProfile, #lastNameProfile {
+	font-size: 14px;
+}
+
+#changeProfilePassword {
+	margin-top: 5vh;
+	background-color: #8c9eff;
+	color: white;
+	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19);
+	border-radius: 6px;
+}
+
+#cancelProfileUpdateCont {
+	margin-top: 2vh;
+	padding: 1%;
+	border: 2px solid #e0e0e0;
+	border-radius: 4px;
+	margin-left: 2.5%;
+}
+
+#confirmProfileUpdateCont {
+	margin-top: 2vh;
+	padding-top: 1%;
+	border: 2px solid #8c9eff;
+	border-radius: 4px;
+	margin-left: 2.5%;
+	opacity: 0.5;
+	float: right;
+}
+
+#cancelProfileUpdate {
+	text-decoration: none;
+	color: #e0e0e0;
+}
+
+#confirmProfileUpdate {
+	text-decoration: none;
+	color: #8c9eff;
+	padding-left: 0;
+	padding-left: 5%;
+}
+
+#updateProfileCont {
+	margin-top: 0.5%;
+}
+
+#mainProfile .row {
+	margin-bottom: 1vh;
 }
 
 /*********************************** END PROFILE *************************************/

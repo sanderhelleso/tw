@@ -198,20 +198,79 @@
 
 	  			<!-- PROFILE -->
 	  			<div id="profileCont" class="col col-lg-3">
-	  				<img id="profileImg" src="/img/pbgit.png">
+	  				<img id="profileImg" class="animated fadeIn" src="/img/avatar.png" alt="Avatar Image"  data-toggle="tooltip" data-placement="top" title="Change your avatar">
+	  				<input type="file" id="avatarUpload">
 	  				<h5 id="profileHeading">Sander Hellesø</h5>
 	  				<p id="profileMail">sanderlade@hotmail.com</p>
 	  				<p id="profileLocation"><i data-feather="map-pin"></i> Ålesund, Norway</p>
 	  				<p id="profileJoined"><i data-feather="clock"></i> Joined 22.03.2018</p>
 	  				<div class="dropdown-divider profileDivider"></div>
 	  				<p id="connect">Connect with Sander</p>
-	  				<a id="profileGithub" class="socialMediaLink"><i data-feather="github"></i> Github</a>
+	  				<a id="profileGithub" class="socialMediaLink"><i data-feather="github"></i> GitHub</a>
 	  				<br>
 	  				<a id="profileLinkedin" class="socialMediaLink"><i data-feather="linkedin"></i> Linekdin</a>
 	  				<br>
 	  				<a id="profileFacebook" class="socialMediaLink"><i data-feather="facebook"></i> Facebook</a>
 	  				<br>
 	  				<a id="profileTwitter" class="socialMediaLink"><i data-feather="twitter"></i> Twitter</a>
+	  			</div>
+	  			<div id="mainProfile" class="col col-lg-8">
+	  				<ul id="profileTabs" class="nav nav-tabs">
+					  <li class="active"><a id="overviewTrigger" data-toggle="tab" href="#home">Overview</a></li>
+					  <li><a data-toggle="tab" href="#menu1">Projects</a></li>
+					  <li><a data-toggle="tab" href="#menu2">Friends</a></li>
+					  <li><a data-toggle="tab" href="#menu3">Settings</a></li>
+					</ul>
+
+					<div class="tab-content">
+					  <div id="home" class="tab-pane fade in active">
+					    <h3>Overview</h3>
+					    <p>Some content.</p>
+					  </div>
+					  <div id="menu1" class="tab-pane fade">
+					    <h3>Projects</h3>
+					    <p>You have no active projects</p>
+					  </div>
+					  <div id="menu2" class="tab-pane fade">
+					    <h3>Friends</h3>
+					    <p>Some content in menu 1.</p>
+					  </div>
+					  <div id="menu3" class="tab-pane fade">
+					    <h3 id="settingsHeading">Settings</h3>
+							<div class="form-group">
+							  <label for="comment">Add a short bio to show the community what you are all about!</label>
+							  <textarea id="bioTextarea" class="form-control" rows="4" placeholder="Tell us a little bit about yourself"></textarea>
+							</div> 
+							<div class="row">
+						    <div class="col col-lg-6">
+						    	<label for="firstNameProfile">First Name</label>
+						      	<input id="firstNameProfile" type="text" class="form-control formInput" placeholder="Jared" autocomplete="off">
+						    </div>
+						    <div class="col col-lg-6">
+						    	<label for="lastNameProfile">Last Name</label>
+						     	<input id="lastNameProfile" type="text" class="form-control formInput" placeholder="Dunn" autocomplete="off">
+						    </div>
+						  	</div>
+						 	<div class="row">
+							  <div class="col col-lg-6">
+							    	<label for="emailProfile">Email</label>
+							      	<input id="emailProfile" type="email" class="form-control formInput" class="form-control formInput" aria-describedby="emailProfile" placeholder="jared@piedpiper.com" autocomplete="off">
+							    </div>
+							    <div class="col col-lg-6">
+							    	<a id="changeProfilePassword" class="btn col col-lg-12" href="#">Change Password</a>
+							    </div>
+							</div>
+							<div id="updateProfileCont" class="row">
+							  <div id="cancelProfileUpdateCont" class="col col-lg-2">
+							    <a id="cancelProfileUpdate" href="#" class="col col-lg-8">Cancel</a>
+							  </div>
+							  <div id="confirmProfileUpdateCont" class="col col-lg-2">
+							    <a id="confirmProfileUpdate" href="#" class="col col-lg-8">Confirm</a>
+							  </div>
+							</div>
+						  </div>
+					  </div>
+					</div>
 	  			</div>
 
 	  			<!-- END PROFILE -->

@@ -25,7 +25,7 @@ function start() {
 	    authDomain: "twproject-13f58.firebaseapp.com",
 	    databaseURL: "https://twproject-13f58.firebaseio.com",
 	    projectId: "twproject-13f58",
-	    storageBucket: "",
+	    storageBucket: "twproject-13f58.appspot.com",
 	    messagingSenderId: "744116401403"
 	};
 	firebase.initializeApp(config);
@@ -49,8 +49,22 @@ function start() {
 		    uidKey = user.uid;
 		    accountRef = firebase.database().ref("accounts/" + uidKey);
 		    accountRef.once("value", function(snapshot) {
-		    	// set account UI
-		    	document.getElementById("userAccount").innerHTML = "<img id='userAvatar' src='/img/avatar.png' alt='Avatar'> " + snapshot.val().First_Name + " " + snapshot.val().Last_Name + " <i data-feather='chevron-down'></i>";
+
+		    	/////// RUN PROFILE FOR TESTING ///////
+		    	profile();
+		    	/////////////////////////////////////
+
+		    	// set account UI and avatar image
+		    	if (snapshot.val().Avatar_url != undefined) {
+		    		document.getElementById("userAccount").innerHTML = "<img id='userAvatar' src=" + snapshot.val().Avatar_url + " alt='Avatar'> " + snapshot.val().First_Name + " " + snapshot.val().Last_Name + " <i data-feather='chevron-down'></i>";
+		    		document.getElementById("profileImg").src = snapshot.val().Avatar_url;
+		    	}
+
+		    	else {
+		    		document.getElementById("userAccount").innerHTML = "<img id='userAvatar' src='/img/avatar.png' alt='Avatar'> " + snapshot.val().First_Name + " " + snapshot.val().Last_Name + " <i data-feather='chevron-down'></i>";
+		    		document.getElementById("profileImg").src = "/img/avatar.png";
+		    	}
+		    	
 		    	// load icon module
 		    	feather.replace();
 
@@ -92,6 +106,15 @@ function start() {
 
 				// load friends
 				loadFriends();
+
+				// load overview on profile load
+				document.getElementById("overviewTrigger").click();
+				
+				// file upload on avatar click
+				$('#profileImg').click(function(){ $('#avatarUpload').trigger('click'); });
+
+				// upload avatar
+				document.getElementById("avatarUpload").addEventListener("change", uploadAvatar);
 				
 		    	// fade in dashboard
 		    	document.getElementById("loadingCover").classList.add("fadeOut");
@@ -330,7 +353,6 @@ function loadFriends() {
 	var friendsRef = firebase.database().ref("accounts/" + uidKey + "/friends");
 	friendsRef.once("value", function(snapshot) {
 		snapshot.forEach((child) => {
-			console.log(child.val());
 
 			// create elements
 			var cont = document.createElement("a");
@@ -905,9 +927,34 @@ function signOut() {
 
 /************************************ PROFILE *************************************/
 function profile() {
-	clear();
+	//clear();
+	document.getElementById("overviewTrigger").click();
 
+	// load profile data
+	accountRef.once("value", function(snapshot) {
+		document.getElementById("bioTextarea").value = snapshot.val().Bio;
+		document.getElementById("firstNameProfile").value = snapshot.val().First_Name;
+		document.getElementById("lastNameProfile").value = snapshot.val().Last_Name;
+		document.getElementById("emailProfile").value = snapshot.val().Email;
+	});
+
+}
+
+function uploadAvatar() {
 	
+	var miniAvatar = document.getElementById("userAvatar");
+	var avatar = document.getElementById("profileImg");
+	var file = document.getElementById("avatarUpload").files[0];
+	var storageRef = firebase.storage().ref();
+	var avatarRef = storageRef.child("avatars/" + uidKey);
+	avatarRef.put(file).then(function(snapshot) {
+	  var url = snapshot.metadata.downloadURLs[0];
+	  avatar.src = url;
+	  miniAvatar.src = url;
+	  accountRef.update({
+	  	Avatar_url: url
+	  });
+	});
 }
 
 
