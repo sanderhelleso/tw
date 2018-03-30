@@ -1002,21 +1002,118 @@ function openProfile() {
 	// get profile key
 	var profileKey = this.id.split("-")[1];
 
+	// reset friends cont before appending
+	document.getElementById("profileModalFriendsRow").innerHTML = "";
+
 	// profile modal elements
 	var profileAvatar = document.getElementById("profileModalAvatar");
 	var profileName = document.getElementById("profileModalName");
 	var profileEmail = document.getElementById("profileModalEmail");
+	var profileBio = document.getElementById("profileModalBio");
 
 	// set data from profile ref
 	var profileRef = firebase.database().ref("accounts/" + profileKey);
 	profileRef.once("value", function(snapshot) {
-		console.log(snapshot.key);
+
+		// set information
 		profileAvatar.src = snapshot.val().Avatar_url;
 		profileName.innerHTML = snapshot.val().First_Name.capitalizeFirstLetter() + " " + snapshot.val().Last_Name.capitalizeFirstLetter();
 		profileEmail.innerHTML = snapshot.val().Email;
 
-		// show modal after data is loaded
-		$('#profileModal').modal('show');
+		// check for user bio
+		if (snapshot.val().Bio != undefined) {
+			profileBio.innerHTML = snapshot.val().Bio;
+			profileBio.style.display = "block";
+		}
+
+		else {
+			profileBio.innerHTML = "";
+			profileBio.style.display = "none";
+		}
+
+		// check for common friends
+		var commonFriends = [];
+		var friends = [];
+		var profileFriends = [];
+		var myFriendsRef = firebase.database().ref("accounts/" + uidKey + "/friends");
+		var profileFriendsRef = firebase.database().ref("accounts/" + profileKey + "/friends");
+		myFriendsRef.once("value", function(snapshot) {
+			snapshot.forEach((child) => {
+				friends.push(child.key);
+			});
+		});
+
+
+		profileFriendsRef.once("value", function(snapshot) {
+			snapshot.forEach((child) => {
+				profileFriends.push(child.key);
+
+				// create friend container
+				var cont = document.createElement("div");
+				cont.id = "profile-" + child.key;
+				cont.classList.add("col") + cont.classList.add("col-lg-5") + cont.classList.add("profileModalFriendsCont") + cont.classList.add("fadeIn") + cont.classList.add("fadeIn");
+
+				// create avatar img
+				var friendImg = document.createElement("img");
+				friendImg.classList.add("friendsAvatar");
+
+				// set img src to be avatar url
+				friendRef = firebase.database().ref("accounts/" + child.key);
+				friendRef.once("value", function(snapshot) {
+					if (snapshot.val().Avatar_url != undefined) {
+						friendImg.src = snapshot.val().Avatar_url;
+					}
+
+					else {
+						friendImg.src = "/img/avatar.png";
+					}
+				});
+
+				// create friend name
+				var friendName = document.createElement("h5");
+				friendName.classList.add("friendsName");
+				friendName.innerHTML = child.val().First_Name.capitalizeFirstLetter() + " " + child.val().Last_Name.capitalizeFirstLetter();
+
+				// create friend email
+				var friendEmail = document.createElement("p");
+				friendEmail.classList.add("friendsEmail");
+				friendEmail.innerHTML = child.val().Email;
+
+				// append
+				cont.appendChild(friendImg);
+				cont.appendChild(friendName);
+				cont.appendChild(friendEmail);
+
+				// add event listener to container, used to open the selected profile
+				cont.addEventListener("click", openProfile);
+
+				// check if profile is logged in account
+				if (profileKey === uidKey) {
+					document.getElementById("profileModalCommunication").style.display = "none";
+					document.getElementById("commonFriends").innerHTML = "";
+				}
+
+				else {
+					document.getElementById("profileModalCommunication").style.display = "block";
+					// count amount of common friends
+					var commonsCount = 0;
+					for (var i = 0; i < friends.length; i++) {
+						for (var x = 0; x < profileFriends.length; x++) {
+							if (friends[i] === profileFriends[x]) {
+								commonsCount++;
+							}
+						}
+					}
+					document.getElementById("commonFriends").innerHTML = commonsCount + " common";
+				}
+
+				// display
+				document.getElementById("profileModalFriendsRow").appendChild(cont);
+			});
+
+			// show profile
+			$('#profileModal').modal('show');
+		});
 	});
 }
 
