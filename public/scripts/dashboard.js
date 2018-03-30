@@ -954,7 +954,7 @@ function loadProfileFriends() {
 			// create friend container
 			var cont = document.createElement("div");
 			cont.id = "profile-" + child.key;
-			cont.classList.add("col") + cont.classList.add("col-lg-5") + cont.classList.add("profileFriendsCont") + cont.classList.add("fadeIn") + cont.classList.add("fadeIn");
+			cont.classList.add("col") + cont.classList.add("col-lg-5") + cont.classList.add("profileFriendsCont") + cont.classList.add("fadeIn") + cont.classList.add("fadeIn") + cont.classList.add("profile-" + child.key);
 
 			// create avatar img
 			var friendImg = document.createElement("img");
@@ -1069,7 +1069,7 @@ function openProfile() {
 				// create friend container
 				var cont = document.createElement("div");
 				cont.id = "profile-" + child.key;
-				cont.classList.add("col") + cont.classList.add("col-lg-5") + cont.classList.add("profileModalFriendsCont") + cont.classList.add("fadeIn") + cont.classList.add("fadeIn");
+				cont.classList.add("col") + cont.classList.add("col-lg-5") + cont.classList.add("profileModalFriendsCont") + cont.classList.add("fadeIn") + cont.classList.add("fadeIn") + cont.classList.add("profile-" + child.key);
 
 				// create avatar img
 				var friendImg = document.createElement("img");
@@ -1195,6 +1195,28 @@ function cancelUnfriend() {
 	document.getElementById("confirmUnfriendCont").style.display = "none";
 	document.getElementById("profileModalAvatar").style.filter = "none";
 	document.getElementById("unfriendLabel").style.display = "none";
+}
+
+function confirmUnfriend() {
+	// remove user from account and account from user, get refs
+	var unfriendUser = firebase.database().ref("accounts/" + uidKey + "/friends/" + settingsKey);
+	var unfriendAccount = firebase.database().ref("accounts/" + settingsKey + "/friends/" + uidKey);
+
+	// remove connection from both accounts
+	unfriendUser.remove();
+	unfriendAccount.remove();
+
+	// remove friend from DOM
+	var friend = document.getElementsByClassName("profile-" + settingsKey);
+	friend[0].remove();
+
+	// display message
+	snackbar.innerHTML = "You are no longer friends with " + document.getElementById("profileModalName").innerHTML.split(" ")[0];
+	snackbar.className = "show";
+	setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
+
+	// hide modal
+	$('#profileModal').modal('hide');
 }
 
 // report selected user
