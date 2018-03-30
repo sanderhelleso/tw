@@ -962,7 +962,13 @@ function loadProfileFriends() {
 			// set img src to be avatar url
 			friendRef = firebase.database().ref("accounts/" + child.key);
 			friendRef.once("value", function(snapshot) {
-				friendImg.src = snapshot.val().Avatar_url;
+				if (snapshot.val().Avatar_url != undefined) {
+					friendImg.src = snapshot.val().Avatar_url;
+				}
+
+				else {
+					friendImg.src = "/img/avatar.png";
+				}
 			});
 
 			// create friend name
@@ -980,11 +986,37 @@ function loadProfileFriends() {
 			cont.appendChild(friendName);
 			cont.appendChild(friendEmail);
 
+			// add event listener to container, used to open the selected profile
+			cont.addEventListener("click", openProfile);
+
 			// display
 			document.getElementById("profileFriendsRow").appendChild(cont);
 
 
   		});
+	});
+}
+
+function openProfile() {
+
+	// get profile key
+	var profileKey = this.id.split("-")[1];
+
+	// profile modal elements
+	var profileAvatar = document.getElementById("profileModalAvatar");
+	var profileName = document.getElementById("profileModalName");
+	var profileEmail = document.getElementById("profileModalEmail");
+
+	// set data from profile ref
+	var profileRef = firebase.database().ref("accounts/" + profileKey);
+	profileRef.once("value", function(snapshot) {
+		console.log(snapshot.key);
+		profileAvatar.src = snapshot.val().Avatar_url;
+		profileName.innerHTML = snapshot.val().First_Name.capitalizeFirstLetter() + " " + snapshot.val().Last_Name.capitalizeFirstLetter();
+		profileEmail.innerHTML = snapshot.val().Email;
+
+		// show modal after data is loaded
+		$('#profileModal').modal('show');
 	});
 }
 

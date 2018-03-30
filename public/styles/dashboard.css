@@ -872,6 +872,52 @@ li .active {
 	margin-bottom: 0;
 }
 
+/********************************** PROFILE MODAL *************************************/
+#profileModalCont {
+	padding-bottom: 5vh;
+}
+
+#profileModalCont #profileModalAvatar {
+	width: 150px;
+	height: 150px;
+	margin-bottom: 2vh;
+	border-radius: 6px;
+	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19);
+	background-color: #9fa8da;
+}
+
+#profileModalCont #profileModalName {
+	font-size: 22px;
+}
+
+#profileModalCont #profileModalEmail {
+	font-size: 16px;
+	font-weight: 400;
+}
+
+#profileModalLocation {
+	margin-top: 2%;
+	font-size: 14px;
+	margin-bottom: 2%;
+}
+
+#profileModalJoined {
+	font-size: 14px;
+	margin-bottom: 2%;
+}
+
+#profileModalFriends {
+	font-size: 14px;
+	margin-bottom: 2%;
+}
+
+#profileModalLocation .feather, #profileModalJoined .feather, #profileModalFriends .feather {
+	height: 16px;
+	width: 16px;
+}
+
+/********************************* END PROFILE MODAL *********************************/
+
 /*********************************** END PROFILE *************************************/
 
 /* Animations to fade the snackbar in and out */
