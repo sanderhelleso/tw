@@ -1009,6 +1009,66 @@ li .active {
 	cursor: pointer;
 }
 
+#reportReason {
+	color: black;
+	border: 0;
+}
+
+#confirmReportCont {
+	margin-bottom: 10%;
+	margin-top: 2.5%;
+}
+
+#confirmReportCont:hover {
+	color: black;
+	cursor: pointer;
+}
+
+#confirmReportCont span {
+	margin-right: 2%;
+	padding: 2%;
+	border-radius: 6px;
+}
+
+#confirmReportCont #cancelReport {
+	border: 1px solid #9e9e9e;
+	color: #9e9e9e;
+	opacity: 0.5;
+	transition: all 0.3s;
+}
+
+#confirmReportCont #cancelReport:hover {
+	opacity: 1;
+}
+
+#confirmReportCont #confirmReport {
+	border: 1px solid #ef5350;
+	color: #ef5350;
+	opacity: 0.5;
+	transition: all 0.3s;
+}
+
+#confirmReportCont #confirmReport:hover {
+	opacity: 1;
+}
+
+#reportReasonLabel {
+	margin-bottom: 0;
+	padding-bottom: 0;
+	padding-top: 0;
+	font-size: 14px;
+	color: #9e9e9e;
+	opacity: 0.8;
+}
+
+#reportReasonLabel:hover {
+	color: #9e9e9e;
+}
+
+#reportReasonCont {
+	display: none;
+}
+
 /********************************* END PROFILE MODAL *********************************/
 
 /*********************************** END PROFILE *************************************/

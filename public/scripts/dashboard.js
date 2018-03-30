@@ -1161,6 +1161,21 @@ function unfriendUser() {
 // report selected user
 function reportUser() {
 
+	// display report form
+	document.getElementById("reportReasonCont").style.display = "block";
+
+	// add a blur to the avatar image 
+	document.getElementById("profileModalAvatar").style.filter = "blur(5px)";
+
+	// init cancel and confirm events
+	document.getElementById("cancelReport").addEventListener("click", cancelReport);
+}
+
+function cancelReport() {
+
+	// hide report form
+	document.getElementById("reportReasonCont").style.display = "none";
+	document.getElementById("profileModalAvatar").style.filter = "none";
 }
 
 // block selected user

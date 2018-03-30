@@ -285,17 +285,22 @@
 		   <div id="profileModalCont" class="modal-content animated">
 		      <div id="exitProfileModal"><span id="profileModalSettings" class="text-left" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i data-feather="settings"></i>
 			      <div id="profileModalSettingsMenu" class="dropdown-menu dropdown-menu-right animated" aria-labelledby="menu">
-				    <h5 id="profileModalSettingsHeading" class="dropdown-item">Notifications</h5>
+				    <h5 id="profileModalSettingsHeading" class="dropdown-item"></h5>
 				        <div class="dropdown-divider"></div>
 				        <p id="unfriendUser" class="dropdown-item">Unfriend</p>
-				        <p id="reportUser" class="dropdown-item">Report</p>
-					    <select multiple class="form-control dropdown-item" id="exampleFormControlSelect2">
-					      <option>1</option>
-					      <option>2</option>
-					      <option>3</option>
-					      <option>4</option>
-					      <option>5</option>
-					    </select>
+				        <div class="dropdown-divider"></div>
+				        <p id="reportUser" class="dropdown-item" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Report</p>
+				        <div id="reportReasonCont" class="animated fadeIn">
+					        <label id="reportReasonLabel" for="reportReason" class="dropdown-item">Why do you want to report Sander?</label>
+						    <select multiple class="form-control dropdown-item" id="reportReason">
+						      <option>This person bothers me</option>
+						      <option>This is a fake account</option>
+						      <option>The person is using a name they dont use daily</option>
+						      <option>This account is representing a company or organization</option>
+						    </select>
+						    <span id="confirmReportCont" class="dropdown-item"><span id="cancelReport">Cancel</span> <span id="confirmReport">Report</span></span>
+						</div>
+					    <div class="dropdown-divider"></div>
 				        <p id="blockUser" class="dropdown-item">Block</p>
 				   </div>
 			   	   </span><span class="close text-right" data-dismiss="modal" aria-label="Close"><i data-feather="x"></i></span>
