@@ -998,13 +998,19 @@ function loadProfileFriends() {
 	});
 }
 
+var settingsKey;
 function openProfile() {
-
 	// get profile key
 	var profileKey = this.id.split("-")[1];
 
+	// used to controll settings
+	settingsKey = profileKey;
+
 	// reset friends cont before appending
 	document.getElementById("profileModalFriendsRow").innerHTML = "";
+
+	// unblur image when cancelling a setting
+	document.getElementById("body").addEventListener("click", unblur);
 
 	// profile modal elements
 	var profileAvatar = document.getElementById("profileModalAvatar");
@@ -1103,6 +1109,7 @@ function openProfile() {
 				if (profileKey === uidKey) {
 					document.getElementById("profileModalCommunication").style.display = "none";
 					document.getElementById("commonFriends").innerHTML = "";
+					document.getElementById("profileModalSettings").style.display = "none";
 				}
 
 				else {
@@ -1117,6 +1124,7 @@ function openProfile() {
 						}
 					}
 					document.getElementById("commonFriends").innerHTML = commonsCount + " common";
+					document.getElementById("profileModalSettings").style.display = "inline-block";
 				}
 
 				// display
@@ -1153,13 +1161,47 @@ function uploadAvatar() {
 	});
 }
 
+// unblur avatar and reset settings options
+function unblur() {
+	document.getElementById("profileModalAvatar").style.filter = "none";
+	cancelUnfriend();
+	cancelReport();
+}
+
 // unfriend selected user
 function unfriendUser() {
+
+	// close potensial other options
+	document.getElementById("cancelReport").click();
+
+	// display unfriend form
+	document.getElementById("confirmUnfriendCont").style.display = "block";
+	document.getElementById("unfriendLabel").style.display = "block";
+
+	// add a blur to the avatar image 
+	document.getElementById("profileModalAvatar").style.filter = "blur(5px)";
+
+	// create label
+	document.getElementById("unfriendLabel").innerHTML = "Are you sure you want to unfriend " + document.getElementById("profileModalName").innerHTML.split(" ")[0] + "?";
+
+	// init cancel and confirm events
+	document.getElementById("cancelUnfriend").addEventListener("click", cancelUnfriend);
+	document.getElementById("confirmUnfriend").addEventListener("click", confirmUnfriend);
 		
+}
+
+function cancelUnfriend() {
+	// hide report form and remove blur from avatar image
+	document.getElementById("confirmUnfriendCont").style.display = "none";
+	document.getElementById("profileModalAvatar").style.filter = "none";
+	document.getElementById("unfriendLabel").style.display = "none";
 }
 
 // report selected user
 function reportUser() {
+
+	//close potensial other options
+	document.getElementById("cancelUnfriend").click();
 
 	// display report form
 	document.getElementById("reportReasonCont").style.display = "block";
@@ -1169,17 +1211,70 @@ function reportUser() {
 
 	// init cancel and confirm events
 	document.getElementById("cancelReport").addEventListener("click", cancelReport);
+	document.getElementById("confirmReport").addEventListener("click", confirmReport);
 }
 
 function cancelReport() {
-
-	// hide report form
+	// hide report form and remove blur from avatar image
 	document.getElementById("reportReasonCont").style.display = "none";
 	document.getElementById("profileModalAvatar").style.filter = "none";
 }
 
+function confirmReport() {
+	// get reason for report
+	var reason = document.getElementById("reportReason").value;
+
+	// check if reason is selected
+	if (reason === "" || reason === undefined) {
+		document.getElementById("reportReason").style.borderBottom = "0.5px solid #ef5350";
+		return;
+	}
+
+	else {
+		document.getElementById("reportReason").style.borderBottom = "none";
+	}
+
+	// get timestamp
+	var now = new Date(); 
+	var month = now.getMonth()+1; 
+	var day = now.getDate();
+	var hour = now.getHours();
+	var minute = now.getMinutes();
+
+	// add zeros if needed
+	if (month.toString().length == 1) {
+		var month = '0' + month;
+	}
+	if (day.toString().length == 1) {
+		var day = '0' + day;
+	}   
+	if (hour.toString().length == 1) {
+		var hour = '0' + hour;
+	}
+	if (minute.toString().length == 1) {
+		var minute = '0' + minute;
+	}
+
+	var dateTime = day + '.' + month + ' ' + hour + ':' + minute;
+
+	// store report with the reporter, and reason
+	var reportRef = firebase.database().ref("accounts/" + settingsKey + "/reports/" + uidKey);
+	reportRef.update({
+		Reason: reason,
+		Timestamp: dateTime
+	});
+
+	// close report
+	document.getElementById("cancelReport").click();
+
+	// display message
+	snackbar.innerHTML = "Thank you for reporting this user!";
+	snackbar.className = "show";
+	setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
+}
+
 // block selected user
-function blodkUser() {
+function blockUser() {
 
 }
 

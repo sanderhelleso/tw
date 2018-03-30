@@ -632,7 +632,7 @@
     border-radius: 2px; /* Rounded borders */
     padding: 16px; /* Padding */
     position: fixed; /* Sit on top of the screen */
-    z-index: 1; /* Add a z-index if needed */
+    z-index: 1000000; /* Add a z-index if needed */
     left: 2%; /* Center the snackbar */
     bottom: 30px; /* 30px from the bottom */
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -1012,6 +1012,8 @@ li .active {
 #reportReason {
 	color: black;
 	border: 0;
+	transition: all 0s;
+	border-radius: 0;
 }
 
 #confirmReportCont {
@@ -1026,7 +1028,7 @@ li .active {
 
 #confirmReportCont span {
 	margin-right: 2%;
-	padding: 2%;
+	padding: 7.5px;
 	border-radius: 6px;
 }
 
@@ -1053,7 +1055,7 @@ li .active {
 }
 
 #reportReasonLabel {
-	margin-bottom: 0;
+	margin-bottom: 2%;
 	padding-bottom: 0;
 	padding-top: 0;
 	font-size: 14px;
@@ -1067,6 +1069,57 @@ li .active {
 
 #reportReasonCont {
 	display: none;
+}
+
+#confirmUnfriendCont {
+	margin-bottom: 10%;
+	margin-top: 2.5%;
+}
+
+#confirmUnfriendCont:hover {
+	color: black;
+	cursor: pointer;
+}
+
+#confirmUnfriendCont span {
+	margin-right: 2%;
+	padding: 7.5px;
+	border-radius: 6px;
+}
+
+#confirmUnfriendCont #cancelUnfriend {
+	border: 1px solid #9e9e9e;
+	color: #9e9e9e;
+	opacity: 0.5;
+	transition: all 0.3s;
+}
+
+#confirmUnfriendCont #cancelUnfriend:hover {
+	opacity: 1;
+}
+
+#confirmUnfriendCont #confirmUnfriend {
+	border: 1px solid #ef5350;
+	color: #ef5350;
+	opacity: 0.5;
+	transition: all 0.3s;
+}
+
+#confirmUnfriendCont #confirmUnfriend:hover {
+	opacity: 1;
+}
+
+#confirmUnfriendCont {
+	display: none;
+}
+
+#unfriendLabel {
+	margin-bottom: 4%;
+	padding-bottom: 0;
+	padding-top: 0;
+	font-size: 14px;
+	color: #9e9e9e;
+	opacity: 0.8;
 }
 
 /********************************* END PROFILE MODAL *********************************/
