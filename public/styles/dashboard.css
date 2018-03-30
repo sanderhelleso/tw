@@ -940,8 +940,14 @@ li .active {
 	font-size: 18px;
 }
 
-#profileModalFriendsHeading .feather {
+#profileModalFriendsHeading .feather, #connectWithProfileHeading .feather {
 	stroke: #8c9eff;
+}
+
+#connectWithProfileHeading {
+	margin-left: 4%;
+	margin-top: 2%;
+	font-size: 18px;
 }
 
 #commonFriends {
@@ -964,6 +970,43 @@ li .active {
 .profileModalFriendsCont:hover {
 	cursor: pointer;
 	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19);
+}
+
+#connectWithProfileRow {
+	margin-left: 4%;
+}
+
+#exitProfileModal {
+	margin: 2%;
+}
+
+#exitProfileModal .feather {
+	stroke: #bdbdbd;
+	width: 22px;
+	height: 22px
+}
+
+#exitProfileModal .close .feather {
+	width: 28px;
+	height: 28px;
+}
+
+#exitProfileModal .feather:hover {
+	stroke: #8c9eff;
+	cursor: pointer;
+}
+
+#profileModalSettingsHeading {
+	font-size: 18px;
+}
+
+#profileModalSettingsHeading:hover {
+	color: black;
+}
+
+#profileModalSettingsMenu p:hover {
+	color: #ef5350;
+	cursor: pointer;
 }
 
 /********************************* END PROFILE MODAL *********************************/

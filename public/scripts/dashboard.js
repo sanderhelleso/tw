@@ -38,6 +38,7 @@ function start() {
 	// allows dropdown to not dismiss on click
 	$('#friendRequestsMenu').bind('click', function (e) { e.stopPropagation() });
 	$('#notificationMenu').bind('click', function (e) { e.stopPropagation() });
+	$('#profileModalSettingsMenu').bind('click', function (e) { e.stopPropagation() });
 
 	// set width of fixed friendlist heading
 	var width = document.getElementsByClassName("friendsList")[0].offsetWidth;
@@ -1015,6 +1016,14 @@ function openProfile() {
 	var profileRef = firebase.database().ref("accounts/" + profileKey);
 	profileRef.once("value", function(snapshot) {
 
+		// set settings
+		document.getElementById("profileModalSettingsHeading").innerHTML = "Settings for " + snapshot.val().First_Name.capitalizeFirstLetter();
+
+		// init settings event
+		document.getElementById("unfriendUser").addEventListener("click", unfriendUser);
+		document.getElementById("reportUser").addEventListener("click", reportUser);
+		document.getElementById("blockUser").addEventListener("click", blockUser);
+
 		// set information
 		profileAvatar.src = snapshot.val().Avatar_url;
 		profileName.innerHTML = snapshot.val().First_Name.capitalizeFirstLetter() + " " + snapshot.val().Last_Name.capitalizeFirstLetter();
@@ -1030,6 +1039,9 @@ function openProfile() {
 			profileBio.innerHTML = "";
 			profileBio.style.display = "none";
 		}
+
+		// connect with profile
+		document.getElementById("connectUser").innerHTML = snapshot.val().First_Name.capitalizeFirstLetter();
 
 		// check for common friends
 		var commonFriends = [];
@@ -1139,6 +1151,21 @@ function uploadAvatar() {
 	  	Avatar_url: url
 	  });
 	});
+}
+
+// unfriend selected user
+function unfriendUser() {
+		
+}
+
+// report selected user
+function reportUser() {
+
+}
+
+// block selected user
+function blodkUser() {
+
 }
 
 
