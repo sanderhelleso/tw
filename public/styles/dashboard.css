@@ -761,6 +761,8 @@ li .active {
 	
 }
 
+/************************************* SETTINGS ***************************************/
+
 #settingsHeading {
 	margin-bottom: 2%;
 }
@@ -826,6 +828,48 @@ li .active {
 
 #mainProfile .row {
 	margin-bottom: 1vh;
+}
+
+/*********************************** END SETTINGS ************************************/
+
+.friendsAvatar {
+	width: 75px;
+	height: 75px;
+	border-radius: 6px;
+	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19);
+	margin-bottom: 3%;
+	background-color: #9fa8da;
+}
+
+.profileFriendsCont {
+	max-height: 35vh;
+	word-break: break-all;
+	padding-top: 2%;
+	padding-bottom: 2%;
+	border: 0.75px solid #e0e0e0;
+	margin-bottom: 3%;
+	margin-right: 5%;
+	transition: 0.3s;
+}
+
+.profileFriendsCont:hover {
+	cursor: pointer;
+	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19);
+}
+
+#friendsHeading {
+	margin-bottom: 4%;
+}
+
+.friendsName {
+	font-size: 16px;
+	margin-bottom: 0;
+}
+
+.friendsEmail {
+	margin-top: 0;
+	font-size: 12px;
+	margin-bottom: 0;
 }
 
 /*********************************** END PROFILE *************************************/

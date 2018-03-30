@@ -928,11 +928,15 @@ function signOut() {
 /************************************ PROFILE *************************************/
 function profile() {
 	//clear();
+	loadProfileFriends();
 	document.getElementById("overviewTrigger").click();
 
 	// load profile data
 	accountRef.once("value", function(snapshot) {
-		document.getElementById("bioTextarea").value = snapshot.val().Bio;
+		if (snapshot.val().Bio != undefined) {
+			document.getElementById("bioTextarea").value = snapshot.val().Bio;
+		}
+		
 		document.getElementById("firstNameProfile").value = snapshot.val().First_Name;
 		document.getElementById("lastNameProfile").value = snapshot.val().Last_Name;
 		document.getElementById("emailProfile").value = snapshot.val().Email;
@@ -940,11 +944,62 @@ function profile() {
 
 }
 
+// load account friends
+function loadProfileFriends() {
+	var friendsRef = firebase.database().ref("accounts/" + uidKey + "/friends");
+	friendsRef.once("value", function(snapshot) {
+		snapshot.forEach((child) => {
+			
+			// create friend container
+			var cont = document.createElement("div");
+			cont.id = "profile-" + child.key;
+			cont.classList.add("col") + cont.classList.add("col-lg-5") + cont.classList.add("profileFriendsCont") + cont.classList.add("fadeIn") + cont.classList.add("fadeIn");
+
+			// create avatar img
+			var friendImg = document.createElement("img");
+			friendImg.classList.add("friendsAvatar");
+
+			// set img src to be avatar url
+			friendRef = firebase.database().ref("accounts/" + child.key);
+			friendRef.once("value", function(snapshot) {
+				friendImg.src = snapshot.val().Avatar_url;
+			});
+
+			// create friend name
+			var friendName = document.createElement("h5");
+			friendName.classList.add("friendsName");
+			friendName.innerHTML = child.val().First_Name.capitalizeFirstLetter() + " " + child.val().Last_Name.capitalizeFirstLetter();
+
+			// create friend email
+			var friendEmail = document.createElement("p");
+			friendEmail.classList.add("friendsEmail");
+			friendEmail.innerHTML = child.val().Email;
+
+			// append
+			cont.appendChild(friendImg);
+			cont.appendChild(friendName);
+			cont.appendChild(friendEmail);
+
+			// display
+			document.getElementById("profileFriendsRow").appendChild(cont);
+
+
+  		});
+	});
+}
+
+
+// allows user to update avatar
 function uploadAvatar() {
 	
+	// mini and main avatar nodes
 	var miniAvatar = document.getElementById("userAvatar");
 	var avatar = document.getElementById("profileImg");
+
+	// file uploaded
 	var file = document.getElementById("avatarUpload").files[0];
+
+	// upload file to db and set URL to profile
 	var storageRef = firebase.storage().ref();
 	var avatarRef = storageRef.child("avatars/" + uidKey);
 	avatarRef.put(file).then(function(snapshot) {
