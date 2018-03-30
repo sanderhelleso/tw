@@ -235,7 +235,19 @@ function loadFriendRequests() {
 			var headingCont = document.createElement("div");
 			var avatar = document.createElement("img");
 			avatar.classList.add("pendingFriendRequestAvatar");
-			avatar.src = "img/avatar.png";
+
+			// send avatar img
+			var requestRef = firebase.database().ref("accounts/" + child.key)
+			requestRef.once("value", function(snapshot) {
+				if (snapshot.val().Avatar_url != undefined) {
+					avatar.src = snapshot.val().Avatar_url;
+				}
+
+				else {
+					avatar.src = "/img/avatar.png";
+				}
+			});
+			
 			var headingSpan = document.createElement("span");
 			headingSpan.classList.add("pendingFriendRequestName");
 			headingSpan.innerHTML = child.val().First_Name.capitalizeFirstLetter() + " " + child.val().Last_Name.capitalizeFirstLetter();
@@ -279,6 +291,15 @@ function loadFriendRequests() {
   		}
   		else {
   			document.getElementById("friendRequestPlaceholder").innerHTML = "You have " + count + " pending friend requests";
+  		}
+
+  		// show notification icon
+  		if (count === 0) {
+  			document.getElementById("friendRequestNotification").style.display = "none";
+  		}
+
+  		else {
+  			document.getElementById("friendRequestNotification").style.display = "block";
   		}
 	});
 }
@@ -345,6 +366,11 @@ function loadNotifications() {
   		// remove notification placeholder
   		if (notificationCount >= 1) {
 			document.getElementById("notificationPlaceholder").style.display = "none";
+			document.getElementById("notificationNotification").style.display = "block";
+		}
+
+		else {
+			document.getElementById("notificationNotification").style.display = "none";
 		}
 	});
 }
@@ -400,10 +426,15 @@ function removeNotification() {
 		document.getElementsByClassName("notificationDivider")[0].remove();
 	}
 
-	// display default message if no notifications are present
+	// display default message if no notifications are present and show icon
 	if (notificationCount === 0) {
 		document.getElementById("notificationPlaceholder").innerHTML = "No new notifications, you are good to go!";
 		document.getElementById("notificationPlaceholder").style.display = "block";
+		document.getElementById("notificationNotification").style.display = "none";
+	}
+
+	else {
+		document.getElementById("notificationNotification").style.display = "block";
 	}
 
 	// delete notification
@@ -454,6 +485,9 @@ function toggleNotifications() {
 			notificationRef.update({
 				Notification_Status: "off"
 			});
+
+			// turn off notification notification
+			document.getElementById("notificationNotification").style.display = "none";
 		}
 	}
 
@@ -483,6 +517,10 @@ function toggleNotifications() {
 			notificationRef.update({
 				Notification_Status: "on"
 			});
+
+			if (notifications.length >= 1) {
+				document.getElementById("notificationNotification").style.display = "block";
+			}
 		}
 	}
 	// controll check on load
@@ -892,6 +930,15 @@ function acceptFriendRequest() {
 		else {
 			document.getElementById("friendRequestPlaceholder").innerHTML = "You have " + (amountOfRequests - 1) + " pending friend requests";
 		}
+
+		// show notification icon
+  		if (amountOfRequests - 1 === 0) {
+  			document.getElementById("friendRequestNotification").style.display = "none";
+  		}
+
+  		else {
+  			document.getElementById("friendRequestNotification").style.display = "block";
+  		}
 	});
 }
 

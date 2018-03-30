@@ -188,6 +188,20 @@
 
 #notification, #friendRequests {
 	padding-left: 5px;
+	position: relative;
+}
+
+#friendRequestNotification, #notificationNotification {
+	position: absolute;
+  	width: 13.5px;
+  	height: 13.5px;
+  	top: 8.5px;
+  	right: 15px;
+  	padding: 0.5px;
+  	border-radius: 50%;
+  	background-color: #7c4dff;
+  	opacity: 0.7;
+  	display: none;
 }
 
 #notificationMenu, #friendRequestsMenu {
