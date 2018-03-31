@@ -1055,6 +1055,7 @@ function profile() {
 
 	// load profile data
 	accountRef.once("value", function(snapshot) {
+		// set profile data into settings
 		if (snapshot.val().Bio != undefined) {
 			document.getElementById("bioTextarea").value = snapshot.val().Bio;
 		}
@@ -1062,6 +1063,33 @@ function profile() {
 		document.getElementById("firstNameProfile").value = snapshot.val().First_Name;
 		document.getElementById("lastNameProfile").value = snapshot.val().Last_Name;
 		document.getElementById("emailProfile").value = snapshot.val().Email;
+	});
+
+	// load social media links into setting inputs and add them to profile links
+	var socialMediaRef = firebase.database().ref("accounts/" + uidKey + "/socialMedias");
+	socialMediaRef.once("value", function(snapshot) {
+		snapshot.forEach((child) => {
+			console.log(child.key);
+			if (child.key === "facebook") {
+				document.getElementById("facebookURL").value = child.val().URL;
+			}
+
+			if (child.key === "github") {
+				document.getElementById("githubURL").value = child.val().URL;
+			}
+
+			if (child.key === "instagram") {
+				document.getElementById("instagramURL").value = child.val().URL;
+			}
+
+			if (child.key === "facebook") {
+				document.getElementById("linkedinURL").value = child.val().URL;
+			}
+
+			if (child.key === "facebook") {
+				document.getElementById("twitterURL").value = child.val().URL;
+			}
+		});
 	});
 
 }
