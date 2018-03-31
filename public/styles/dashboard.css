@@ -762,11 +762,40 @@
 
 .socialMediaLink {
 	font-size: 16px;
+	color: black;
+	text-decoration: none;
+	transition: all 0.3s;
+	display: none;
+}
+
+.socialMediaLink:hover {
+	color: #8c9eff;
+	text-decoration: none;
 }
 
 .socialMediaLink .feather {
 	height: 16px;
 	width: 16px;
+}
+
+#profileGithub:hover {
+	color: #b388ff;
+}
+
+#profileFacebook:hover {
+	color: #0d47a1;
+}
+
+#profileTwitter:hover {
+	color: #42a5f5;
+}
+
+#profileLinkedin:hover {
+	color: #1976d2;
+}
+
+#profileInstagram:hover {
+	color: #e95950;
 }
 
 #profileGithub .feather {
@@ -777,8 +806,16 @@
 	stroke: #1976d2;
 }
 
+#profileGithub .feather {
+	stroke: #b388ff;
+}
+
 #profileFacebook .feather {
 	stroke: #0d47a1;
+}
+
+#profileInstagram .feather {
+	stroke: #e95950;
 }
 
 #profileTwitter .feather {

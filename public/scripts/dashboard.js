@@ -1072,22 +1072,32 @@ function profile() {
 			console.log(child.key);
 			if (child.key === "facebook") {
 				document.getElementById("facebookURL").value = child.val().URL;
+				document.getElementById("profileFacebook").href = "_blank" + child.val().URL;
+				document.getElementById("profileFacebook").style.display = "block";
 			}
 
 			if (child.key === "github") {
 				document.getElementById("githubURL").value = child.val().URL;
+				document.getElementById("profileGithub").href = "_blank" + child.val().URL;
+				document.getElementById("profileGithub").style.display = "block";
 			}
 
 			if (child.key === "instagram") {
 				document.getElementById("instagramURL").value = child.val().URL;
+				document.getElementById("profileInstagram").href = "_blank" + child.val().URL;
+				document.getElementById("profileInstagram").style.display = "block";
 			}
 
-			if (child.key === "facebook") {
+			if (child.key === "linkedin") {
 				document.getElementById("linkedinURL").value = child.val().URL;
+				document.getElementById("profileLinkedin").href = "_blank" + child.val().URL;
+				document.getElementById("profileLinkedin").style.display = "block";
 			}
 
-			if (child.key === "facebook") {
+			if (child.key === "twitter") {
 				document.getElementById("twitterURL").value = child.val().URL;
+				document.getElementById("profileTwitter").href = "_blank" + child.val().URL;
+				document.getElementById("profileTwitter").style.display = "block";
 			}
 		});
 	});
@@ -1764,6 +1774,9 @@ function addGithubURL() {
 		// display message
 		errorMessage[0].innerHTML = "GtHub succesfully added to your profile!";
 		errorMessage[0].style.color = "#66bb6a";
+
+		document.getElementById("profileGithub").href = "_blank" + validURL;
+		document.getElementById("profileGithub").style.display = "block";
 	}
 
 	else {
@@ -1796,6 +1809,8 @@ function addLinkedinURL() {
 		// display message
 		errorMessage[1].innerHTML = "LinkedIn succesfully added to your profile!";
 		errorMessage[1].style.color = "#66bb6a";
+		document.getElementById("profileLikedin").href = "_blank" + validURL;
+		document.getElementById("profileLinkedin").style.display = "block";
 	}
 
 	else {
@@ -1827,6 +1842,8 @@ function addInstagramURL() {
 		// display message
 		errorMessage[2].innerHTML = "Instagram succesfully added to your profile!";
 		errorMessage[2].style.color = "#66bb6a";
+		document.getElementById("profileInstagram").href = "_blank" + validURL;
+		document.getElementById("profileInstagram").style.display = "block";
 	}
 
 	else {
@@ -1858,6 +1875,8 @@ function addFacebookURL() {
 		// display message
 		errorMessage[3].innerHTML = "Facebook succesfully added to your profile!";
 		errorMessage[3].style.color = "#66bb6a";
+		document.getElementById("profileFacebook").href = "_blank" + validURL;
+		document.getElementById("profileFacebook").style.display = "block";
 	}
 
 	else {
@@ -1888,6 +1907,8 @@ function addTwitterURL() {
 		// display message
 		errorMessage[4].innerHTML = "Twitter succesfully added to your profile!";
 		errorMessage[4].style.color = "#66bb6a";
+		document.getElementById("profileTwitter").href = "_blank" + validURL;
+		document.getElementById("profileTwitter").style.display = "block";
 	}
 
 	else {
