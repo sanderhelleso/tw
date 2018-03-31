@@ -852,10 +852,7 @@ function sendFriendRequest() {
 
 // accept friend request
 var profileRequestKey;
-function acceptFriendRequest(e) {
-	// stop notification menu to fade out after click
-	e.stopPropagation();
-
+function acceptFriendRequest() {
 	// get user key
 	var userKey;
 	var friendCont;
@@ -997,6 +994,9 @@ function acceptFriendRequest(e) {
   		else {
   			document.getElementById("friendRequestNotification").style.display = "block";
   		}
+
+  		// hide add friend profile button
+  		document.getElementsByClassName("pendingFriendRequestChoicesProfile")[0].style.display = "none";
 	});
 }
 
@@ -1036,6 +1036,12 @@ function profile() {
 	//clear();
 	loadProfileFriends();
 	document.getElementById("overviewTrigger").click();
+
+	// init update profile events
+	var inputs = document.getElementsByClassName("settingsInput");
+	for (var i = 0; i < inputs.length; i++) {
+		inputs[i].addEventListener("keyup", updateProfile);
+	}
 
 	// load profile data
 	accountRef.once("value", function(snapshot) {
@@ -1438,6 +1444,53 @@ function confirmReport() {
 // block selected user
 function blockUser() {
 
+}
+
+function updateProfile() {
+	//cancel and confirm buttons
+	var cancel = document.getElementById("cancelProfileUpdateCont");
+	var update = document.getElementById("confirmProfileUpdateCont");
+
+	// original input values
+	var bio;
+	var firstName;
+	var lastName;
+	var email;
+
+	// get inputs and store in variables
+	var inputs = document.getElementsByClassName("settingsInput");
+	bio = inputs[0].value;
+	firstName = inputs[1].value;
+	lastName = inputs[2].value;
+	email = inputs[3].value;
+
+	var settingsRef = firebase.database().ref("accounts/" + uidKey);
+	settingsRef.once("value", function(snapshot) {
+		// if changes are made, add event to buttons
+		if (snapshot.val().Bio != bio || snapshot.val().First_Name != firstName || snapshot.val().Last_Name != lastName || snapshot.val().Email != email) {
+			cancel.style.opacity = "1";
+			update.style.opacity = "1";
+			cancel.addEventListener("click", cancelProfileUpdate);
+			update.addEventListener("click", confirmProfileUpdate);
+		}
+
+		else {
+			cancel.style.opacity = "0.3";
+			update.style.opacity = "0.3";
+			cancel.removeEventListener("click", cancelProfileUpdate);
+			update.removeEventListener("click", confirmProfileUpdate);
+		}
+	});
+
+	console.log(bio);
+}
+
+function cancelProfileUpdate() {
+	console.log(123);
+}
+
+function confirmProfileUpdate() {
+	console.log(321);
 }
 
 

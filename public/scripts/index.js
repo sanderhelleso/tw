@@ -45,13 +45,6 @@ function start() {
 
 	// check user
 	checkUser();
-
-	// sign out
-	/*firebase.auth().signOut().then(function() {
-		console.log('Signed Out');
-	}, function(error) {
-		console.error('Sign Out Error', error);
-	});*/
 }
 
 function checkUser() {
@@ -345,8 +338,9 @@ function signup() {
 			inputs[i].removeAttribute("style");
 			inputIcons[i].style.opacity = "0";
 		}
-		document.getElementById("signupForm").reset();
+
         console.log('everything went fine');
+
         // create account
         var accountRef = firebase.database().ref("accounts/" + user.uid);
 		accountRef.set({
@@ -355,7 +349,9 @@ function signup() {
 		    Email: email.value,
 		    Proffesion: select.value
 		});
+
         firebase.auth().signOut();
+        document.getElementById("signupForm").reset();
     }).catch(function(error) {
     	document.getElementById("signupProgress").style.display = "none";
     	document.getElementById("errorMessage").style.display = "block";
