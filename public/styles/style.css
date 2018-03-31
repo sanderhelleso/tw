@@ -394,7 +394,7 @@ form .col svg {
 	font-weight: 100;
 }
 
-#loginBtn {
+#loginBtn, #changePasswordBtn {
 	background-color: #7e57c2;
 	color: white;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -405,7 +405,7 @@ form .col svg {
 	font-size: 18px;
 }
 
-#loginBtn:hover {
+#loginBtn:hover, #changePasswordBtn:hover {
 	background-color: #b388ff;
 }
 

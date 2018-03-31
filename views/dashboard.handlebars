@@ -350,7 +350,7 @@
                 </button>
                 <h3 class="text-center">Re-authenticate</h3>
                 <div class="row justify-content-center">
-                	<div id="authenticateAlert" class="alert alert-warning col col-lg-10" role="alert">
+                	<div id="authenticateAlert" class="alert alert-warning col col-lg-10 animated fadeIn" role="alert">
 					  This action requires that you recenlty signed in. Please enter your credentials to proceed.
 					</div>
 					<div class="col col-lg-10">
@@ -366,14 +366,45 @@
 					<div id="loginBtnCont" class="col col-lg-10">
 					  	<a id="loginBtn" class="btn col col-lg-12" href="#">Log In</a>
 					</div>
+					<div id="authenticateError" class="alert alert-danger col-lg-10 animated bounceIn" role="alert">
+					  <p id="authenticateErrorMsg" class="text-center">qweqweqeqew</p>
+					</div>
                 </div>
             </div>
 		</div>
 	</div>
+	<!-- END RE-AUTHENTICATE MODAL -->
+
+	<!-- CHANGE PASSWORD MODAL -->
+	<div id="changePasswordModalCont" class="modal fade changePasswordModal changePassword-modal-md" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="static">
+		<div class="modal-dialog modal-md">
+		   	<div id="changePasswordModal" class="modal-content">
+                <button id="exitLoginModal" type="button" class="close text-right" data-dismiss="modal" aria-label="Close"><i data-feather="x"></i>
+                </button>
+                <h3 class="text-center">Change Password</h3>
+                <div class="row justify-content-center">
+    				<div class="col col-lg-8">
+					    <label for="newPassword">New Password</i></label>
+    					<input type="password" class="form-control form-control-lg" id="newPassword" placeholder="New password" autocomplete="off">
+    					<p id="changePasswordError" class="formError"></p>
+					</div>
+					<div class="col col-lg-8">
+					    <label for="confirmPassword">Confirm Password</i></label>
+    					<input type="password" class="form-control form-control-lg" id="confirmPassword" placeholder="Confirm password" autocomplete="off">
+    					<p id="confirmPasswordError" class="formError"></p>
+					</div>
+					<div id="changePasswordBtnCont" class="col col-lg-8">
+					  	<a id="changePasswordBtn" class="btn col col-lg-12" href="#">Change Password</a>
+					</div>
+				</div>
+            </div>
+		</div>
+	</div>
+	<!-- END CHANGE PASSWORD MODAL -->
 
 
 	<!-- SNACKBAR -->
-	<div id="snackbar">Some text some message..</div>
+	<div id="snackbar"></div>
 	<!-- END SNAKCBAR -->
 	</section>
 </body>

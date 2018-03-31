@@ -1037,6 +1037,9 @@ function profile() {
 	loadProfileFriends();
 	document.getElementById("overviewTrigger").click();
 
+	// new password btn
+	document.getElementById("changeProfilePassword").addEventListener("click", updatePassword);
+
 	// init update profile events
 	var inputs = document.getElementsByClassName("settingsInput");
 	for (var i = 0; i < inputs.length; i++) {
@@ -1517,6 +1520,9 @@ function confirmProfileUpdate() {
 			settingsRef.update({
 				Bio: inputs[0].value
 			});
+			snackbar.innerHTML = "Profile succesfully updated!";
+			snackbar.className = "show";
+			setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
 
 			// update and reset if ok
 			cancelProfileUpdate();
@@ -1527,6 +1533,9 @@ function confirmProfileUpdate() {
 			settingsRef.update({
 				First_Name: inputs[1].value
 			});
+			snackbar.innerHTML = "Profile succesfully updated!";
+			snackbar.className = "show";
+			setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
 
 			// update and reset if ok
 			cancelProfileUpdate();
@@ -1537,6 +1546,9 @@ function confirmProfileUpdate() {
 			settingsRef.update({
 				Last_Name: inputs[2].value
 			});
+			snackbar.innerHTML = "Profile succesfully updated!";
+			snackbar.className = "show";
+			setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
 
 			// update and reset
 			cancelProfileUpdate();
@@ -1558,6 +1570,12 @@ function confirmProfileUpdate() {
 			// get user
 			var user = firebase.auth().currentUser;
 			user.updateEmail(inputs[3].value).then(function() {
+				settingsRef.update({
+					Email: inputs[3].value
+				});
+				snackbar.innerHTML = "Profile succesfully updated!";
+				snackbar.className = "show";
+				setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
 				cancelProfileUpdate();
 			  // Update successful.
 			}).catch(function(error) {
@@ -1570,12 +1588,54 @@ function confirmProfileUpdate() {
 				return;
 			});
 		}
-	})
-	// if succesfull, display message
-	.then(function() {
-		snackbar.innerHTML = "Profile succesfully updated!";
-		snackbar.className = "show";
-		setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
+	});
+}
+
+function updatePassword() {
+	// show modal
+	$('#changePasswordModalCont').modal('show');
+
+	// init update password event
+	document.getElementById("changePasswordBtn").addEventListener("click", confirmUpdatePassword);
+}
+
+function confirmUpdatePassword() {
+	console.log(123);
+}
+
+// re-authenticate the user
+function authenticate() {
+	// get values
+	var inputs = document.getElementsByClassName("settingsInput");
+	var user = firebase.auth().currentUser;
+	var email = document.getElementById("loginEmail").value;
+	var password = document.getElementById("loginPassword").value;
+	var credentials = firebase.auth.EmailAuthProvider.credential(email, password);
+
+	// Prompt the user to re-provide their sign-in credentials
+
+	user.reauthenticateWithCredential(credentials).then(function() {
+	  	// User re-authenticated.
+	  	$('#authenticateModalCont').modal('hide');
+
+	  	// get setting value ref
+		var settingsRef = firebase.database().ref("accounts/" + uidKey);
+		settingsRef.once("value", function(snapshot) {
+			// update email
+			user.updateEmail(inputs[3].value);
+			settingsRef.update({
+				Email: inputs[3].value
+			});
+			snackbar.innerHTML = "Profile succesfully updated!";
+			snackbar.className = "show";
+			setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
+			cancelProfileUpdate();
+		});
+	}).catch(function(error) {
+	  // An error happened, and display message
+	  document.getElementById("authenticateError").style.display = "block";
+	  document.getElementById("authenticateErrorMsg").innerHTML = error.message;
+	  return;
 	});
 }
 
