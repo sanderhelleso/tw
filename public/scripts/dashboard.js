@@ -1470,6 +1470,8 @@ function updateProfile() {
 		if (snapshot.val().Bio != bio || snapshot.val().First_Name != firstName || snapshot.val().Last_Name != lastName || snapshot.val().Email != email) {
 			cancel.style.opacity = "1";
 			update.style.opacity = "1";
+
+			// add events
 			cancel.addEventListener("click", cancelProfileUpdate);
 			update.addEventListener("click", confirmProfileUpdate);
 		}
@@ -1477,6 +1479,8 @@ function updateProfile() {
 		else {
 			cancel.style.opacity = "0.3";
 			update.style.opacity = "0.3";
+
+			// remove events
 			cancel.removeEventListener("click", cancelProfileUpdate);
 			update.removeEventListener("click", confirmProfileUpdate);
 		}
@@ -1486,11 +1490,54 @@ function updateProfile() {
 }
 
 function cancelProfileUpdate() {
-	console.log(123);
+	// reset settings
+	var settingsRef = firebase.database().ref("accounts/" + uidKey);
+	settingsRef.once("value", function(snapshot) {
+		var inputs = document.getElementsByClassName("settingsInput");
+		inputs[0].value = snapshot.val().Bio;
+		inputs[1].value = snapshot.val().First_Name;
+		inputs[2].value = snapshot.val().Last_Name;
+		inputs[3].value = snapshot.val().Email;
+		updateProfile();
+
+		// remove event instant
+		document.getElementById("cancelProfileUpdateCont").removeEventListener("click", cancelProfileUpdate);
+		document.getElementById("confirmProfileUpdateCont").removeEventListener("click", confirmProfileUpdate);
+	});
 }
 
 function confirmProfileUpdate() {
-	console.log(321);
+	// get setting value ref
+	var settingsRef = firebase.database().ref("accounts/" + uidKey);
+	settingsRef.once("value", function(snapshot) {
+		var inputs = document.getElementsByClassName("settingsInput");
+
+		// bio
+		if (inputs[0].value != snapshot.val().Bio && inputs[0].value.length >= 2) {
+			settingsRef.update({
+				Bio: inputs[0].value
+			});
+		}
+
+		// first name
+		if (inputs[1].value != snapshot.val().First_Name && inputs[1].value.length >= 2) {
+			settingsRef.update({
+				First_Name: inputs[1].value
+			});
+		}
+
+		// last name
+		if (inputs[2].value != snapshot.val().Last_Name && inputs[2].value.length >= 2) {
+			settingsRef.update({
+				Last_Name: inputs[2].value
+			});
+		}
+
+		// display message
+		snackbar.innerHTML = "Profile succesfully updated!";
+		snackbar.className = "show";
+		setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
+	});
 }
 
 
