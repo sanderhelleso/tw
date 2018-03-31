@@ -1517,6 +1517,9 @@ function confirmProfileUpdate() {
 			settingsRef.update({
 				Bio: inputs[0].value
 			});
+
+			// update and reset if ok
+			cancelProfileUpdate();
 		}
 
 		// first name
@@ -1524,6 +1527,9 @@ function confirmProfileUpdate() {
 			settingsRef.update({
 				First_Name: inputs[1].value
 			});
+
+			// update and reset if ok
+			cancelProfileUpdate();
 		}
 
 		// last name
@@ -1531,9 +1537,42 @@ function confirmProfileUpdate() {
 			settingsRef.update({
 				Last_Name: inputs[2].value
 			});
+
+			// update and reset
+			cancelProfileUpdate();
 		}
 
-		// display message
+		// check for valid email
+		regEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		OK = regEx.test(inputs[3].value);
+		if (!OK) {
+			snackbar.innerHTML = "Please enter a valid email! " + inputs[3].value + " is not a valid email";
+			snackbar.className = "show";
+			setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
+			return;
+		}
+
+		// update email
+		if (inputs[3].value != snapshot.val().Email && OK) {
+			console.log("ok");
+			// get user
+			var user = firebase.auth().currentUser;
+			user.updateEmail(inputs[3].value).then(function() {
+				cancelProfileUpdate();
+			  // Update successful.
+			}).catch(function(error) {
+
+				// display error and prompt re-authenticate modal
+			  	$('#authenticateModalCont').modal('show');
+
+			  	// init event for re-authentication
+			  	document.getElementById("loginBtn").addEventListener("click", authenticate);
+				return;
+			});
+		}
+	})
+	// if succesfull, display message
+	.then(function() {
 		snackbar.innerHTML = "Profile succesfully updated!";
 		snackbar.className = "show";
 		setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);

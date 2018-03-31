@@ -257,9 +257,11 @@
 							  <div class="col col-lg-6">
 							    	<label for="emailProfile">Email</label>
 							      	<input id="emailProfile" type="email" class="form-control formInput settingsInput" class="form-control formInput" aria-describedby="emailProfile" placeholder="jared@piedpiper.com" autocomplete="off">
+							      	<p id="emailNote">Email change requires recent sign in</p>
 							    </div>
 							    <div class="col col-lg-6">
 							    	<a id="changeProfilePassword" class="btn col col-lg-12" href="#">Change Password</a>
+							    	<p id="passwordNote">Password change requires recent sign in</p>
 							    </div>
 							</div>
 							<div id="updateProfileCont" class="row text-center">
@@ -339,6 +341,36 @@
 		</div>
 	</div>
 	<!-- END PROFILE MODAL -->
+
+	<!-- RE-AUTHENTICATE MODAL-->
+	<div id="authenticateModalCont" class="modal fade authenticateModal authenticate-modal-md" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="static">
+		<div class="modal-dialog modal-md">
+		   	<div id="authenticateModal" class="modal-content">
+                <button id="exitLoginModal" type="button" class="close text-right" data-dismiss="modal" aria-label="Close"><i data-feather="x"></i>
+                </button>
+                <h3 class="text-center">Re-authenticate</h3>
+                <div class="row justify-content-center">
+                	<div id="authenticateAlert" class="alert alert-warning col col-lg-10" role="alert">
+					  This action requires that you recenlty signed in. Please enter your credentials to proceed.
+					</div>
+					<div class="col col-lg-10">
+						<label for="loginEmail">Email Address</label>
+						<input type="email" class="form-control form-control-lg" id="loginEmail" aria-describedby="emailHelp" placeholder="jared@piedpiper.com" autocomplete="off">
+						<p id="loginEmailError" class="formError"></p>
+					</div>
+					<div class="col col-lg-10">
+					    <label for="loginPassword">Password</i></label>
+    					<input type="password" class="form-control form-control-lg" id="loginPassword" placeholder="Password" autocomplete="off">
+    					<p id="loginPasswordError" class="formError"></p>
+					</div>
+					<div id="loginBtnCont" class="col col-lg-10">
+					  	<a id="loginBtn" class="btn col col-lg-12" href="#">Log In</a>
+					</div>
+                </div>
+            </div>
+		</div>
+	</div>
+
 
 	<!-- SNACKBAR -->
 	<div id="snackbar">Some text some message..</div>
