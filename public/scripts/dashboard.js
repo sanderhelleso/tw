@@ -1509,6 +1509,8 @@ function cancelProfileUpdate() {
 	});
 }
 
+// update profile
+var emailConfirmation = false;
 function confirmProfileUpdate() {
 	// get setting value ref
 	var settingsRef = firebase.database().ref("accounts/" + uidKey);
@@ -1583,14 +1585,17 @@ function confirmProfileUpdate() {
 				// display error and prompt re-authenticate modal
 			  	$('#authenticateModalCont').modal('show');
 
+			  	// confirms that email shall be updated if re-authenticated
+			  	emailConfirmation = true;
+
 			  	// init event for re-authentication
 			  	document.getElementById("loginBtn").addEventListener("click", authenticate);
-				return;
 			});
 		}
 	});
 }
 
+// open update password modal and trigger event to change password
 function updatePassword() {
 	// show modal
 	$('#changePasswordModalCont').modal('show');
@@ -1599,8 +1604,49 @@ function updatePassword() {
 	document.getElementById("changePasswordBtn").addEventListener("click", confirmUpdatePassword);
 }
 
+var passConfirmation = false;
 function confirmUpdatePassword() {
-	console.log(123);
+	// get values
+	var password = document.getElementById("newPassword");
+	var confirmPassword = document.getElementById("confirmPassword");
+	// check for secure password
+	regEx = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+	OK = regEx.test(password.value);
+
+	if (!OK) {
+		document.getElementById("changePasswordErrorMessage").style.display = "block";
+		document.getElementById("changePasswordErrorMessage").innerHTML = "Password needs to contain the following: <strong><br>1 Uppercase letter<br>1 Lowercase letter<br>1 Number<br>8 Characters long</strong>";
+		return;
+	}
+
+	if (password.value != confirmPassword.value) {
+		document.getElementById("changePasswordErrorMessage").style.display = "block";
+		document.getElementById("changePasswordErrorMessage").innerHTML = "Passwords dont match! Please try again";
+		return;
+	}
+	
+	// update password
+	var user = firebase.auth().currentUser;
+	user.updatePassword(password.value).then(function() {
+	  	// Update successful.
+	 	$('#changePasswordModalCont').modal('hide');
+	  	snackbar.innerHTML = "Profile succesfully updated!";
+		snackbar.className = "show";
+		setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
+
+		// reset form
+		password.value = "";
+		confirmPassword.value = "";
+	}).catch(function(error) {
+	  // An error happened.
+
+	  // display re-authenticate modal and hide change password modal
+	  $('#changePasswordModalCont').modal('hide');
+	  $('#authenticateModalCont').modal('show');
+
+	  // confirms that email shall be updated if re-authenticated
+	  passConfirmation = true;
+	});
 }
 
 // re-authenticate the user
@@ -1613,7 +1659,6 @@ function authenticate() {
 	var credentials = firebase.auth.EmailAuthProvider.credential(email, password);
 
 	// Prompt the user to re-provide their sign-in credentials
-
 	user.reauthenticateWithCredential(credentials).then(function() {
 	  	// User re-authenticated.
 	  	$('#authenticateModalCont').modal('hide');
@@ -1621,15 +1666,40 @@ function authenticate() {
 	  	// get setting value ref
 		var settingsRef = firebase.database().ref("accounts/" + uidKey);
 		settingsRef.once("value", function(snapshot) {
-			// update email
-			user.updateEmail(inputs[3].value);
-			settingsRef.update({
-				Email: inputs[3].value
-			});
-			snackbar.innerHTML = "Profile succesfully updated!";
-			snackbar.className = "show";
-			setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
-			cancelProfileUpdate();
+
+			// check for confirmation
+			if (emailConfirmation === true) {
+				// update email
+				var updatedEmail = document.getElementById("emailProfile").value;
+				user.updateEmail(updatedEmail);
+				settingsRef.update({
+					Email: updatedEmail
+				});
+
+				// display message
+				snackbar.innerHTML = "Profile succesfully updated!";
+				snackbar.className = "show";
+				setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
+				cancelProfileUpdate();
+			}
+
+			if (passConfirmation === true) {
+				console.log(123);
+				// update password
+				var password = document.getElementById("confirmPassword").value;
+				var user = firebase.auth().currentUser;
+				user.updatePassword(password);
+
+				// display message
+				snackbar.innerHTML = "Profile succesfully updated!";
+				snackbar.className = "show";
+				setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
+				cancelProfileUpdate();
+
+				// reset form
+				document.getElementById("newPassword").value = "";
+				password = "";
+			}
 		});
 	}).catch(function(error) {
 	  // An error happened, and display message

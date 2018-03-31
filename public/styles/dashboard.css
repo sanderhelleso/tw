@@ -919,7 +919,7 @@ li .active {
 	padding-top: 2%;
 }
 
-#authenticateModal #loginBtn {
+#authenticateModal #loginBtn, #changePasswordModal #changePasswordBtn {
 	margin-bottom: 5vh;
 }
 
@@ -946,6 +946,19 @@ li .active {
 
 #changePasswordModal h3 {
 	margin-bottom: 5vh;
+}
+
+#changePasswordModal input {
+	margin-bottom: 3vh;
+}
+
+#changePasswordErrorMessage {
+	margin-bottom: 5vh;
+	display: none;
+}
+
+#socialMediaHeading {
+	margin-top: 5vh;
 }
 
 /*********************************** END SETTINGS ************************************/
