@@ -1072,36 +1072,46 @@ function profile() {
 			console.log(child.key);
 			if (child.key === "facebook") {
 				document.getElementById("facebookURL").value = child.val().URL;
-				document.getElementById("profileFacebook").href = child.val().URL;
+				document.getElementById("profileFacebook").href = "https://www." + child.val().URL;
 				document.getElementById("profileFacebook").style.display = "block";
+				document.getElementsByClassName("removeSocialMedia")[2].style.display = "inline-block";
+				document.getElementsByClassName("removeSocialMedia")[2].addEventListener("click", removeFacebookURL);
+
 			}
 
 			if (child.key === "github") {
 				document.getElementById("githubURL").value = child.val().URL;
-				document.getElementById("profileGithub").href = child.val().URL;
+				document.getElementById("profileGithub").href = "https://www." + child.val().URL;
 				document.getElementById("profileGithub").style.display = "block";
+				document.getElementsByClassName("removeSocialMedia")[0].style.display = "inline-block";
+				document.getElementsByClassName("removeSocialMedia")[0].addEventListener("click", removeGithubURL);
 			}
 
 			if (child.key === "instagram") {
 				document.getElementById("instagramURL").value = child.val().URL;
-				document.getElementById("profileInstagram").href = child.val().URL;
+				document.getElementById("profileInstagram").href = "https://www." + child.val().URL;
 				document.getElementById("profileInstagram").style.display = "block";
+				document.getElementsByClassName("removeSocialMedia")[3].style.display = "inline-block";
+				document.getElementsByClassName("removeSocialMedia")[3].addEventListener("click", removeInstagramURL);
 			}
 
 			if (child.key === "linkedin") {
 				document.getElementById("linkedinURL").value = child.val().URL;
-				document.getElementById("profileLinkedin").href = child.val().URL;
+				document.getElementById("profileLinkedin").href = "https://www." + child.val().URL;
 				document.getElementById("profileLinkedin").style.display = "block";
+				document.getElementsByClassName("removeSocialMedia")[1].style.display = "inline-block";
+				document.getElementsByClassName("removeSocialMedia")[1].addEventListener("click", removeLinkedinURL);
 			}
 
 			if (child.key === "twitter") {
 				document.getElementById("twitterURL").value = child.val().URL;
-				document.getElementById("profileTwitter").href = child.val().URL;
+				document.getElementById("profileTwitter").href = "https://www." + child.val().URL;
 				document.getElementById("profileTwitter").style.display = "block";
+				document.getElementsByClassName("removeSocialMedia")[4].style.display = "inline-block";
+				document.getElementsByClassName("removeSocialMedia")[4].addEventListener("click", removeTwitterURL);
 			}
 		});
 	});
-
 }
 
 // load account friends
@@ -1774,8 +1784,15 @@ function addGithubURL() {
 		// display message
 		errorMessage[0].innerHTML = "GtHub succesfully added to your profile!";
 		errorMessage[0].style.color = "#66bb6a";
+		setTimeout(function() {
+			errorMessage[0].innerHTML = "";
+		}, 3000);
 
-		document.getElementById("profileGithub").href = validURL;
+		// init delete event
+		document.getElementsByClassName("removeSocialMedia")[0].style.display = "inline-block";
+		document.getElementsByClassName("removeSocialMedia")[0].addEventListener("click", removeGithubURL);
+
+		document.getElementById("profileGithub").href = "https://www." + validURL;
 		document.getElementById("profileGithub").style.display = "block";
 	}
 
@@ -1809,7 +1826,15 @@ function addLinkedinURL() {
 		// display message
 		errorMessage[1].innerHTML = "LinkedIn succesfully added to your profile!";
 		errorMessage[1].style.color = "#66bb6a";
-		document.getElementById("profileLikedin").href = validURL;
+		setTimeout(function() {
+			errorMessage[1].innerHTML = "";
+		}, 3000);
+
+		// init delete event
+		document.getElementsByClassName("removeSocialMedia")[1].style.display = "inline-block";
+		document.getElementsByClassName("removeSocialMedia")[1].addEventListener("click", removeLinkedinURL);
+
+		document.getElementById("profileLinkedin").href = "https://www." + validURL;
 		document.getElementById("profileLinkedin").style.display = "block";
 	}
 
@@ -1842,7 +1867,15 @@ function addInstagramURL() {
 		// display message
 		errorMessage[2].innerHTML = "Instagram succesfully added to your profile!";
 		errorMessage[2].style.color = "#66bb6a";
-		document.getElementById("profileInstagram").href = validURL;
+		setTimeout(function() {
+			errorMessage[2].innerHTML = "";
+		}, 3000);
+
+		// init delete event
+		document.getElementsByClassName("removeSocialMedia")[2].style.display = "inline-block";
+		document.getElementsByClassName("removeSocialMedia")[2].addEventListener("click", removeInstagramURL);
+
+		document.getElementById("profileInstagram").href = "https://www." + validURL;
 		document.getElementById("profileInstagram").style.display = "block";
 	}
 
@@ -1875,7 +1908,15 @@ function addFacebookURL() {
 		// display message
 		errorMessage[3].innerHTML = "Facebook succesfully added to your profile!";
 		errorMessage[3].style.color = "#66bb6a";
-		document.getElementById("profileFacebook").href = validURL;
+		setTimeout(function() {
+			errorMessage[3].innerHTML = "";
+		}, 3000);
+
+		// init delete event
+		document.getElementsByClassName("removeSocialMedia")[3].style.display = "inline-block";
+		document.getElementsByClassName("removeSocialMedia")[3].addEventListener("click", removeFacebookURL);
+
+		document.getElementById("profileFacebook").href = "https://www." + validURL;
 		document.getElementById("profileFacebook").style.display = "block";
 	}
 
@@ -1907,7 +1948,15 @@ function addTwitterURL() {
 		// display message
 		errorMessage[4].innerHTML = "Twitter succesfully added to your profile!";
 		errorMessage[4].style.color = "#66bb6a";
-		document.getElementById("profileTwitter").href = validURL;
+		setTimeout(function() {
+			errorMessage[4].innerHTML = "";
+		}, 3000);
+
+		// init delete event
+		document.getElementsByClassName("removeSocialMedia")[4].style.display = "inline-block";
+		document.getElementsByClassName("removeSocialMedia")[4].addEventListener("click", removeTwitterURL);
+
+		document.getElementById("profileTwitter").href = "https://www." + validURL;
 		document.getElementById("profileTwitter").style.display = "block";
 	}
 
@@ -1919,6 +1968,95 @@ function addTwitterURL() {
 	}
 }
 
+// global for message
+var errorMessage = document.getElementsByClassName("socialMediaError");
+
+// remove github from account
+function removeGithubURL() {
+	// reset and remove data
+	this.style.display = "none";
+	document.getElementById("profileGithub").style.display = "none";
+	document.getElementById("githubURL").value = "";
+	var githubRef = firebase.database().ref("accounts/" + uidKey + "/socialMedias/github");
+	githubRef.remove();
+
+	// display message
+	errorMessage[0].innerHTML = "GitHub succesfully removed from your profile!";
+	errorMessage[0].style.color = "#9e9e9e";
+	setTimeout(function() {
+		errorMessage[0].innerHTML = "";
+	}, 3000);
+}
+
+// remove linkedin from account
+function removeLinkedinURL() {
+	// reset and remove data
+	this.style.display = "none";
+	document.getElementById("profileLinkedin").style.display = "none";
+	document.getElementById("linkedinURL").value = "";
+	var linkedinRef = firebase.database().ref("accounts/" + uidKey + "/socialMedias/linkedin");
+	linkedinRef.remove();
+
+	// display message
+	errorMessage[1].innerHTML = "LinkedIn succesfully removed from your profile!";
+	errorMessage[1].style.color = "#9e9e9e";
+	setTimeout(function() {
+		errorMessage[1].innerHTML = "";
+	}, 3000);
+
+}
+
+// remove instagram from accont
+function removeInstagramURL() {
+	// reset and remove data
+	this.style.display = "none";
+	document.getElementById("profileInstagram").style.display = "none";
+	document.getElementById("instagramURL").value = "";
+	var instagramRef = firebase.database().ref("accounts/" + uidKey + "/socialMedias/instagram");
+	instagramRef.remove();
+
+	// display message
+	errorMessage[2].innerHTML = "Instagram succesfully removed from your profile!";
+	errorMessage[2].style.color = "#9e9e9e";
+	setTimeout(function() {
+		errorMessage[2].innerHTML = "";
+	}, 3000);
+
+}
+
+// remove facebook from account
+function removeFacebookURL() {
+	// reset and remove data
+	this.style.display = "none";
+	document.getElementById("profileFacebook").style.display = "none";
+	document.getElementById("facebookURL").value = "";
+	var facebookRef = firebase.database().ref("accounts/" + uidKey + "/socialMedias/facebook");
+	facebookRef.remove();
+
+	// display message
+	errorMessage[3].innerHTML = "Facebook succesfully removed from your profile!";
+	errorMessage[3].style.color = "#9e9e9e";
+	setTimeout(function() {
+		errorMessage[3].innerHTML = "";
+	}, 3000);
+}
+
+// remove twitter from account
+function removeTwitterURL() {
+	// reset and remove data
+	this.style.display = "none";
+	document.getElementById("profileTwitter").style.display = "none";
+	document.getElementById("twitterURL").value = "";
+	var twitterRef = firebase.database().ref("accounts/" + uidKey + "/socialMedias/twitter");
+	twitterRef.remove();
+
+	// display message
+	errorMessage[4].innerHTML = "Twitter succesfully removed from your profile!";
+	errorMessage[4].style.color = "#9e9e9e";
+	setTimeout(function() {
+		errorMessage[4].innerHTML = "";
+	}, 3000);
+}
 
 
 
