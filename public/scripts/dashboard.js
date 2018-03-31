@@ -1046,6 +1046,13 @@ function profile() {
 		inputs[i].addEventListener("keyup", updateProfile);
 	}
 
+	// init social media events
+	document.getElementById("addGithubURL").addEventListener("click", addGithubURL);
+	document.getElementById("addLinkedinURL").addEventListener("click", addLinkedinURL);
+	document.getElementById("addInstagramURL").addEventListener("click", addInstagramURL);
+	document.getElementById("addFacebookURL").addEventListener("click", addFacebookURL);
+	document.getElementById("addTwitterURL").addEventListener("click", addTwitterURL);
+
 	// load profile data
 	accountRef.once("value", function(snapshot) {
 		if (snapshot.val().Bio != undefined) {
@@ -1707,6 +1714,160 @@ function authenticate() {
 	  document.getElementById("authenticateErrorMsg").innerHTML = error.message;
 	  return;
 	});
+}
+
+// add github
+function addGithubURL() {
+	// get github ref
+	var githubRef = firebase.database().ref("accounts/" + uidKey + "/socialMedias/github");
+
+	// get error element in case of error
+	var errorMessage = document.getElementsByClassName("socialMediaError");
+
+	// check for valid URL
+	var url = document.getElementById("githubURL").value.toLowerCase().split("com/");
+	var validURL = document.getElementById("githubURL").value;
+	if (url[0].toLowerCase() === "https://github." || url[0].toLowerCase() === "www.github." || url[0].toLowerCase() === "github.") {
+		// add URL to profile
+		githubRef.update({
+			URL: validURL
+		});
+
+		// display message
+		errorMessage[0].innerHTML = "GtHub succesfully added to your profile!";
+		errorMessage[0].style.color = "#66bb6a";
+	}
+
+	else {
+		// display error message
+		errorMessage[0].innerHTML = "Invalid URL! make sure the URL is formatted correctly."
+		errorMessage[0].style.color = "#ef5350";
+		return;
+	}
+}
+
+// add linkedin
+function addLinkedinURL() {
+	// get github ref
+	var linkedinRef = firebase.database().ref("accounts/" + uidKey + "/socialMedias/linkedin");
+
+	// get error element in case of error
+	var errorMessage = document.getElementsByClassName("socialMediaError");
+
+	// check for valid URL
+	var url = document.getElementById("linkedinURL").value.toLowerCase().split(".com/");
+	var validURL = document.getElementById("linkedinURL").value;
+	console.log(url[1].split("/"));
+	if (url[1].split("/")[0].toLowerCase() === "in" || url[1].split("/")[0] === "in" && url[1].split("/")[1] != "" && url[0].split("/")[0].toLowerCase() === "linkedin") {
+		console.log(url[1].split("/"));
+		// add URL to profile
+		linkedinRef.update({
+			URL: validURL
+		});
+
+		// display message
+		errorMessage[1].innerHTML = "LinkedIn succesfully added to your profile!";
+		errorMessage[1].style.color = "#66bb6a";
+	}
+
+	else {
+		// display error message
+		errorMessage[1].innerHTML = "Invalid URL! make sure the URL is formatted correctly."
+		errorMessage[1].style.color = "#ef5350";
+		return;
+	}
+}
+
+// add instagram
+function addInstagramURL() {
+	// get instagram ref
+	var instagramRef = firebase.database().ref("accounts/" + uidKey + "/socialMedias/instagram");
+
+	// get error element in case of error
+	var errorMessage = document.getElementsByClassName("socialMediaError");
+
+	// check for valid URL
+	var url = document.getElementById("instagramURL").value.toLowerCase().split("com/");
+	var validURL = document.getElementById("instagramURL").value;
+	console.log(url);
+	if (url[0].toLowerCase() === "https://www.instagram." || url[0].toLowerCase() === "www.instagram." || url[0].toLowerCase() === "instagram.") {
+		// add URL to profile
+		instagramRef.update({
+			URL: validURL
+		});
+
+		// display message
+		errorMessage[2].innerHTML = "Instagram succesfully added to your profile!";
+		errorMessage[2].style.color = "#66bb6a";
+	}
+
+	else {
+		// display error message
+		errorMessage[2].innerHTML = "Invalid URL! make sure the URL is formatted correctly."
+		errorMessage[2].style.color = "#ef5350";
+		return;
+	}
+}
+
+// add github
+function addFacebookURL() {
+	// get facebookref
+	var facebookRef = firebase.database().ref("accounts/" + uidKey + "/socialMedias/facebook");
+
+	// get error element in case of error
+	var errorMessage = document.getElementsByClassName("socialMediaError");
+
+	// check for valid URL
+	var url = document.getElementById("facebookURL").value.toLowerCase().split("com/");
+	var validURL = document.getElementById("facebookURL").value;
+	console.log(url);
+	if (url[0].toLowerCase() === "https://www.facebook." || url[0].toLowerCase() === "www.facebook." || url[0].toLowerCase() === "facebook.") {
+		// add URL to profile
+		facebookRef.update({
+			URL: validURL
+		});
+
+		// display message
+		errorMessage[3].innerHTML = "Facebook succesfully added to your profile!";
+		errorMessage[3].style.color = "#66bb6a";
+	}
+
+	else {
+		// display error message
+		errorMessage[3].innerHTML = "Invalid URL! make sure the URL is formatted correctly."
+		errorMessage[3].style.color = "#ef5350";
+		return;
+	}
+}
+
+// add twitter
+function addTwitterURL() {
+	// get twitter ref
+	var twitterRef = firebase.database().ref("accounts/" + uidKey + "/socialMedias/twitter");
+
+	// get error element in case of error
+	var errorMessage = document.getElementsByClassName("socialMediaError");
+
+	// check for valid URL
+	var url = document.getElementById("twitterURL").value.toLowerCase().split("com/");
+	var validURL = document.getElementById("twitterURL").value;
+	if (url[0].toLowerCase() === "https://twitter." || url[0].toLowerCase() === "www.twitter." || url[0].toLowerCase() === "twitter.") {
+		// add URL to profile
+		twitterRef.update({
+			URL: validURL
+		});
+
+		// display message
+		errorMessage[4].innerHTML = "Twitter succesfully added to your profile!";
+		errorMessage[4].style.color = "#66bb6a";
+	}
+
+	else {
+		// display error message
+		errorMessage[4].innerHTML = "Invalid URL! make sure the URL is formatted correctly."
+		errorMessage[4].style.color = "#ef5350";
+		return;
+	}
 }
 
 

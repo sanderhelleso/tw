@@ -1043,6 +1043,12 @@ li .active {
 	height: 16px;
 }
 
+.socialMediaError {
+	font-size: 12px;
+	color: #ef5350;
+	padding-top: 4px;
+}
+
 /*********************************** END SETTINGS ************************************/
 
 .friendsAvatar {
