@@ -230,6 +230,7 @@ function loadFriendRequests() {
 			var cont = document.createElement("div");
 			cont.id = "friendRequest-" + child.key;
 			cont.classList.add("pendingFriendRequest") + cont.classList.add("animated") + cont.classList.add("fadeIn");
+			cont.addEventListener("click", openProfile);
 
 			// create avatar and heading
 			var headingCont = document.createElement("div");
@@ -850,12 +851,26 @@ function sendFriendRequest() {
 }
 
 // accept friend request
-function acceptFriendRequest() {
+var profileRequestKey;
+function acceptFriendRequest(e) {
+	// stop notification menu to fade out after click
+	e.stopPropagation();
+
 	// get user key
-	var userKey = this.parentElement.parentElement.parentElement.id.split("-")[1];
+	var userKey;
+	var friendCont;
+	if (this.classList.contains("acceptFriendRequest")) {
+		userKey = this.parentElement.parentElement.parentElement.id.split("-")[1];
+		friendCont = this.parentElement.parentElement.parentElement;
+	}
+
+	else if (this.classList.contains("acceptFriendRequestProfile")) {
+		userKey = profileRequestKey;
+		friendCont = document.getElementById("friendRequest-" + userKey);
+	}
+
 	var friendRef = firebase.database().ref("accounts/" + uidKey + "/friends/" + userKey);
 	var acceptedFriendRef = firebase.database().ref("accounts/" + userKey + "/friends/" + uidKey);
-	var friendCont = this.parentElement.parentElement.parentElement;
 	
 	// get friend data
 	accountRef = firebase.database().ref("accounts/" + userKey);
@@ -898,6 +913,49 @@ function acceptFriendRequest() {
 		cont.appendChild(friendEmail);
 		cont.appendChild(options);
 		document.getElementById("friendsListCont").appendChild(cont);
+
+		// create friend element and display in profile page
+		var cont = document.createElement("div");
+		cont.id = "profile-" + snapshot.key;
+		cont.classList.add("col") + cont.classList.add("col-lg-5") + cont.classList.add("profileFriendsCont") + cont.classList.add("fadeIn") + cont.classList.add("fadeIn") + cont.classList.add("profile-" + snapshot.key);
+
+		// create avatar img
+		var friendImg = document.createElement("img");
+		friendImg.classList.add("friendsAvatar");
+
+		// set img src to be avatar url
+		friendRef = firebase.database().ref("accounts/" + snapshot.key);
+		friendRef.once("value", function(snapshot) {
+			if (snapshot.val().Avatar_url != undefined) {
+				friendImg.src = snapshot.val().Avatar_url;
+			}
+	
+			else {
+				friendImg.src = "/img/avatar.png";
+			}
+		});
+
+		// create friend name
+		var friendName = document.createElement("h5");
+		friendName.classList.add("friendsName");
+		friendName.innerHTML = snapshot.val().First_Name.capitalizeFirstLetter() + " " + snapshot.val().Last_Name.capitalizeFirstLetter();
+
+		// create friend email
+		var friendEmail = document.createElement("p");
+		friendEmail.classList.add("friendsEmail");
+		friendEmail.innerHTML = snapshot.val().Email;
+
+		// append
+		cont.appendChild(friendImg);
+		cont.appendChild(friendName);
+		cont.appendChild(friendEmail);
+
+		// add event listener to container, used to open the selected profile
+		cont.addEventListener("click", openProfile);
+
+		// display
+		document.getElementById("profileFriendsRow").appendChild(cont);
+
 
 		// set friend to user who requested to be friend
 		var accountRef = firebase.database().ref("accounts/" + uidKey);
@@ -1039,8 +1097,6 @@ function loadProfileFriends() {
 
 			// display
 			document.getElementById("profileFriendsRow").appendChild(cont);
-
-
   		});
 	});
 }
@@ -1049,12 +1105,33 @@ var settingsKey;
 function openProfile() {
 	// get profile key
 	var profileKey = this.id.split("-")[1];
+	profileRequestKey = profileKey;
+
+	// check if profile is from friend request
+	if (this.id.split("-")[0] === "friendRequest") {
+		document.getElementById("unfriendUser").style.display = "none";
+		document.getElementById("unfriendDivider").style.display = "none";
+		document.getElementsByClassName("pendingFriendRequestChoicesProfile")[0].style.display = "block";
+
+		// event listener for add friend button
+		document.getElementsByClassName("pendingFriendRequestChoicesProfile")[0].childNodes[0].addEventListener("click", acceptFriendRequest);
+
+		// event listener for decline friend button
+		document.getElementsByClassName("pendingFriendRequestChoicesProfile")[0].childNodes[2].addEventListener("click", declineFriendRequest);
+	}
+
+	else {
+		document.getElementById("unfriendUser").style.display = "block";
+		document.getElementById("unfriendDivider").style.display = "block";
+		document.getElementsByClassName("pendingFriendRequestChoicesProfile")[0].style.display = "none";
+	}
 
 	// used to controll settings
 	settingsKey = profileKey;
 
 	// reset friends cont before appending
 	document.getElementById("profileModalFriendsRow").innerHTML = "";
+	document.getElementById("commonFriends").innerHTML = "";
 
 	// unblur image when cancelling a setting
 	document.getElementById("body").addEventListener("click", unblur);
@@ -1153,6 +1230,7 @@ function openProfile() {
 				cont.addEventListener("click", openProfile);
 
 				// check if profile is logged in account
+				document.getElementById("commonFriends").innerHTML = "";
 				if (profileKey === uidKey) {
 					document.getElementById("profileModalCommunication").style.display = "none";
 					document.getElementById("commonFriends").innerHTML = "";
@@ -1170,13 +1248,28 @@ function openProfile() {
 							}
 						}
 					}
+
+					// set amount of common friends
 					document.getElementById("commonFriends").innerHTML = commonsCount + " common";
+
+					// settings available
 					document.getElementById("profileModalSettings").style.display = "inline-block";
 				}
 
 				// display
 				document.getElementById("profileModalFriendsRow").appendChild(cont);
 			});
+
+			// display no friend message if the user have no friends
+			if (profileFriends.length === 0) {
+				document.getElementById("foreverAlone").style.display = "block";
+			}
+
+			else {
+				document.getElementById("foreverAlone").style.display = "none";
+			}
+
+			console.log(profileFriends.length);
 
 			// show profile
 			$('#profileModal').modal('show');

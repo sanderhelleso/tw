@@ -45,7 +45,7 @@
 			          <div class="dropdown-divider"></div>
 			          <a id="friendRequestPlaceholder" href="#" class="dropdown-item animated fadeIn">No new friend requests, everything is up to date!</a>
 			          <div id="masterRequest" class="pendingFriendRequest">
-						<span class="pendingFriendRequestChoices"><span class="acceptFriendRequest"> <i data-feather="user-check"></i> Accept</span> <span class="declineFriendRequest"> <i data-feather="user-x"></i> Decline </span></span>
+						<span class="pendingFriendRequestChoices"><span id="acceptFriendRequest" class="acceptFriendRequest"> <i data-feather="user-check"></i> Accept</span> <span class="declineFriendRequest"> <i data-feather="user-x"></i> Decline </span></span>
 					  </div>
 			        </div>
 			    </li>
@@ -290,7 +290,7 @@
 				        <p id="unfriendUser" class="dropdown-item">Unfriend</p>
 				        <p id="unfriendLabel" class="dropdown-item"></p>
 				        <span id="confirmUnfriendCont" class="dropdown-item animated fadeIn"><span id="cancelUnfriend">Cancel</span> <span id="confirmUnfriend">Unfriend</span></span>
-				        <div class="dropdown-divider"></div>
+				        <div id="unfriendDivider" class="dropdown-divider"></div>
 				        <p id="reportUser" class="dropdown-item" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Report</p>
 				        <div id="reportReasonCont" class="animated fadeIn">
 					        <label id="reportReasonLabel" for="reportReason" class="dropdown-item">Why do you want to report Sander?</label>
@@ -316,8 +316,12 @@
                 <p id="profileModalBio" class="text-center"></p>
                 <p id="profileModalLocation" class="text-center"><i data-feather="map-pin"></i> Ålesund, Norway</p>
 	  			<p id="profileModalJoined" class="text-center"><i data-feather="clock"></i> Joined 22.03.2018</p>
+
+	  			<span class="pendingFriendRequestChoicesProfile text-center"><span class="acceptFriendRequestProfile"> <i data-feather="user-check"></i> Accept</span> <span class="declineFriendRequestProfile"> <i data-feather="user-x"></i> Decline </span></span>
+
 	  			<div class="dropdown-divider"></div>
 				<h5 id="profileModalFriendsHeading" class="text-left"><i data-feather="users"></i> Friends<br> <span id="commonFriends"></span></h5>
+				<p id="foreverAlone" class="text-left">This user have no friends</p>
 				<div id="profileModalFriendsRow" class="row justify-content-center"></div>
 				<div class="dropdown-divider"></div>
 				<h5 id="connectWithProfileHeading" class="text-left"><i data-feather="globe"></i> Connect with <span id="connectUser"></span></h5>
