@@ -1258,6 +1258,10 @@ function openProfile() {
 		var commonFriends = [];
 		var friends = [];
 		var profileFriends = [];
+
+		// check for blocked users
+		var blockedUsers = [];
+
 		var myFriendsRef = firebase.database().ref("accounts/" + uidKey + "/friends");
 		var profileFriendsRef = firebase.database().ref("accounts/" + profileKey + "/friends");
 		myFriendsRef.once("value", function(snapshot) {
@@ -1266,82 +1270,95 @@ function openProfile() {
 			});
 		});
 
+		// find blocked users
+		blockedRef = firebase.database().ref("accounts/" + uidKey + "/blocked");
+	  	blockedRef.once("value", function(snapshot) {
+			snapshot.forEach((child) => {
+				blockedUsers.push(child.key);
+		  	});
+		});
+
 
 		profileFriendsRef.once("value", function(snapshot) {
 			// reset friends cont before appending
 			document.getElementById("profileModalFriendsRow").innerHTML = "";
 			document.getElementById("commonFriends").innerHTML = "";
 			snapshot.forEach((child) => {
-				profileFriends.push(child.key);
 
-				// create friend container
-				var cont = document.createElement("div");
-				cont.id = "profile-" + child.key;
-				cont.classList.add("col") + cont.classList.add("col-lg-5") + cont.classList.add("profileModalFriendsCont") + cont.classList.add("fadeIn") + cont.classList.add("fadeIn") + cont.classList.add("profile-" + child.key);
+				for (var i = 0; i < blockedUsers.length; i++) {
+					if (child.key != blockedUsers[i]) {
+						profileFriends.push(child.key);
 
-				// create avatar img
-				var friendImg = document.createElement("img");
-				friendImg.classList.add("friendsAvatar");
+						// create friend container
+						var cont = document.createElement("div");
+						cont.id = "profile-" + child.key;
+						cont.classList.add("col") + cont.classList.add("col-lg-5") + cont.classList.add("profileModalFriendsCont") + cont.classList.add("fadeIn") + cont.classList.add("fadeIn") + cont.classList.add("profile-" + child.key);
 
-				// set img src to be avatar url
-				friendRef = firebase.database().ref("accounts/" + child.key);
-				friendRef.once("value", function(snapshot) {
-					if (snapshot.val().Avatar_url != undefined) {
-						friendImg.src = snapshot.val().Avatar_url;
-					}
+						// create avatar img
+						var friendImg = document.createElement("img");
+						friendImg.classList.add("friendsAvatar");
 
-					else {
-						friendImg.src = "/img/avatar.png";
-					}
-				});
-
-				// create friend name
-				var friendName = document.createElement("h5");
-				friendName.classList.add("friendsName");
-				friendName.innerHTML = child.val().First_Name.capitalizeFirstLetter() + " " + child.val().Last_Name.capitalizeFirstLetter();
-
-				// create friend email
-				var friendEmail = document.createElement("p");
-				friendEmail.classList.add("friendsEmail");
-				friendEmail.innerHTML = child.val().Email;
-
-				// append
-				cont.appendChild(friendImg);
-				cont.appendChild(friendName);
-				cont.appendChild(friendEmail);
-
-				// add event listener to container, used to open the selected profile
-				cont.addEventListener("click", openProfile);
-
-				// check if profile is logged in account
-				document.getElementById("commonFriends").innerHTML = "";
-				if (profileKey === uidKey) {
-					document.getElementById("profileModalCommunication").style.display = "none";
-					document.getElementById("commonFriends").innerHTML = "";
-					document.getElementById("profileModalSettings").style.display = "none";
-				}
-
-				else {
-					document.getElementById("profileModalCommunication").style.display = "block";
-					// count amount of common friends
-					var commonsCount = 0;
-					for (var i = 0; i < friends.length; i++) {
-						for (var x = 0; x < profileFriends.length; x++) {
-							if (friends[i] === profileFriends[x]) {
-								commonsCount++;
+						// set img src to be avatar url
+						friendRef = firebase.database().ref("accounts/" + child.key);
+						friendRef.once("value", function(snapshot) {
+							if (snapshot.val().Avatar_url != undefined) {
+								friendImg.src = snapshot.val().Avatar_url;
 							}
+
+							else {
+								friendImg.src = "/img/avatar.png";
+							}
+						});
+
+						// create friend name
+						var friendName = document.createElement("h5");
+						friendName.classList.add("friendsName");
+						friendName.innerHTML = child.val().First_Name.capitalizeFirstLetter() + " " + child.val().Last_Name.capitalizeFirstLetter();
+
+						// create friend email
+						var friendEmail = document.createElement("p");
+						friendEmail.classList.add("friendsEmail");
+						friendEmail.innerHTML = child.val().Email;
+
+						// append
+						cont.appendChild(friendImg);
+						cont.appendChild(friendName);
+						cont.appendChild(friendEmail);
+
+						// add event listener to container, used to open the selected profile
+						cont.addEventListener("click", openProfile);
+
+						// check if profile is logged in account
+						document.getElementById("commonFriends").innerHTML = "";
+						if (profileKey === uidKey) {
+							document.getElementById("profileModalCommunication").style.display = "none";
+							document.getElementById("commonFriends").innerHTML = "";
+							document.getElementById("profileModalSettings").style.display = "none";
 						}
+
+						else {
+							document.getElementById("profileModalCommunication").style.display = "block";
+							// count amount of common friends
+							var commonsCount = 0;
+							for (var i = 0; i < friends.length; i++) {
+								for (var x = 0; x < profileFriends.length; x++) {
+									if (friends[i] === profileFriends[x]) {
+										commonsCount++;
+									}
+								}
+							}
+
+							// set amount of common friends
+							document.getElementById("commonFriends").innerHTML = commonsCount + " common";
+
+							// settings available
+							document.getElementById("profileModalSettings").style.display = "inline-block";
+						}
+
+						// display
+						document.getElementById("profileModalFriendsRow").appendChild(cont);
 					}
-
-					// set amount of common friends
-					document.getElementById("commonFriends").innerHTML = commonsCount + " common";
-
-					// settings available
-					document.getElementById("profileModalSettings").style.display = "inline-block";
 				}
-
-				// display
-				document.getElementById("profileModalFriendsRow").appendChild(cont);
 			});
 
 			// display no friend message if the user have no friends
