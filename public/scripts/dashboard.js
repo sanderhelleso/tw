@@ -690,9 +690,10 @@ function findFriend() {
 			if (keys[i] != uidKey) {
 				// check if user is blocked
 				for (var x = 0; x < blockedUsers.length; x++) {
-					if (keys[i] !=  blockedUsers[x]) {
+					if (keys[i] != blockedUsers[x]) {
 						notBlocked++;
 						// check for matches
+						console.log(arr[i]);
 						if (search.value.toLowerCase() === arr[i].Email || arr[i].First_Name.toLowerCase() + " " + arr[i].Last_Name.toLowerCase() === search.value.toLowerCase()) {
 							foundCount++;
 
@@ -706,21 +707,34 @@ function findFriend() {
 
 							// create elements
 							var cont = document.createElement("div");
-							cont.id = "profile-" + keys[i];
+							cont.id = keys[i];
 							cont.classList.add("col") + cont.classList.add("col-lg-5") + cont.classList.add("text-center") + cont.classList.add("animated");
 							var name = document.createElement("h5");
-							name.innerHTML = arr[i].First_Name.toUpperCase() + " " + arr[i].Last_Name.toUpperCase();
+							name.innerHTML = arr[i].First_Name..capitalizeFirstLetter() + " " + arr[i].Last_Name.capitalizeFirstLetter();
 							var email = document.createElement("p");
 							email.innerHTML = arr[i].Email.toLowerCase();
 							var avatar = document.createElement("img");
 							avatar.classList.add("searchResultsAvatar");
 							avatar.src = arr[i].Avatar_url;
+							avatar.id = "profile-" + keys[i];
 							var bio = document.createElement("p");
 							bio.classList.add("bio");
 							var icons = document.createElement("span");
-							icons.classList.add("searchResultsIcons");
-							icons.innerHTML = document.getElementById("masterResult").childNodes[1].innerHTML;
-							console.log(document.getElementById("masterResult").childNodes[1]);
+
+							// check if profile is friend with account
+							var isFriendRef = firebase.database().ref("accounts/" + uidKey + "/friends/" + keys[i])
+							isFriendRef.once("value", function(snapshot) {
+								console.log(snapshot.val());
+								// only show add friend option if the profile is not accounts friend
+								if (snapshot.val() === null || snapshot.val() === undefined) {
+									icons.classList.add("searchResultsIcons");
+									icons.innerHTML = document.getElementById("masterResult").childNodes[1].innerHTML;
+								}
+
+								else {
+									icons.innerHTML = "You and " + name.innerHTML.split(" ")[0] + " are friends <3";
+								}
+							});
 
 							// append
 							cont.appendChild(name);
@@ -728,7 +742,7 @@ function findFriend() {
 							cont.appendChild(avatar);
 
 							// init open profile event
-							cont.addEventListener("click", openProfile);
+							avatar.addEventListener("click", openProfile);
 
 							// check if user got a bio set
 							if (arr[i].Bio != undefined) {
@@ -742,6 +756,7 @@ function findFriend() {
 								cont.appendChild(bio);
 							}
 
+							// append add & chat icons OR message if friends
 							cont.appendChild(icons);
 
 							// display results
@@ -1285,6 +1300,22 @@ function openProfile() {
 			document.getElementById("commonFriends").innerHTML = "";
 			snapshot.forEach((child) => {
 
+				// check if profile is friend with account
+				var isFriendRef = firebase.database().ref("accounts/" + uidKey + "/friends/" + child.key)
+				isFriendRef.once("value", function(snapshot) {
+					// remove UNFRIEND option if account is not friend with profile
+					if (snapshot.val() === null || snapshot.val() === undefined) {
+						document.getElementById("unfriendUser").style.display = "none";
+						document.getElementById("unfriendDivider").style.display = "none";
+					}
+
+					else {
+						document.getElementById("unfriendUser").style.display = "block";
+						document.getElementById("unfriendDivider").style.display = "block";
+					}
+				});
+
+				// check for blocked users
 				for (var i = 0; i < blockedUsers.length; i++) {
 					if (child.key != blockedUsers[i]) {
 						profileFriends.push(child.key);
