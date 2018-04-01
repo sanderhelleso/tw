@@ -661,6 +661,7 @@ function findFriend() {
 	var keys = [];
 	var arr = [];
 	var blockedUsers = [];
+	var notBlocked = 0;
 	var notFoundCount = 0;
 	var foundCount = 0;
 
@@ -679,9 +680,6 @@ function findFriend() {
 			arr.push(child.val());
 			keys.push(child.key);
   		});
-  		
-  		console.log(blockedUsers);
-
 
   		// reset before displaying results
 		document.getElementById("searchResults").innerHTML = "";
@@ -690,10 +688,10 @@ function findFriend() {
   		for (var i = 0; i < arr.length; i++) {
   			// exclude signed in user from search
 			if (keys[i] != uidKey) {
-
 				// check if user is blocked
 				for (var x = 0; x < blockedUsers.length; x++) {
 					if (keys[i] !=  blockedUsers[x]) {
+						notBlocked++;
 						// check for matches
 						if (search.value.toLowerCase() === arr[i].Email || arr[i].First_Name.toLowerCase() + " " + arr[i].Last_Name.toLowerCase() === search.value.toLowerCase()) {
 							foundCount++;
@@ -708,7 +706,7 @@ function findFriend() {
 
 							// create elements
 							var cont = document.createElement("div");
-							cont.id = keys[i];
+							cont.id = "profile-" + keys[i];
 							cont.classList.add("col") + cont.classList.add("col-lg-5") + cont.classList.add("text-center") + cont.classList.add("animated");
 							var name = document.createElement("h5");
 							name.innerHTML = arr[i].First_Name.toUpperCase() + " " + arr[i].Last_Name.toUpperCase();
@@ -728,6 +726,9 @@ function findFriend() {
 							cont.appendChild(name);
 							cont.appendChild(email);
 							cont.appendChild(avatar);
+
+							// init open profile event
+							cont.addEventListener("click", openProfile);
 
 							// check if user got a bio set
 							if (arr[i].Bio != undefined) {
@@ -754,7 +755,9 @@ function findFriend() {
 						// if no matches were found, display error message
 						else {
 							notFoundCount++;
-							if (notFoundCount === arr.length - 1) {
+							console.log(notFoundCount);
+							console.log(notBlocked);
+							if (notFoundCount === arr.length - 2) {
 								// show error message
 								document.getElementById("searchNewFriendSuccess").style.display = "none";
 								document.getElementById("searchNewFriendError").classList.add("bounceIn");
