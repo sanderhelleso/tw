@@ -660,15 +660,28 @@ function findFriend() {
 	// variables used to check if no matches were found before displaying error message
 	var keys = [];
 	var arr = [];
+	var blockedUsers = [];
 	var notFoundCount = 0;
 	var foundCount = 0;
+
+	// find blocked users
+	blockedRef = firebase.database().ref("accounts/" + uidKey + "/blocked");
+  	blockedRef.once("value", function(snapshot) {
+		snapshot.forEach((child) => {
+			blockedUsers.push(child.key);
+	  	});
+	});
+
+	// get all users
 	allAccountsRef = firebase.database().ref("accounts/");
 	allAccountsRef.once("value", function(snapshot) {
 		snapshot.forEach((child) => {
 			arr.push(child.val());
 			keys.push(child.key);
   		});
-  		console.log(arr);
+  		
+  		console.log(blockedUsers);
+
 
   		// reset before displaying results
 		document.getElementById("searchResults").innerHTML = "";
@@ -677,76 +690,82 @@ function findFriend() {
   		for (var i = 0; i < arr.length; i++) {
   			// exclude signed in user from search
 			if (keys[i] != uidKey) {
-				// check for matches
-				if (search.value.toLowerCase() === arr[i].Email || arr[i].First_Name.toLowerCase() + " " + arr[i].Last_Name.toLowerCase() === search.value.toLowerCase()) {
-					foundCount++;
 
-					// show success message
-					document.getElementById("searchNewFriendError").style.display = "none";
-					document.getElementById("searchNewFriendSuccess").style.display = "block";
-					document.getElementById("searchNewFriendSuccess").innerHTML = "We succesfully found <strong>" + foundCount + "</strong> accounts connected to your search!"; 
+				// check if user is blocked
+				for (var x = 0; x < blockedUsers.length; x++) {
+					if (keys[i] !=  blockedUsers[x]) {
+						// check for matches
+						if (search.value.toLowerCase() === arr[i].Email || arr[i].First_Name.toLowerCase() + " " + arr[i].Last_Name.toLowerCase() === search.value.toLowerCase()) {
+							foundCount++;
 
-					// add scrollbar to container if needed
-					document.getElementById("socialMain").style.overflowY = "scroll";
+							// show success message
+							document.getElementById("searchNewFriendError").style.display = "none";
+							document.getElementById("searchNewFriendSuccess").style.display = "block";
+							document.getElementById("searchNewFriendSuccess").innerHTML = "We succesfully found <strong>" + foundCount + "</strong> accounts connected to your search!"; 
 
-					// create elements
-					var cont = document.createElement("div");
-					cont.id = keys[i];
-					cont.classList.add("col") + cont.classList.add("col-lg-5") + cont.classList.add("text-center") + cont.classList.add("animated");
-					var name = document.createElement("h5");
-					name.innerHTML = arr[i].First_Name.toUpperCase() + " " + arr[i].Last_Name.toUpperCase();
-					var email = document.createElement("p");
-					email.innerHTML = arr[i].Email.toLowerCase();
-					var avatar = document.createElement("img");
-					avatar.classList.add("searchResultsAvatar");
-					avatar.src = "img/avatar.png";
-					var bio = document.createElement("p");
-					bio.classList.add("bio");
-					var icons = document.createElement("span");
-					icons.classList.add("searchResultsIcons");
-					icons.innerHTML = document.getElementById("masterResult").childNodes[1].innerHTML;
-					console.log(document.getElementById("masterResult").childNodes[1]);
+							// add scrollbar to container if needed
+							document.getElementById("socialMain").style.overflowY = "scroll";
 
-					// append
-					cont.appendChild(name);
-					cont.appendChild(email);
-					cont.appendChild(avatar);
+							// create elements
+							var cont = document.createElement("div");
+							cont.id = keys[i];
+							cont.classList.add("col") + cont.classList.add("col-lg-5") + cont.classList.add("text-center") + cont.classList.add("animated");
+							var name = document.createElement("h5");
+							name.innerHTML = arr[i].First_Name.toUpperCase() + " " + arr[i].Last_Name.toUpperCase();
+							var email = document.createElement("p");
+							email.innerHTML = arr[i].Email.toLowerCase();
+							var avatar = document.createElement("img");
+							avatar.classList.add("searchResultsAvatar");
+							avatar.src = arr[i].Avatar_url;
+							var bio = document.createElement("p");
+							bio.classList.add("bio");
+							var icons = document.createElement("span");
+							icons.classList.add("searchResultsIcons");
+							icons.innerHTML = document.getElementById("masterResult").childNodes[1].innerHTML;
+							console.log(document.getElementById("masterResult").childNodes[1]);
 
-					// check if user got a bio set
-					if (arr[i].Bio != undefined) {
-						bio.innerHTML = arr[i].Bio;
-						cont.appendChild(bio);
-					}
+							// append
+							cont.appendChild(name);
+							cont.appendChild(email);
+							cont.appendChild(avatar);
 
-					// if not set default text
-					else {
-						bio.innerHTML = "This user has not set a bio";
-						cont.appendChild(bio);
-					}
+							// check if user got a bio set
+							if (arr[i].Bio != undefined) {
+								bio.innerHTML = arr[i].Bio;
+								cont.appendChild(bio);
+							}
 
-					cont.appendChild(icons);
+							// if not set default text
+							else {
+								bio.innerHTML = "This user has not set a bio";
+								cont.appendChild(bio);
+							}
 
-					// display results
-					cont.classList.add("fadeInUp");
-					document.getElementById("searchResults").appendChild(cont);
-					$('#socialMain').animate({
-					    scrollTop: $("#searchResults").offset().top,
-					}, 1500);
-				}
+							cont.appendChild(icons);
 
-				// if no matches were found, display error message
-				else {
-					notFoundCount++;
-					if (notFoundCount === arr.length - 1) {
-						// show error message
-						document.getElementById("searchNewFriendSuccess").style.display = "none";
-						document.getElementById("searchNewFriendError").classList.add("bounceIn");
-						document.getElementById("searchNewFriendError").innerHTML = "We could not find any registered account connected to <strong>" + search.value.toUpperCase() + "</strong>.";
-						document.getElementById("searchNewFriendError").style.display = "block";
-						setTimeout(function() {
-							document.getElementById("searchNewFriendError").classList.remove("bounceIn");
-						}, 1000);
-						return;
+							// display results
+							cont.classList.add("fadeInUp");
+							document.getElementById("searchResults").appendChild(cont);
+							$('#socialMain').animate({
+							    scrollTop: $("#searchResults").offset().top,
+							}, 1500);
+						}
+
+						// if no matches were found, display error message
+						else {
+							notFoundCount++;
+							if (notFoundCount === arr.length - 1) {
+								// show error message
+								document.getElementById("searchNewFriendSuccess").style.display = "none";
+								document.getElementById("searchNewFriendError").classList.add("bounceIn");
+								document.getElementById("searchNewFriendError").innerHTML = "We could not find any registered account connected to <strong>" + search.value.toUpperCase() + "</strong>.";
+								document.getElementById("searchNewFriendError").style.display = "block";
+								setTimeout(function() {
+									document.getElementById("searchNewFriendError").classList.remove("bounceIn");
+								}, 1000);
+								return;
+							}
+						}
 					}
 				}
 			}
@@ -1601,7 +1620,7 @@ function confirmBlock() {
 	var dateTime = day + '.' + month + ' ' + hour + ':' + minute;
 
 	// store block
-	var reportRef = firebase.database().ref("accounts/" + settingsKey + "/blocked/" + uidKey);
+	var reportRef = firebase.database().ref("accounts/" + uidKey + "/blocked/" + settingsKey);
 	reportRef.update({
 		Timestamp: dateTime
 	});
@@ -1622,7 +1641,7 @@ function confirmBlock() {
 	document.getElementById("cancelBlock").click();
 
 	// display message
-	snackbar.innerHTML = "Thank you for blocking this user! You will no longer be able to see or interact with this user.";
+	snackbar.innerHTML = "Thank you for blocking this user! The user will no longer be able to see or interact with this user.";
 	snackbar.className = "show";
 	setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 5000);
 
