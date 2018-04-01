@@ -1422,6 +1422,7 @@ function unfriendUser() {
 
 	// close potensial other options
 	document.getElementById("cancelReport").click();
+	document.getElementById("cancelBlock").click();
 
 	// display unfriend form
 	document.getElementById("confirmUnfriendCont").style.display = "block";
@@ -1473,12 +1474,17 @@ function reportUser() {
 
 	//close potensial other options
 	document.getElementById("cancelUnfriend").click();
+	document.getElementById("cancelBlock").click();
 
 	// display report form
 	document.getElementById("reportReasonCont").style.display = "block";
 
 	// add a blur to the avatar image 
 	document.getElementById("profileModalAvatar").style.filter = "blur(5px)";
+
+	// set label
+	document.getElementById("reportReasonLabel").innerHTML = "Are you sure you want to report " + document.getElementById("profileModalName").innerHTML.split(" ")[0] + "?";
+
 
 	// init cancel and confirm events
 	document.getElementById("cancelReport").addEventListener("click", cancelReport);
@@ -1546,7 +1552,82 @@ function confirmReport() {
 
 // block selected user
 function blockUser() {
+	// close potensial other options
+	document.getElementById("cancelReport").click();
+	document.getElementById("cancelUnfriend").click();
 
+	// display report form
+	document.getElementById("blockCont").style.display = "block";
+
+	// add a blur to the avatar image 
+	document.getElementById("profileModalAvatar").style.filter = "blur(5px)";
+
+	// set label
+	document.getElementById("blockLabel").innerHTML = "Are you sure you want to block " + document.getElementById("profileModalName").innerHTML.split(" ")[0] + "?";
+
+	// init cancel and confirm events
+	document.getElementById("cancelBlock").addEventListener("click", cancelBlock);
+	document.getElementById("confirmBlock").addEventListener("click", confirmBlock);
+}
+
+function cancelBlock() {
+	// hide block form and remove blur from avatar image
+	document.getElementById("blockCont").style.display = "none";
+	document.getElementById("profileModalAvatar").style.filter = "none";
+}
+
+function confirmBlock() {
+	// get timestamp
+	var now = new Date(); 
+	var month = now.getMonth()+1; 
+	var day = now.getDate();
+	var hour = now.getHours();
+	var minute = now.getMinutes();
+
+	// add zeros if needed
+	if (month.toString().length == 1) {
+		var month = '0' + month;
+	}
+	if (day.toString().length == 1) {
+		var day = '0' + day;
+	}   
+	if (hour.toString().length == 1) {
+		var hour = '0' + hour;
+	}
+	if (minute.toString().length == 1) {
+		var minute = '0' + minute;
+	}
+
+	var dateTime = day + '.' + month + ' ' + hour + ':' + minute;
+
+	// store block
+	var reportRef = firebase.database().ref("accounts/" + settingsKey + "/blocked/" + uidKey);
+	reportRef.update({
+		Timestamp: dateTime
+	});
+
+	// remove user from account and account from user, get refs
+	var unfriendUser = firebase.database().ref("accounts/" + uidKey + "/friends/" + settingsKey);
+	var unfriendAccount = firebase.database().ref("accounts/" + settingsKey + "/friends/" + uidKey);
+
+	// remove connection from both accounts
+	unfriendUser.remove();
+	unfriendAccount.remove();
+
+	// remove friend from DOM
+	var friend = document.getElementsByClassName("profile-" + settingsKey);
+	friend[0].remove();
+
+	// close block
+	document.getElementById("cancelBlock").click();
+
+	// display message
+	snackbar.innerHTML = "Thank you for blocking this user! You will no longer be able to see or interact with this user.";
+	snackbar.className = "show";
+	setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 5000);
+
+	// close modal
+	$('#profileModal').modal('hide');
 }
 
 function updateProfile() {
