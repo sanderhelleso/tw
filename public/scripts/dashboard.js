@@ -1069,7 +1069,6 @@ function profile() {
 	var socialMediaRef = firebase.database().ref("accounts/" + uidKey + "/socialMedias");
 	socialMediaRef.once("value", function(snapshot) {
 		snapshot.forEach((child) => {
-			console.log(child.key);
 			if (child.key === "facebook") {
 				document.getElementById("facebookURL").value = child.val().URL;
 				document.getElementById("profileFacebook").href = "https://www." + child.val().URL;
@@ -1193,10 +1192,6 @@ function openProfile() {
 	// used to controll settings
 	settingsKey = profileKey;
 
-	// reset friends cont before appending
-	document.getElementById("profileModalFriendsRow").innerHTML = "";
-	document.getElementById("commonFriends").innerHTML = "";
-
 	// unblur image when cancelling a setting
 	document.getElementById("body").addEventListener("click", unblur);
 
@@ -1251,6 +1246,9 @@ function openProfile() {
 
 
 		profileFriendsRef.once("value", function(snapshot) {
+			// reset friends cont before appending
+			document.getElementById("profileModalFriendsRow").innerHTML = "";
+			document.getElementById("commonFriends").innerHTML = "";
 			snapshot.forEach((child) => {
 				profileFriends.push(child.key);
 
@@ -1333,7 +1331,54 @@ function openProfile() {
 				document.getElementById("foreverAlone").style.display = "none";
 			}
 
-			console.log(profileFriends.length);
+			// resets links before appending
+			var socialRow = document.getElementById("connectWithProfileRow").childNodes;
+			for (var i = 0; i < socialRow.length; i++) {
+				if (socialRow[i].tagName === "A") {
+					socialRow[i].style.display = "none";
+				}
+			}
+
+			// display social links
+			var socialMediaRef = firebase.database().ref("accounts/" + profileKey + "/socialMedias");
+			socialMediaRef.once("value", function(snapshot) {
+
+				// check if profile have social media links conneted
+				if (snapshot.val() === null) {
+					document.getElementById("noConnections").style.display = "block";
+				}
+
+				else {
+					document.getElementById("noConnections").style.display = "none";
+				}
+
+				snapshot.forEach((child) => {
+					if (child.key === "facebook") {
+						document.getElementById("profileFacebookModal").href = "https://www." + child.val().URL;
+						document.getElementById("profileFacebookModal").style.display = "block";
+					}
+
+					if (child.key === "github") {
+						document.getElementById("profileGithubModal").href = "https://www." + child.val().URL;
+						document.getElementById("profileGithubModal").style.display = "block";
+					}
+
+					if (child.key === "instagram") {
+						document.getElementById("profileInstagramModal").href = "https://www." + child.val().URL;
+						document.getElementById("profileInstagramModal").style.display = "block";
+					}
+
+					if (child.key === "linkedin") {
+						document.getElementById("profileLinkedinModal").href = "https://www." + child.val().URL;
+						document.getElementById("profileLinkedinModal").style.display = "block";
+					}
+
+					if (child.key === "twitter") {
+						document.getElementById("profileTwitterModal").href = "https://www." + child.val().URL;
+						document.getElementById("profileTwitterModal").style.display = "block";
+					}
+				});
+			});
 
 			// show profile
 			$('#profileModal').modal('show');
