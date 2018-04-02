@@ -1324,8 +1324,7 @@ function openProfile() {
 					}
 				});
 
-
-
+				// push profile friends to array
 				profileFriends.push(child.key);
 
 				// create friend container
@@ -1397,11 +1396,21 @@ function openProfile() {
 
 				// display
 				document.getElementById("profileModalFriendsRow").appendChild(cont);
+
+				// if user is blocked, remove
 				for (var i = 0; i < blockedUsers.length; i++) {
 					if (cont.id.split("-")[1] === blockedUsers[i]) {
 						cont.remove();
 					}
 				}
+
+				// check if profile have blocked users, remove if cont id matches
+				var profileBlockedUsersRef = firebase.database().ref("accounts/" + cont.id.split("-")[1] + "/blocked");
+				profileBlockedUsersRef.once("value", function(snapshot) {
+					if (snapshot.val() != null || snapshot.val() != undefined) {
+						cont.remove();
+					}
+				});
 			});
 
 			// display no friend message if the user have no friends
