@@ -713,26 +713,14 @@ function findFriend() {
 					var bio = document.createElement("p");
 					bio.classList.add("bio");
 					var icons = document.createElement("span");
-
-					// check if profile is friend with account
-					var isFriendRef = firebase.database().ref("accounts/" + uidKey + "/friends/" + keys[i])
-					isFriendRef.once("value", function(snapshot) {
-						console.log(snapshot.val());
-						// only show add friend option if the profile is not accounts friend
-						if (snapshot.val() === null || snapshot.val() === undefined) {
-							icons.classList.add("searchResultsIcons");
-							icons.innerHTML = document.getElementById("masterResult").childNodes[1].innerHTML;
-						}
-
-						else {
-							icons.innerHTML = "You and " + name.innerHTML.split(" ")[0] + " are friends <3";
-						}
-					});
+					icons.classList.add("searchResultsIcons");
+					icons.innerHTML = document.getElementById("masterResult").childNodes[1].innerHTML;
 
 					// append
 					cont.appendChild(name);
 					cont.appendChild(email);
 					cont.appendChild(avatar);
+					cont.appendChild(icons);
 
 					// init open profile event
 					avatar.addEventListener("click", openProfile);
@@ -748,9 +736,6 @@ function findFriend() {
 						bio.innerHTML = "This user has not set a bio";
 						cont.appendChild(bio);
 					}
-
-					// append add & chat icons OR message if friends
-					cont.appendChild(icons);
 
 					// check if profile have blocked users, remove if cont id matches
 					var profileBlockedUsersRef = firebase.database().ref("accounts/" + avatar.id.split("-")[1] + "/blocked");
@@ -808,6 +793,7 @@ function findFriend() {
 }
 
 function sendFriendRequest() {
+	console.log(123);
 	// show snackbar to confirm friend request has been sendt / if a request allready is pening
 	var snackbar = document.getElementById("snackbar")
 	var name = this.parentElement.parentElement.childNodes[0].innerHTML;
@@ -1046,7 +1032,46 @@ function acceptFriendRequest() {
 
 // decline friend request
 function declineFriendRequest() {
-	console.log(123);
+	// hide profile
+	$('#profileModal').modal('hide');
+	// get user key
+	var userKey;
+	var friendCont;
+	if (this.classList.contains("declineFriendRequest")) {
+		userKey = this.parentElement.parentElement.parentElement.id.split("-")[1];
+		friendCont = this.parentElement.parentElement.parentElement;
+	}
+
+	else if (this.classList.contains("declineFriendRequestProfile")) {
+		userKey = profileRequestKey;
+		friendCont = document.getElementById("friendRequest-" + userKey);
+	}
+	// remove friend request
+	var friendRequestRef = firebase.database().ref("accounts/" + uidKey + "/friend_requests/" + userKey);
+	friendRequestRef.remove();
+	friendCont.remove();
+
+	// get current amount and update message
+	var amountOfRequests = parseInt(document.getElementById("friendRequestPlaceholder").innerHTML.split(" ")[2]);
+	if (amountOfRequests - 1 === 1) {
+		document.getElementById("friendRequestPlaceholder").innerHTML = "You have " + (amountOfRequests - 1) + " pending friend request";
+	}
+
+	else {
+		document.getElementById("friendRequestPlaceholder").innerHTML = "You have " + (amountOfRequests - 1) + " pending friend requests";
+	}
+
+	// show notification icon
+ 	if (amountOfRequests - 1 === 0) {
+		document.getElementById("friendRequestNotification").style.display = "none";
+  	}
+
+ 	else {
+  		document.getElementById("friendRequestNotification").style.display = "block";
+  	}
+
+  	// hide add friend profile button
+  	document.getElementsByClassName("pendingFriendRequestChoicesProfile")[0].style.display = "none";
 }
 
 // sign out
@@ -1268,6 +1293,21 @@ function openProfile() {
 	var profileRef = firebase.database().ref("accounts/" + profileKey);
 	profileRef.once("value", function(snapshot) {
 
+		// check if profile is friend with account
+		var isFriendRef = firebase.database().ref("accounts/" + uidKey + "/friends/" + profileKey)
+		isFriendRef.once("value", function(snapshot) {
+			// remove UNFRIEND option if account is not friend with profile
+			if (snapshot.val() != null || snapshot.val() != undefined) {
+				document.getElementById("unfriendUser").style.display = "block";
+				document.getElementById("unfriendDivider").style.display = "block";
+			}
+
+			else {
+				document.getElementById("unfriendUser").style.display = "none";
+				document.getElementById("unfriendDivider").style.display = "none";
+			}
+		});
+
 		// set settings
 		document.getElementById("profileModalSettingsHeading").innerHTML = "Settings for " + snapshot.val().First_Name.capitalizeFirstLetter();
 
@@ -1319,27 +1359,12 @@ function openProfile() {
 		  	});
 		});
 
-
+	  	// get profile friends
 		profileFriendsRef.once("value", function(snapshot) {
 			// reset friends cont before appending
 			document.getElementById("profileModalFriendsRow").innerHTML = "";
 			document.getElementById("commonFriends").innerHTML = "";
 			snapshot.forEach((child) => {
-
-				// check if profile is friend with account
-				var isFriendRef = firebase.database().ref("accounts/" + uidKey + "/friends/" + child.key)
-				isFriendRef.once("value", function(snapshot) {
-					// remove UNFRIEND option if account is not friend with profile
-					if (snapshot.val() === null || snapshot.val() === undefined) {
-						document.getElementById("unfriendUser").style.display = "none";
-						document.getElementById("unfriendDivider").style.display = "none";
-					}
-
-					else {
-						document.getElementById("unfriendUser").style.display = "block";
-						document.getElementById("unfriendDivider").style.display = "block";
-					}
-				});
 
 				// push profile friends to array
 				profileFriends.push(child.key);
