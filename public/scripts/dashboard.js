@@ -175,6 +175,7 @@ function clear() {
 
 /********************************** SOCIAL *****************************************/
 function social() {
+	// clear dashboard container
 	clear();
 
 	// display containers
@@ -1076,10 +1077,20 @@ function signOut() {
 
 /************************************ PROFILE *************************************/
 function profile() {
-	//clear();
-	loadProfileFriends();
-	document.getElementById("overviewTrigger").click();
+	// clear dashboard container
+	clear();
 
+	// clear cont and load account friends
+	document.getElementById("profileFriendsRow").innerHTML = "";
+	loadProfileFriends();
+
+	// hide social
+	document.getElementById("socialMain").style.display = "none";
+	document.getElementById("socialAside").style.display = "none";
+
+	// show profile
+	document.getElementById("mainProfile").style.display = "block";
+	document.getElementById("profileCont").style.display = "block"
 	// new password btn
 	document.getElementById("changeProfilePassword").addEventListener("click", updatePassword);
 
