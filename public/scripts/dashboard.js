@@ -688,106 +688,112 @@ function findFriend() {
   		for (var i = 0; i < arr.length; i++) {
   			// exclude signed in user from search
 			if (keys[i] != uidKey) {
-				// check if user is blocked
-				for (var x = 0; x < blockedUsers.length; x++) {
-					if (keys[i] != blockedUsers[x]) {
-						notBlocked++;
-						// check for matches
-						console.log(arr[i]);
-						if (search.value.toLowerCase() === arr[i].Email || arr[i].First_Name.toLowerCase() + " " + arr[i].Last_Name.toLowerCase() === search.value.toLowerCase()) {
-							foundCount++;
+				notBlocked++;
+				// check for matches
+				console.log(arr[i]);
+				if (search.value.toLowerCase() === arr[i].Email || arr[i].First_Name.toLowerCase() + " " + arr[i].Last_Name.toLowerCase() === search.value.toLowerCase()) {
+					foundCount++;
 
-							// show success message
-							document.getElementById("searchNewFriendError").style.display = "none";
-							document.getElementById("searchNewFriendSuccess").style.display = "block";
-							document.getElementById("searchNewFriendSuccess").innerHTML = "We succesfully found <strong>" + foundCount + "</strong> accounts connected to your search!"; 
+					// add scrollbar to container if needed
+					document.getElementById("socialMain").style.overflowY = "scroll";
 
-							// add scrollbar to container if needed
-							document.getElementById("socialMain").style.overflowY = "scroll";
+					// create elements
+					var cont = document.createElement("div");
+					cont.id = keys[i];
+					cont.classList.add("col") + cont.classList.add("col-lg-5") + cont.classList.add("text-center") + cont.classList.add("animated");
+					var name = document.createElement("h5");
+					name.innerHTML = arr[i].First_Name.capitalizeFirstLetter() + " " + arr[i].Last_Name.capitalizeFirstLetter();
+					var email = document.createElement("p");
+					email.innerHTML = arr[i].Email.toLowerCase();
+					var avatar = document.createElement("img");
+					avatar.classList.add("searchResultsAvatar");
+					avatar.src = arr[i].Avatar_url;
+					avatar.id = "profile-" + keys[i];
+					var bio = document.createElement("p");
+					bio.classList.add("bio");
+					var icons = document.createElement("span");
 
-							// create elements
-							var cont = document.createElement("div");
-							cont.id = keys[i];
-							cont.classList.add("col") + cont.classList.add("col-lg-5") + cont.classList.add("text-center") + cont.classList.add("animated");
-							var name = document.createElement("h5");
-							name.innerHTML = arr[i].First_Name.capitalizeFirstLetter() + " " + arr[i].Last_Name.capitalizeFirstLetter();
-							var email = document.createElement("p");
-							email.innerHTML = arr[i].Email.toLowerCase();
-							var avatar = document.createElement("img");
-							avatar.classList.add("searchResultsAvatar");
-							avatar.src = arr[i].Avatar_url;
-							avatar.id = "profile-" + keys[i];
-							var bio = document.createElement("p");
-							bio.classList.add("bio");
-							var icons = document.createElement("span");
-
-							// check if profile is friend with account
-							var isFriendRef = firebase.database().ref("accounts/" + uidKey + "/friends/" + keys[i])
-							isFriendRef.once("value", function(snapshot) {
-								console.log(snapshot.val());
-								// only show add friend option if the profile is not accounts friend
-								if (snapshot.val() === null || snapshot.val() === undefined) {
-									icons.classList.add("searchResultsIcons");
-									icons.innerHTML = document.getElementById("masterResult").childNodes[1].innerHTML;
-								}
-
-								else {
-									icons.innerHTML = "You and " + name.innerHTML.split(" ")[0] + " are friends <3";
-								}
-							});
-
-							// append
-							cont.appendChild(name);
-							cont.appendChild(email);
-							cont.appendChild(avatar);
-
-							// init open profile event
-							avatar.addEventListener("click", openProfile);
-
-							// check if user got a bio set
-							if (arr[i].Bio != undefined) {
-								bio.innerHTML = arr[i].Bio;
-								cont.appendChild(bio);
-							}
-
-							// if not set default text
-							else {
-								bio.innerHTML = "This user has not set a bio";
-								cont.appendChild(bio);
-							}
-
-							// append add & chat icons OR message if friends
-							cont.appendChild(icons);
-
-							// display results
-							cont.classList.add("fadeInUp");
-							document.getElementById("searchResults").appendChild(cont);
-							$('#socialMain').animate({
-							    scrollTop: $("#searchResults").offset().top,
-							}, 1500);
+					// check if profile is friend with account
+					var isFriendRef = firebase.database().ref("accounts/" + uidKey + "/friends/" + keys[i])
+					isFriendRef.once("value", function(snapshot) {
+						console.log(snapshot.val());
+						// only show add friend option if the profile is not accounts friend
+						if (snapshot.val() === null || snapshot.val() === undefined) {
+							icons.classList.add("searchResultsIcons");
+							icons.innerHTML = document.getElementById("masterResult").childNodes[1].innerHTML;
 						}
 
-						// if no matches were found, display error message
 						else {
-							notFoundCount++;
-							console.log(notFoundCount);
-							console.log(notBlocked);
-							if (notFoundCount === arr.length - 2) {
-								// show error message
-								document.getElementById("searchNewFriendSuccess").style.display = "none";
-								document.getElementById("searchNewFriendError").classList.add("bounceIn");
-								document.getElementById("searchNewFriendError").innerHTML = "We could not find any registered account connected to <strong>" + search.value.toUpperCase() + "</strong>.";
-								document.getElementById("searchNewFriendError").style.display = "block";
-								setTimeout(function() {
-									document.getElementById("searchNewFriendError").classList.remove("bounceIn");
-								}, 1000);
-								return;
-							}
+							icons.innerHTML = "You and " + name.innerHTML.split(" ")[0] + " are friends <3";
 						}
+					});
+
+					// append
+					cont.appendChild(name);
+					cont.appendChild(email);
+					cont.appendChild(avatar);
+
+					// init open profile event
+					avatar.addEventListener("click", openProfile);
+
+					// check if user got a bio set
+					if (arr[i].Bio != undefined) {
+						bio.innerHTML = arr[i].Bio;
+						cont.appendChild(bio);
+					}
+
+					// if not set default text
+					else {
+						bio.innerHTML = "This user has not set a bio";
+						cont.appendChild(bio);
+					}
+
+					// append add & chat icons OR message if friends
+					cont.appendChild(icons);
+
+					// check if profile have blocked users, remove if cont id matches
+					var profileBlockedUsersRef = firebase.database().ref("accounts/" + avatar.id.split("-")[1] + "/blocked");
+					profileBlockedUsersRef.once("value", function(snapshot) {
+						if (snapshot.val() != null || snapshot.val() != undefined) {
+							cont.remove();
+							// subtract from count
+							foundCount--;
+						}
+
+						// show success message
+						document.getElementById("searchNewFriendError").style.display = "none";
+						document.getElementById("searchNewFriendSuccess").style.display = "block";
+						document.getElementById("searchNewFriendSuccess").innerHTML = "We succesfully found <strong>" + foundCount + "</strong> accounts connected to your search!"; 
+					});
+
+					// display results
+					cont.classList.add("fadeInUp");
+					document.getElementById("searchResults").appendChild(cont);
+
+					// scroll animation to results
+					$('#socialMain').animate({
+					    scrollTop: $("#searchResults").offset().top,
+					}, 1500);
+				}
+
+				// if no matches were found, display error message
+				else {
+					notFoundCount++;
+					if (notFoundCount === arr.length - 1) {
+						// show error message
+						document.getElementById("searchNewFriendSuccess").style.display = "none";
+						document.getElementById("searchNewFriendError").classList.add("bounceIn");
+						document.getElementById("searchNewFriendError").innerHTML = "We could not find any registered account connected to <strong>" + search.value.toUpperCase() + "</strong>.";
+						document.getElementById("searchNewFriendError").style.display = "block";
+						setTimeout(function() {
+							document.getElementById("searchNewFriendError").classList.remove("bounceIn");
+						}, 1000);
+						return;
 					}
 				}
 			}
   		}
+
   		// init friend request trigger
 		var sendFriendRequestTrigger = document.getElementsByClassName("sendFriendRequest");
 		for (var i = 0; i < sendFriendRequestTrigger.length; i++) {
