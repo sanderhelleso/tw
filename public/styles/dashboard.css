@@ -718,6 +718,7 @@
 #mainProfile {
 	max-height: 80vh;
 	overflow: auto;
+	overflow-x: hidden;
 }
 
 #profileImg {
@@ -1104,6 +1105,21 @@ li .active {
 }
 
 /*********************************** END SETTINGS ************************************/
+
+#noFriendsRow h5, #noFriendsRow p {
+	margin-left: 2%;
+	color: #9e9e9e;
+}
+
+#noFriendsRow h5 {
+	font-size: 18px;
+}
+
+#noFriendsRow p {
+	font-size: 14px;
+	color: #9e9e9e;
+}
+
 
 .friendsAvatar {
 	width: 75px;
