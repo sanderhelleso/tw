@@ -40,10 +40,6 @@ function start() {
 	$('#notificationMenu').bind('click', function (e) { e.stopPropagation() });
 	$('#profileModalSettingsMenu').bind('click', function (e) { e.stopPropagation() });
 
-	// set width of fixed friendlist heading
-	var width = document.getElementsByClassName("friendsList")[0].offsetWidth;
-	document.getElementById("friendsListHeadingCont").style.width = width + "px";
-
 	// load user
 	firebase.auth().onAuthStateChanged(function(user) {
 		if (user) {
@@ -411,9 +407,14 @@ function loadFriends() {
 			cont.appendChild(nameCont);
 			cont.appendChild(email);
 			cont.appendChild(options);
+			options.childNodes[2].addEventListener("click", openChat);
 			document.getElementById("friendsListCont").appendChild(cont);
-			cont.addEventListener("click", openProfile);
+
+			//cont.addEventListener("click", openProfile);
 		});
+		// set width of fixed friendlist heading
+		var width = document.getElementsByClassName("friendsList")[0].offsetWidth;
+		document.getElementById("friendsListHeadingCont").style.width = width + "px";
 	});
 }
 
@@ -586,6 +587,14 @@ function availabilityMode() {
 	}
 	loadSocial = true;
 	availabilityModeCheck = false;
+}
+
+// open a chat with selected user
+function openChat() {
+	clear();
+	document.getElementById("socialiconCont").style.display = "none";
+	document.getElementById("chatCont").style.display = "block";
+	document.getElementById("socialTrigger").click();
 }
 
 // not in use for the moment

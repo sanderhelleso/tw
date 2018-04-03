@@ -439,6 +439,10 @@
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19);
 }
 
+#masterList {
+	height: 0px;
+}
+
 .friendName {
 	font-size: 16px;
 }
@@ -714,6 +718,34 @@
 
   	-webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
     animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+#chatCont {
+	display: none;
+	min-height: 80vh;
+}
+
+#chatCont #chat {
+	height: 60vh;
+	border-radius: 6px;
+	border: 1px solid #9e9e9e;
+	margin-top: 5vh;
+}
+
+#chatCont h5 {
+	margin-left: 4%;
+	margin-top: 7.5vh;
+	color: #9e9e9e;
+	font-weight: 100;
+	margin-bottom: 2.5vh;
+}
+
+#chatCont #chatAvatar {
+	padding: 0;
+	min-height: 75px;
+	min-width: 75px;
+	border-radius: 50%;
+	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19);
 }
 
 /*********************************** PROFILE *******************************************/
