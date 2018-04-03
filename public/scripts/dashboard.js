@@ -1257,6 +1257,16 @@ function loadProfileFriends() {
 function loadBlockedUsers() {
 	var blockedRef = firebase.database().ref("accounts/" + uidKey + "/blocked");
 	blockedRef.once("value", function(snapshot) {
+		// check for users
+		if (snapshot.val() === null || snapshot.val() === undefined) {
+			document.getElementById("blockedUsersRow").style.display = "none";
+		}
+
+		else {
+			document.getElementById("blockedUsersRow").style.display = "block";
+		}
+
+		// get users
 		snapshot.forEach((child) => {
 			var blockedUserRef = firebase.database().ref("accounts/" + child.key);
 			blockedUserRef.once("value", function(snapshot) {
@@ -1308,8 +1318,18 @@ function loadBlockedUsers() {
 	document.getElementById("toggleBlockedUsers").addEventListener("click", displayBlocked);
 }
 
+// unblocks the user
 function unblock() {
-	console.log(123);
+	// get key and remove
+	var key = this.parentElement.id.split("-")[1];
+	var blockedRef = firebase.database().ref("accounts/" + uidKey + "/blocked/" + key);
+	blockedRef.remove();
+	this.parentElement.remove();
+
+	// show message
+	snackbar.innerHTML = "User unblocked! You can now interact with the user again.";
+	snackbar.className = "show";
+	setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
 }
 
 // toggle blocked users
@@ -1860,9 +1880,9 @@ function confirmBlock() {
 	document.getElementById("cancelBlock").click();
 
 	// display message
-	snackbar.innerHTML = "Thank you for blocking this user! The user will no longer be able to see or interact with this user.";
+	snackbar.innerHTML = "The user have now been blocked! They will no longer be able to see or interact with this you.";
 	snackbar.className = "show";
-	setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 5000);
+	setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
 
 	// close modal
 	$('#profileModal').modal('hide');
