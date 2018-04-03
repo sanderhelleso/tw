@@ -105,7 +105,9 @@ function start() {
 				loadFriends();
 
 				// load overview on profile load
-				document.getElementById("overviewTrigger").click();
+				//document.getElementById("overviewTrigger").click();
+
+				openChat();
 				
 				// file upload on avatar click
 				$('#profileImg').click(function(){ $('#avatarUpload').trigger('click'); });
@@ -591,10 +593,19 @@ function availabilityMode() {
 
 // open a chat with selected user
 function openChat() {
+	// clear and display chat
 	clear();
 	document.getElementById("socialiconCont").style.display = "none";
 	document.getElementById("chatCont").style.display = "block";
 	document.getElementById("socialTrigger").click();
+
+	var key = this.parentElement.parentElement.id.split("-")[1];
+	var chatRef = firebase.database().ref("accounts/" + key);
+	chatRef.once("value", function(snapshot) {
+		// set data about user in chat
+		document.getElementById("chattingWith").innerHTML = "Now chatting with " + snapshot.val().First_Name.capitalizeFirstLetter();
+		document.getElementById("chatAvatar").src = snapshot.val().Avatar_url;
+	});
 }
 
 // not in use for the moment
