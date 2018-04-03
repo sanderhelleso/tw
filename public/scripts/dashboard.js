@@ -1105,9 +1105,10 @@ function profile() {
 	// clear dashboard container
 	clear();
 
-	// clear cont and load account friends
+	// clear cont and load account friends and blocked users
 	document.getElementById("profileFriendsRow").innerHTML = "";
 	loadProfileFriends();
+	loadBlockedUsers();
 
 	// hide social
 	document.getElementById("socialMain").style.display = "none";
@@ -1196,6 +1197,15 @@ function profile() {
 function loadProfileFriends() {
 	var friendsRef = firebase.database().ref("accounts/" + uidKey + "/friends");
 	friendsRef.once("value", function(snapshot) {
+		console.log(snapshot.val());
+		// if no friends are present, display container
+		if (snapshot.val() === null || snapshot.val() === undefined) {
+			document.getElementById("noFriendsRow").style.display = "block";
+		}
+
+		else {
+			document.getElementById("noFriendsRow").style.display = "none";
+		}
 		snapshot.forEach((child) => {
 			
 			// create friend container
@@ -1241,6 +1251,90 @@ function loadProfileFriends() {
 			document.getElementById("profileFriendsRow").appendChild(cont);
   		});
 	});
+}
+
+// load all blocked user
+function loadBlockedUsers() {
+	var blockedRef = firebase.database().ref("accounts/" + uidKey + "/blocked");
+	blockedRef.once("value", function(snapshot) {
+		snapshot.forEach((child) => {
+			var blockedUserRef = firebase.database().ref("accounts/" + child.key);
+			blockedUserRef.once("value", function(snapshot) {
+				var cont = document.createElement("div");
+				cont.id = "blokced-" + child.key;
+				cont.classList.add("col") + cont.classList.add("col-lg-5") + cont.classList.add("profileBlockedCont") + cont.classList.add("fadeIn") + cont.classList.add("fadeIn") + cont.classList.add("blocked-" + child.key);
+
+				// create avatar img
+				var userImg = document.createElement("img");
+				userImg.classList.add("blockedAvatar");
+
+				// unblur pic on click
+				userImg.addEventListener("click", unblurBlocked);
+
+				// set img src to be avatar url
+				userImgRef = firebase.database().ref("accounts/" + child.key);
+				userImgRef.once("value", function(snapshot) {
+					if (snapshot.val().Avatar_url != undefined) {
+						userImg.src = snapshot.val().Avatar_url;
+					}
+
+					else {
+						userImg.src = "/img/avatar.png";
+					}
+				});
+
+				// create user name
+				var userName = document.createElement("h5");
+				userName.classList.add("blockedName");
+				userName.innerHTML = snapshot.val().First_Name.capitalizeFirstLetter() + " " + snapshot.val().Last_Name.capitalizeFirstLetter();
+
+				// unblock btn
+				var unblockTrigger =  document.createElement("p");
+				unblockTrigger.classList.add("unblockUser") + unblockTrigger.classList.add("text-center");
+				unblockTrigger.innerHTML = "Unblock";
+				unblockTrigger.addEventListener("click", unblock);
+
+				// append to cont
+				cont.appendChild(userImg);
+				cont.appendChild(userName);
+				cont.appendChild(unblockTrigger);
+
+				// display
+				document.getElementById("blockedUsersRow").appendChild(cont);
+			});
+		});
+	});
+	// init display blocked users
+	document.getElementById("toggleBlockedUsers").addEventListener("click", displayBlocked);
+}
+
+function unblock() {
+	console.log(123);
+}
+
+// toggle blocked users
+var blockedCheck = false;
+function displayBlocked() {
+	// get profiles
+	var blocked = document.getElementsByClassName("profileBlockedCont");
+
+	// show
+	if (blockedCheck === false) {
+		blockedCheck = true;
+		this.innerHTML = "Hide";
+		for (var i = 0; i < blocked.length; i++) {
+			blocked[i].style.display = "block";
+		}
+	}
+
+	// hide
+	else {
+		blockedCheck = false;
+		this.innerHTML = "Show";
+		for (var i = 0; i < blocked.length; i++) {
+			blocked[i].style.display = "none";
+		}
+	}
 }
 
 var settingsKey;
@@ -1548,6 +1642,17 @@ function unblur() {
 	document.getElementById("profileModalAvatar").style.filter = "none";
 	cancelUnfriend();
 	cancelReport();
+	cancelBlock();
+}
+
+function unblurBlocked() {
+	if (this.style.filter === "none") {
+		this.style.filter = "blur(2px)";
+	}
+
+	else {
+		this.style.filter = "none";
+	}
 }
 
 // unfriend selected user
