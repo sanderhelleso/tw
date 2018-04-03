@@ -431,6 +431,14 @@
 	word-wrap: break-word;
 }
 
+.chatAvatar {
+	vertical-align: middle;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19);
+}
+
 .friendName {
 	font-size: 16px;
 }
@@ -649,6 +657,7 @@
     border-radius: 50%;
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19);
     transition: all 0.3s;
+    background-color: white;
 }
 
 .searchResultsAvatar:hover {

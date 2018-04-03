@@ -229,16 +229,17 @@ function loadFriendRequests() {
 
 			// create container
 			var cont = document.createElement("div");
-			cont.id = "friendRequest-" + child.key;
 			cont.classList.add("pendingFriendRequest") + cont.classList.add("animated") + cont.classList.add("fadeIn");
-			cont.addEventListener("click", openProfile);
+			cont.id = "friendRequestCont-" + userKey;
 
 			// create avatar and heading
 			var headingCont = document.createElement("div");
 			var avatar = document.createElement("img");
+			avatar.id = "friendRequest-" + child.key;
 			avatar.classList.add("pendingFriendRequestAvatar");
+			avatar.addEventListener("click", openProfile)
 
-			// send avatar img
+			// avatar img
 			var requestRef = firebase.database().ref("accounts/" + child.key)
 			requestRef.once("value", function(snapshot) {
 				if (snapshot.val().Avatar_url != undefined) {
@@ -386,6 +387,7 @@ function loadFriends() {
 			// create elements
 			var cont = document.createElement("a");
 			cont.href = "#";
+			cont.id = "chat-" + child.key;
 			cont.classList.add("list-group-item") + cont.classList.add("list-group-item-action") + cont.classList.add("flex-column") + cont.classList.add("align-items-start") + cont.classList.add("friendsList");
 			var nameCont = document.createElement("div");
 			nameCont.classList.add("d-flex") + nameCont.classList.add("w-100") + nameCont.classList.add("justify-content-between");
@@ -410,6 +412,7 @@ function loadFriends() {
 			cont.appendChild(email);
 			cont.appendChild(options);
 			document.getElementById("friendsListCont").appendChild(cont);
+			cont.addEventListener("click", openProfile);
 		});
 	});
 }
@@ -893,7 +896,7 @@ function acceptFriendRequest() {
 
 	else if (this.classList.contains("acceptFriendRequestProfile")) {
 		userKey = profileRequestKey;
-		friendCont = document.getElementById("friendRequest-" + userKey);
+		friendCont = document.getElementById("friendRequestCont-" + userKey);
 	}
 
 	var friendRef = firebase.database().ref("accounts/" + uidKey + "/friends/" + userKey);
