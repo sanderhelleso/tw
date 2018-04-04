@@ -820,6 +820,7 @@
 	padding: 1.5%;
 	padding-left: 3%;
 	padding-right: 3%;
+	margin-right: 5%;
 	font-size: 14px;
 	border-radius: 20px;
 	color: white;
@@ -833,6 +834,7 @@
 	padding: 1.5%;
 	padding-left: 3%;
 	padding-right: 3%;
+	margin-left: 5%;
 	font-size: 14px;
 	border-radius: 20px;
 	color: black;
@@ -840,6 +842,26 @@
 	float: left;
 	display: block;
 	clear: both;
+}
+
+.accountTime {
+	font-size: 10px;
+	color: #9e9e9e;
+	float: right;
+	display: block;
+	clear: both;
+	margin-bottom: 2px;
+	margin-right: 7.5%;
+}
+
+.profileTime {
+	font-size: 10px;
+	color: #9e9e9e;
+	float: left;
+	display: block;
+	clear: both;
+	margin-bottom: 2px;
+	margin-left: 7.5%;
 }
 
 .chatRowAccount {

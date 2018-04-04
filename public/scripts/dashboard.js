@@ -207,6 +207,7 @@ function social() {
 function loadFriendRequests() {
 	// count to controll flow of divider
 	var count = 0;
+	var userKey;
 
 	// request ref
 	var friendRequestRef = firebase.database().ref("accounts/" + uidKey + "/friend_requests");
@@ -214,6 +215,7 @@ function loadFriendRequests() {
 		// create requests for each value
 		snapshot.forEach((child) => {
 			count++;
+			userKey = child.key;
 
 			// only create divider if there are more than one request
 			if (count > 1) {
@@ -593,13 +595,10 @@ function availabilityMode() {
 function openChat() {
 	// clear and display chat
 	clear();
+	document.getElementById("chatMain").innerHTML = "";
 	document.getElementById("socialiconCont").style.display = "none";
 	document.getElementById("chatCont").style.display = "block";
 	document.getElementById("socialTrigger").click();
-
-	// scroll to bottom
-	var chatContScroll = document.getElementById("mainChatCont");
-	chatContScroll.scrollTop = chatContScroll.scrollHeight;
 
 	// variables for name and time
 	var nameAccount;
@@ -633,19 +632,58 @@ function openChat() {
 		var minute = '0' + minute;
 	}
 
-	timestamp = hour + ' ' + minute;  
+	timestamp = hour + ' ' + minute; 
+
+	var chatMessages = [];
 
 	// load chats
 	var offset;
 	var accountChatRef = firebase.database().ref("accounts/" + uidKey + "/chat/" + key);
 	var profileChatRef = firebase.database().ref("accounts/" + key + "/chat/" + uidKey);
 	accountChatRef.once("value", function(snapshot) {
-		console.log(snapshot.val());
-		offset = snapshot.val();
+		snapshot.forEach((child) => {
+			console.log(child.val());
+			var div = document.createElement("div");
+			div.classList.add("chatRowMessage");
+			var time = document.createElement("span");
+			time.classList.add("accountTime");
+			time.innerHTML = child.val().time;
+			var message = document.createElement("p");
+			message.classList.add("accountMessage");
+			message.innerHTML = child.val().message;
+
+			div.appendChild(time);
+			div.appendChild(message)
+			
+			document.getElementById("chatMain").appendChild(div);
+			chatMessages.push(child.val());
+			// scroll to bottom
+			var chatContScroll = document.getElementById("mainChatCont");
+			chatContScroll.scrollTop = chatContScroll.scrollHeight;
+		});
 	});
 
 	profileChatRef.once("value", function(snapshot) {
-		console.log(snapshot.val());
+		snapshot.forEach((child) => {
+			console.log(child.val());
+			var div = document.createElement("div");
+			div.classList.add("chatRowMessage");
+			var time = document.createElement("span");
+			time.classList.add("profileTime");
+			time.innerHTML = child.val().time;
+			var message = document.createElement("p");
+			message.classList.add("profileMessage");
+			message.innerHTML = child.val().message;
+
+			div.appendChild(time);
+			div.appendChild(message)
+			
+			document.getElementById("chatMain").appendChild(div);
+			chatMessages.push(child.val());
+			// scroll to bottom
+			var chatContScroll = document.getElementById("mainChatCont");
+			chatContScroll.scrollTop = chatContScroll.scrollHeight;
+		});
 	});
 
 	// init send message
