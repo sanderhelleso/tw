@@ -597,13 +597,69 @@ function openChat() {
 	document.getElementById("chatCont").style.display = "block";
 	document.getElementById("socialTrigger").click();
 
+	// variables for name and time
+	var nameAccount;
+	var nameProfile;
+	var timestamp;
+
+	accountRef.once("value", function(snapshot) {
+		nameAccount = snapshot.val().First_Name.capitalizeFirstLetter();
+	});
+
 	var key = this.parentElement.parentElement.id.split("-")[1];
 	var chatRef = firebase.database().ref("accounts/" + key);
 	chatRef.once("value", function(snapshot) {
+		nameProfile = snapshot.val().First_Name.capitalizeFirstLetter();
 		// set data about user in chat
 		document.getElementById("chattingWith").innerHTML = "Now chatting with " + snapshot.val().First_Name.capitalizeFirstLetter();
 		document.getElementById("chatAvatar").src = snapshot.val().Avatar_url;
 	});
+
+	// get timestamp
+	var now = new Date(); 
+	var hour = now.getHours();
+ 	var minute = now.getMinutes();
+
+	// add zeros if needed 
+	if (hour.toString().length == 1) {
+		var hour = '0' + hour;
+	}
+
+	if (minute.toString().length == 1) {
+		var minute = '0' + minute;
+	}
+
+	timestamp = hour + ' ' + minute;  
+
+	// load chats
+	var offset;
+	var accountChatRef = firebase.database().ref("accounts/" + uidKey + "/chat/" + key);
+	var profileChatRef = firebase.database().ref("accounts/" + key + "/chat/" + uidKey);
+	accountChatRef.once("value", function(snapshot) {
+		console.log(snapshot.val());
+		offset = snapshot.val();
+	});
+
+	profileChatRef.once("value", function(snapshot) {
+		console.log(snapshot.val());
+	});
+
+	// init send message
+	document.getElementById("sendChatMessage").addEventListener("click", sendChatMessage);
+
+	// send message
+	function sendChatMessage() {
+		// message
+		var chatMessage = document.getElementById("writeChatMessage");
+		var sendMessageRef = firebase.database().ref("accounts/" + uidKey + "/chat/" + key + "/" + new Date().getTime());
+		sendMessageRef.update({
+			name: nameAccount,
+			message: chatMessage.value,
+			time: timestamp,
+			timestamp: firebase.database.ServerValue.TIMESTAMP
+		});
+		chatMessage.value = "";
+	}
 }
 
 // not in use for the moment

@@ -726,12 +726,14 @@
 }
 
 #chatCont #chat {
-	height: 62.5vh;
+	min-height: 62.5vh;
+	max-height: 62.5vh;
 	margin-top: 5vh;
 	padding: 0;
 	position: relative;
 	border: 1px solid #e0e0e0;
 	background-color: white;
+	overflow-y: auto;
 }
 
 #chatCont h5 {
@@ -798,6 +800,33 @@
 	color: #8c9eff;
 	margin-top: 5px;
 	font-size: 16px;
+}
+
+#sendChatMessage:hover {
+	cursor: pointer;
+}
+
+#chatMain {
+	margin-left: 5%;
+	margin-right: 5%;
+}
+
+.accountMessage {
+	padding: 1.5%;
+	font-size: 14px;
+	border-radius: 20px;
+	color: white;
+	background-color: #8c9eff;
+	float: right;
+}
+
+.profileMessage {
+	padding: 1.5%;
+	font-size: 14px;
+	border-radius: 20px;
+	color: black;
+	background-color: #eeeeee;
+	float: left;
 }
 
 /*********************************** PROFILE *******************************************/
