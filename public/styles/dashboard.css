@@ -779,6 +779,7 @@
 	border-radius: 6px;
 	font-size: 12px;
 	margin-right: 0;
+	border: 1px solid #8c9eff;
 }
 
 #chatOptions {
@@ -900,6 +901,10 @@
 .themeColors:hover {
 	cursor: pointer;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+#colorDiv {
+	padding-bottom: 5vh;
 }
 
 /*********************************** PROFILE *******************************************/

@@ -594,8 +594,9 @@ function availabilityMode() {
 // open a chat with selected user
 var accTime;
 var profTime;
-var profileChatRefTest;
+var chatListenRef;
 var listenChat = false;
+var themeColor;
 function openChat() {
 	// clear and display chat
 	clear();
@@ -644,7 +645,27 @@ function openChat() {
 	var offset;
 	var accountChatRef = firebase.database().ref("accounts/" + uidKey + "/chat/" + key);
 	var profileChatRef = firebase.database().ref("accounts/" + key + "/chat/" + uidKey);
-	profileChatRefTest = firebase.database().ref("accounts/" + key + "/chat/" + uidKey);
+	chatListenRef = firebase.database().ref("accounts/" + key + "/chat/" + uidKey);
+
+	// get color theme
+	var colorRef = firebase.database().ref("accounts/" + uidKey + "/chat/theme");
+	colorRef.once("value", function(snapshot) {
+		themeColor = snapshot.val().color;
+
+		// set border color input 
+		document.getElementById("writeChatMessage").style.border = "1px solid " + themeColor;
+
+		// set color for icons
+		var options = document.getElementById("chatOptions").childNodes;
+		for (var i = 0; i < options.length; i++) {
+			if (options[i].tagName === "SPAN") {
+				options[i].childNodes[0].style.stroke = themeColor;
+			}
+		}
+
+		// set color send button
+		document.getElementById("sendChatMessage").style.color = themeColor;
+	});
 
 	// get acc messages
 	accountChatRef.once("value", function(snapshot) {
@@ -677,6 +698,7 @@ function openChat() {
 				}
 
 				var message = document.createElement("p");
+				message.style.backgroundColor = themeColor;
 				message.classList.add("accountMessage");
 				message.innerHTML = chatMessages[i].message;
 
@@ -744,6 +766,7 @@ function openChat() {
 		time.classList.add("accountTime");
 		time.innerHTML = timestamp;
 		var message = document.createElement("p");
+		message.style.backgroundColor = themeColor;
 		message.classList.add("accountMessage");
 		message.innerHTML = chatMessage.value;
 
@@ -756,6 +779,10 @@ function openChat() {
 		// scroll to bottom
 		var chatContScroll = document.getElementById("mainChatCont");
 		chatContScroll.scrollTop = chatContScroll.scrollHeight;
+
+		// play sound
+		var audio = new Audio("/audio/send.mp3");
+		audio.play();
 	}
 
 	// start to listen for changes
@@ -767,7 +794,7 @@ function openChat() {
 
 // listen for changes in chat, update in realtime
 function startListening() {
-	profileChatRefTest.on('child_added', function(snapshot) {
+	chatListenRef.on('child_added', function(snapshot) {
 		var div = document.createElement("div");
 		div.classList.add("chatRowMessage") + div.classList.add("animated") + div.classList.add("fadeInUp");
 		var time = document.createElement("span");
@@ -786,12 +813,19 @@ function startListening() {
 		// scroll to bottom
 		var chatContScroll = document.getElementById("mainChatCont");
 		chatContScroll.scrollTop = chatContScroll.scrollHeight;
+
+		// play sound
+		var audio = new Audio("/audio/received.mp3");
+		audio.play();
     });
 }
 
 function changeTheme() {
 	// open theme modal
 	$('#themeModal').modal('show');
+
+	// reset
+	document.getElementById("colorDiv").innerHTML = "";
 
 	// array with materialize colors
 	var colors = {
@@ -1109,12 +1143,21 @@ function changeTheme() {
 function setTheme() {
 	// get selected color
 	var color = this.style.backgroundColor;
+	themeColor = this.style.backgroundColor;
+
+	var colorRef = firebase.database().ref("accounts/" + uidKey + "/chat/theme");
+	colorRef.update({
+		color: color
+	});
 
 	// set color for every message
 	var messages = document.getElementsByClassName("accountMessage");
 	for (var i = 0; i < messages.length; i++) {
 		messages[i].style.backgroundColor = color;
 	}
+
+	// set border color input 
+	document.getElementById("writeChatMessage").style.border = "1px solid " + color;
 
 	// set color for icons
 	var options = document.getElementById("chatOptions").childNodes;
