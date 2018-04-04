@@ -814,6 +814,7 @@
 #chatMain {
 	margin-left: 5%;
 	margin-right: 5%;
+	overflow-x: hidden;
 }
 
 .accountMessage {
@@ -828,6 +829,8 @@
 	float: right;
 	display: block;
 	clear: both;
+	max-width: 80%;
+	word-break: break-all;
 }
 
 .profileMessage {
@@ -842,6 +845,8 @@
 	float: left;
 	display: block;
 	clear: both;
+	max-width: 80%;
+	word-break: break-all;
 }
 
 .accountTime {
@@ -852,6 +857,7 @@
 	clear: both;
 	margin-bottom: 2px;
 	margin-right: 7.5%;
+	margin-top: 10px;
 }
 
 .profileTime {
@@ -862,6 +868,7 @@
 	clear: both;
 	margin-bottom: 2px;
 	margin-left: 7.5%;
+	margin-top: 10px;
 }
 
 .chatRowAccount {

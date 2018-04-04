@@ -592,6 +592,10 @@ function availabilityMode() {
 }
 
 // open a chat with selected user
+var accTime;
+var profTime;
+var profileChatRefTest;
+var listenChat = false;
 function openChat() {
 	// clear and display chat
 	clear();
@@ -640,6 +644,7 @@ function openChat() {
 	var offset;
 	var accountChatRef = firebase.database().ref("accounts/" + uidKey + "/chat/" + key);
 	var profileChatRef = firebase.database().ref("accounts/" + key + "/chat/" + uidKey);
+	profileChatRefTest = firebase.database().ref("accounts/" + key + "/chat/" + uidKey);
 
 	// get acc messages
 	accountChatRef.once("value", function(snapshot) {
@@ -659,10 +664,18 @@ function openChat() {
 		for (var i = 0; i < chatMessages.length; i++) {
 			if (chatMessages[i].uid === uidKey) {
 				var div = document.createElement("div");
-				div.classList.add("chatRowMessage");
+				div.classList.add("chatRowMessage") + div.classList.add("animated") + div.classList.add("fadeInUp");
 				var time = document.createElement("span");
 				time.classList.add("accountTime");
 				time.innerHTML = chatMessages[i].time;
+				if (accTime === time.innerHTML) {
+					time.style.display = "none";
+				}
+
+				else {
+					accTime = time.innerHTML;
+				}
+
 				var message = document.createElement("p");
 				message.classList.add("accountMessage");
 				message.innerHTML = chatMessages[i].message;
@@ -675,10 +688,20 @@ function openChat() {
 
 			else {
 				var div = document.createElement("div");
-				div.classList.add("chatRowMessage");
+				div.classList.add("chatRowMessage") + div.classList.add("animated") + div.classList.add("fadeInUp");
 				var time = document.createElement("span");
 				time.classList.add("profileTime");
 				time.innerHTML = chatMessages[i].time;
+
+				if (profTime === time.innerHTML) {
+					time.style.display = "none";
+				}
+
+				else {
+					profTime = time.innerHTML;
+				}
+				
+
 				var message = document.createElement("p");
 				message.classList.add("profileMessage");
 				message.innerHTML = chatMessages[i].message;
@@ -699,8 +722,13 @@ function openChat() {
 
 	// send message
 	function sendChatMessage() {
-		// message
+		// do check
 		var chatMessage = document.getElementById("writeChatMessage");
+		if (chatMessage.value === "") {
+			return;
+		}
+
+		// message
 		var sendMessageRef = firebase.database().ref("accounts/" + uidKey + "/chat/" + key + "/" + new Date().getTime());
 		sendMessageRef.update({
 			name: nameAccount,
@@ -709,12 +737,63 @@ function openChat() {
 			timestamp: firebase.database.ServerValue.TIMESTAMP,
 			uid: uidKey
 		});
+
+		var div = document.createElement("div");
+		div.classList.add("chatRowMessage") + div.classList.add("animated") + div.classList.add("fadeInUp");
+		var time = document.createElement("span");
+		time.classList.add("accountTime");
+		time.innerHTML = timestamp;
+		var message = document.createElement("p");
+		message.classList.add("accountMessage");
+		message.innerHTML = chatMessage.value;
+
+		div.appendChild(time);
+		div.appendChild(message)
+				
+		document.getElementById("chatMain").appendChild(div);
 		// reset message input
 		chatMessage.value = "";
 		// scroll to bottom
 		var chatContScroll = document.getElementById("mainChatCont");
 		chatContScroll.scrollTop = chatContScroll.scrollHeight;
 	}
+	//startListening();
+}
+
+// listen for changes in chat
+function startListening() {
+	profileChatRefTest.on('child_added', function(snapshot) {
+		if (listenChat === true) {
+			var div = document.createElement("div");
+			div.classList.add("chatRowMessage") + div.classList.add("animated") + div.classList.add("fadeInUp");
+			var time = document.createElement("span");
+			time.classList.add("profileTime");
+			time.innerHTML = snapshot.val().time;
+
+			if (profTime === time.innerHTML) {
+				time.style.display = "none";
+			}
+
+			else {
+				profTime = time.innerHTML;
+			}
+					
+
+			var message = document.createElement("p");
+			message.classList.add("profileMessage");
+			message.innerHTML = snapshot.val().message;
+
+			div.appendChild(time);
+			div.appendChild(message)
+					
+			document.getElementById("chatMain").appendChild(div);
+
+			// scroll to bottom
+			var chatContScroll = document.getElementById("mainChatCont");
+			chatContScroll.scrollTop = chatContScroll.scrollHeight;
+		}
+		listenChat = true;
+    });
 }
 
 // not in use for the moment
