@@ -818,15 +818,23 @@
 	color: white;
 	background-color: #8c9eff;
 	float: right;
+	display: block;
+	clear: both;
 }
 
 .profileMessage {
-	padding: 1.5%;
+	padding: 2%;
 	font-size: 14px;
 	border-radius: 20px;
 	color: black;
 	background-color: #eeeeee;
 	float: left;
+	display: block;
+	clear: both;
+}
+
+.chatRowAccount {
+	width: 100%;
 }
 
 /*********************************** PROFILE *******************************************/
