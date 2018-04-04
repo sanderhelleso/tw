@@ -731,6 +731,7 @@
 	padding: 0;
 	position: relative;
 	border: 1px solid #e0e0e0;
+	background-color: white;
 }
 
 #chatCont h5 {
@@ -752,14 +753,51 @@
 #chatCont #chatPanel {
 	height: 50px;
 	width: 100%;
-	background-color: #eeeeee;
+	background-color: #f5f5f5;
+	border-top: 0.5px solid #e0e0e0;
 	position: absolute;
 	bottom: 0;
+	overflow: hidden;
+	margin-left: 0.03vw;
 }
 
 #chatProfile {
 	margin-top: 5vh;
 	background-color: #8c9eff;
+}
+
+#writeChatMessage {
+	height: 30px;
+	margin-top: 10px;
+	border-radius: 6px;
+	font-size: 12px;
+	margin-right: 0;
+}
+
+#chatOptions {
+	padding: 0;
+}
+
+#emojis, #colorTheme {
+	margin-top: 10px;
+}
+
+#emojis .feather, #colorTheme .feather {
+	stroke: #8c9eff;
+	height: 20px;
+	width: 20px;
+	margin-top: 15px;
+	margin-right: 5px;
+}
+
+#sendChatCont {
+	margin-top: 10px;
+}
+
+#sendChatMessage {
+	color: #8c9eff;
+	margin-top: 5px;
+	font-size: 16px;
 }
 
 /*********************************** PROFILE *******************************************/

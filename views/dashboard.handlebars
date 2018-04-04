@@ -91,10 +91,18 @@
 						  <div id="chat" class="col-10 offset-lg-1">
 						  	<h5 id="chattingWith" class="text-center">Now chatting with Sander</h5>
 	  						<div id="chatAvatarCont" class="col col-lg-4 offset-lg-4">
-	  							<img id="chatAvatar" src="/img/avatar.png" alt="chat avatar" class="col-lg-8 offset-lg-2">
+	  							<img id="chatAvatar" src="/img/avatar.png" alt="chat avatar" class="col-lg-4 offset-lg-4">
 	  						</div>
-	  						<div id="chatPanel">
-	  							<p>wqeqqw</p>
+	  						<div id="chatPanel" class="row justify-content-center">
+	  							<input id="writeChatMessage" class="form-control mr-sm-2 col-lg-8 input-sm" type="search" placeholder="Write a message...">
+	  							<div id="chatOptions" class="col-lg-2 text-center">
+	  								<span id="emojis"><i data-feather="slack"></i></span>
+	  								<span id="colorTheme"><i data-feather="droplet"></i></span>
+	  								
+	  							</div>
+	  							<div id="sendChatCont" class="col-lg-1">
+	  								<span id="sendChatMessage" class="text-center">Send</span>
+	  							</div>
 	  						</div>
 						  </div>
 						</div>
@@ -103,7 +111,7 @@
 	  					<div id="searchNewFriendCont" class="col col-lg-12">
 	  						<h4 class="text-center">Lets find you a new friend</h4>
 	  						<p class="text-center">search for email address or full name</p>
-	  						<div>	
+	  						<div>
 								<div class="input-group col-lg-8 offset-lg-2">
 							      <div class="input-group-prepend">
 							        <span id="addFriendSearchIcon" class="input-group-text"><i data-feather="search"></i></span>

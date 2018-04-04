@@ -106,8 +106,6 @@ function start() {
 
 				// load overview on profile load
 				//document.getElementById("overviewTrigger").click();
-
-				openChat();
 				
 				// file upload on avatar click
 				$('#profileImg').click(function(){ $('#avatarUpload').trigger('click'); });
