@@ -640,53 +640,58 @@ function openChat() {
 	var offset;
 	var accountChatRef = firebase.database().ref("accounts/" + uidKey + "/chat/" + key);
 	var profileChatRef = firebase.database().ref("accounts/" + key + "/chat/" + uidKey);
+
+	// get acc messages
 	accountChatRef.once("value", function(snapshot) {
 		snapshot.forEach((child) => {
-			console.log(child.val());
-			var div = document.createElement("div");
-			div.classList.add("chatRowMessage");
-			var time = document.createElement("span");
-			time.classList.add("accountTime");
-			time.innerHTML = child.val().time;
-			var message = document.createElement("p");
-			message.classList.add("accountMessage");
-			message.innerHTML = child.val().message;
-
-			div.appendChild(time);
-			div.appendChild(message)
-			
-			document.getElementById("chatMain").appendChild(div);
 			chatMessages.push(child.val());
-			// scroll to bottom
-			var chatContScroll = document.getElementById("mainChatCont");
-			chatContScroll.scrollTop = chatContScroll.scrollHeight;
 		});
 	});
 
+	// get profile messages
 	profileChatRef.once("value", function(snapshot) {
 		snapshot.forEach((child) => {
-			console.log(child.val());
-			var div = document.createElement("div");
-			div.classList.add("chatRowMessage");
-			var time = document.createElement("span");
-			time.classList.add("profileTime");
-			time.innerHTML = child.val().time;
-			var message = document.createElement("p");
-			message.classList.add("profileMessage");
-			message.innerHTML = child.val().message;
-
-			div.appendChild(time);
-			div.appendChild(message)
-			
-			document.getElementById("chatMain").appendChild(div);
 			chatMessages.push(child.val());
+		});
+
+		// sort messages after timestamp and check sender
+		chatMessages.sort(function(a,b){return a.timestamp - b.timestamp});
+		for (var i = 0; i < chatMessages.length; i++) {
+			if (chatMessages[i].uid === uidKey) {
+				var div = document.createElement("div");
+				div.classList.add("chatRowMessage");
+				var time = document.createElement("span");
+				time.classList.add("accountTime");
+				time.innerHTML = chatMessages[i].time;
+				var message = document.createElement("p");
+				message.classList.add("accountMessage");
+				message.innerHTML = chatMessages[i].message;
+
+				div.appendChild(time);
+				div.appendChild(message)
+				
+				document.getElementById("chatMain").appendChild(div);
+			}
+
+			else {
+				var div = document.createElement("div");
+				div.classList.add("chatRowMessage");
+				var time = document.createElement("span");
+				time.classList.add("profileTime");
+				time.innerHTML = chatMessages[i].time;
+				var message = document.createElement("p");
+				message.classList.add("profileMessage");
+				message.innerHTML = chatMessages[i].message;
+
+				div.appendChild(time);
+				div.appendChild(message)
+				
+				document.getElementById("chatMain").appendChild(div);
+			}
 			// scroll to bottom
 			var chatContScroll = document.getElementById("mainChatCont");
 			chatContScroll.scrollTop = chatContScroll.scrollHeight;
-		});
-
-		chatMessages.sort(function(a,b){return a.timestamp - b.timestamp});
-		console.log(chatMessages);
+		}
 	});
 
 	// init send message
@@ -701,7 +706,8 @@ function openChat() {
 			name: nameAccount,
 			message: chatMessage.value,
 			time: timestamp,
-			timestamp: firebase.database.ServerValue.TIMESTAMP
+			timestamp: firebase.database.ServerValue.TIMESTAMP,
+			uid: uidKey
 		});
 		// reset message input
 		chatMessage.value = "";
