@@ -684,6 +684,9 @@ function openChat() {
 			var chatContScroll = document.getElementById("mainChatCont");
 			chatContScroll.scrollTop = chatContScroll.scrollHeight;
 		});
+
+		chatMessages.sort(function(a,b){return a.timestamp - b.timestamp});
+		console.log(chatMessages);
 	});
 
 	// init send message
