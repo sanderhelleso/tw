@@ -597,6 +597,10 @@ function openChat() {
 	document.getElementById("chatCont").style.display = "block";
 	document.getElementById("socialTrigger").click();
 
+	// scroll to bottom
+	var chatContScroll = document.getElementById("mainChatCont");
+	chatContScroll.scrollTop = chatContScroll.scrollHeight;
+
 	// variables for name and time
 	var nameAccount;
 	var nameProfile;
@@ -658,7 +662,11 @@ function openChat() {
 			time: timestamp,
 			timestamp: firebase.database.ServerValue.TIMESTAMP
 		});
+		// reset message input
 		chatMessage.value = "";
+		// scroll to bottom
+		var chatContScroll = document.getElementById("mainChatCont");
+		chatContScroll.scrollTop = chatContScroll.scrollHeight;
 	}
 }
 
