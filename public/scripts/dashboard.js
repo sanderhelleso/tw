@@ -642,7 +642,11 @@ function openChat() {
 
 		// set color for heading
 		var heading = document.getElementById("chatHeader");
-		heading.style.backgroundColor = themeColor;
+
+		// create rgba color
+		var splitColor = themeColor.split(")");
+		var transparent = splitColor[0].split("(")[0] + "a(" + splitColor[0].split("(")[1] + ", 0.9)";
+		heading.style.backgroundColor = transparent;
 
 		// set border color input 
 		document.getElementById("writeChatMessage").style.border = "1px solid " + themeColor;

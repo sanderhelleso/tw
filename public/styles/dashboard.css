@@ -918,6 +918,20 @@
 	z-index: 1000;
 }
 
+#chatHeaderName {
+	color: white;
+	font-size: 16px;
+	font-weight: 400;
+	margin: 0 auto;
+	text-align: center;
+	margin-top: 10px;
+}
+
+#lastActive {
+	font-size: 10px;
+	color: #eeeeee;
+}
+
 /*********************************** PROFILE *******************************************/
 
 #profileCont {
