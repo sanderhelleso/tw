@@ -595,8 +595,11 @@ function availabilityMode() {
 var accTime;
 var profTime;
 var chatListenRef;
+var profileListenKey;
 var listenChat = false;
 var themeColor;
+var lastMessageReceivedAcc;
+var lastMessageReceivedProf;
 function openChat() {
 	// clear and display chat
 	clear();
@@ -615,6 +618,7 @@ function openChat() {
 	});
 
 	var key = this.parentElement.parentElement.id.split("-")[1];
+	profileListenKey = key;
 	var chatRef = firebase.database().ref("accounts/" + key);
 	chatRef.once("value", function(snapshot) {
 		nameProfile = snapshot.val().First_Name.capitalizeFirstLetter();
@@ -686,23 +690,12 @@ function openChat() {
 			if (chatMessages[i].uid === uidKey) {
 				var div = document.createElement("div");
 				div.classList.add("chatRowMessage") + div.classList.add("animated") + div.classList.add("fadeInUp");
-				var time = document.createElement("span");
-				time.classList.add("accountTime");
-				time.innerHTML = chatMessages[i].time;
-				if (accTime === time.innerHTML) {
-					time.style.display = "none";
-				}
-
-				else {
-					accTime = time.innerHTML;
-				}
 
 				var message = document.createElement("p");
 				message.style.backgroundColor = themeColor;
 				message.classList.add("accountMessage");
 				message.innerHTML = chatMessages[i].message;
 
-				div.appendChild(time);
 				div.appendChild(message)
 				
 				document.getElementById("chatMain").appendChild(div);
@@ -711,32 +704,23 @@ function openChat() {
 			else {
 				var div = document.createElement("div");
 				div.classList.add("chatRowMessage") + div.classList.add("animated") + div.classList.add("fadeInUp");
-				var time = document.createElement("span");
-				time.classList.add("profileTime");
-				time.innerHTML = chatMessages[i].time;
-
-				if (profTime === time.innerHTML) {
-					time.style.display = "none";
-				}
-
-				else {
-					profTime = time.innerHTML;
-				}
-				
 
 				var message = document.createElement("p");
 				message.classList.add("profileMessage");
 				message.innerHTML = chatMessages[i].message;
 
-				div.appendChild(time);
 				div.appendChild(message)
 				
 				document.getElementById("chatMain").appendChild(div);
 			}
+
 			// scroll to bottom
 			var chatContScroll = document.getElementById("mainChatCont");
 			chatContScroll.scrollTop = chatContScroll.scrollHeight;
 		}
+
+		// listen for changes
+		startListening();
 	});
 
 	// init send message
@@ -762,15 +746,12 @@ function openChat() {
 
 		var div = document.createElement("div");
 		div.classList.add("chatRowMessage") + div.classList.add("animated") + div.classList.add("fadeInUp");
-		var time = document.createElement("span");
-		time.classList.add("accountTime");
-		time.innerHTML = timestamp;
+
 		var message = document.createElement("p");
 		message.style.backgroundColor = themeColor;
 		message.classList.add("accountMessage");
 		message.innerHTML = chatMessage.value;
 
-		div.appendChild(time);
 		div.appendChild(message)
 				
 		document.getElementById("chatMain").appendChild(div);
@@ -785,39 +766,45 @@ function openChat() {
 		audio.play();
 	}
 
-	// start to listen for changes
-	startListening();
-
 	// init change theme
 	document.getElementById("colorTheme").addEventListener("click", changeTheme);
 }
 
 // listen for changes in chat, update in realtime
+var lastMessageTime;
 function startListening() {
-	chatListenRef.on('child_added', function(snapshot) {
-		var div = document.createElement("div");
-		div.classList.add("chatRowMessage") + div.classList.add("animated") + div.classList.add("fadeInUp");
-		var time = document.createElement("span");
-		time.classList.add("profileTime");
-		time.innerHTML = snapshot.val().time;		
+	var key = profileListenKey;
+	console.log(profileListenKey);
 
-		var message = document.createElement("p");
-		message.classList.add("profileMessage");
-		message.innerHTML = snapshot.val().message;
+	var first = true;
+	var chatListenRef = firebase.database().ref("accounts/" + key + "/chat/" + uidKey);
+	chatListenRef.limitToLast(1).on("child_added", function(snapshot) {
+	   if (first) {
+	       first = false; 
+	   } 
 
-		div.appendChild(time);
-		div.appendChild(message)
-					
-		document.getElementById("chatMain").appendChild(div);
+	   else {
+	       	var div = document.createElement("div");
+			div.classList.add("chatRowMessage") + div.classList.add("animated") + div.classList.add("fadeInUp")	
 
-		// scroll to bottom
-		var chatContScroll = document.getElementById("mainChatCont");
-		chatContScroll.scrollTop = chatContScroll.scrollHeight;
+			var message = document.createElement("p");
+			message.classList.add("profileMessage");
+			message.innerHTML = snapshot.val().message;
 
-		// play sound
-		var audio = new Audio("/audio/received.mp3");
-		audio.play();
-    });
+			div.appendChild(time);
+			div.appendChild(message)
+						
+			document.getElementById("chatMain").appendChild(div);
+
+			// scroll to bottom
+			var chatContScroll = document.getElementById("mainChatCont");
+			chatContScroll.scrollTop = chatContScroll.scrollHeight;
+
+			// play sound
+			var audio = new Audio("/audio/received.mp3");
+			audio.play();
+	   }
+	});
 }
 
 function changeTheme() {
