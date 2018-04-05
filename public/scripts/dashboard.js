@@ -671,9 +671,21 @@ function openChat() {
 	});
 
 	// get profile messages
+	var profAvatar;
 	profileChatRef.once("value", function(snapshot) {
 		snapshot.forEach((child) => {
 			chatMessages.push(child.val());
+			var avatarImages = document.getElementsByClassName("chatMessageAvatar");
+			var profileRef = firebase.database().ref("accounts/" + key);
+			profileRef.once("value", function(snapshot) {
+				if (snapshot.val().Avatar_url != undefined) {
+					profAvatar = snapshot.val().Avatar_url;
+				}
+
+				else {
+					profAvatar = "/img/avatar.png";
+				}
+			});
 		});
 
 		// sort messages after timestamp and check sender
@@ -686,15 +698,6 @@ function openChat() {
 				var time = document.createElement("span");
 				time.classList.add("accountTime");
 				time.innerHTML = chatMessages[i].time;
-
-				if (lastMessageReceivedAcc === chatMessages[i].time) {
-					console.log(time.parentElement);
-					time.style.display = "none";
-				}
-
-				else {
-					lastMessageReceivedAcc = chatMessages[i].time;
-				}
 
 				var message = document.createElement("p");
 				message.style.backgroundColor = themeColor;
@@ -709,25 +712,25 @@ function openChat() {
 
 			else {
 				var div = document.createElement("div");
+
+				var avatar = document.createElement("img");
+				avatar.classList.add("chatMessageAvatar");
+				avatar.src = profAvatar;
+
 				div.classList.add("chatRowMessage") + div.classList.add("animated") + div.classList.add("fadeInUp");
 				var time = document.createElement("span");
 				time.classList.add("profileTime");
 				time.innerHTML = chatMessages[i].time;
-
-				if (lastMessageReceivedProf === chatMessages[i].time) {
-					time.style.display = "none";
-				}
-
-				else {
-					lastMessageReceivedProf = chatMessages[i].time;
-				}
 				
 				var message = document.createElement("p");
 				message.classList.add("profileMessage");
 				message.innerHTML = chatMessages[i].message;
 
+				var span = document.createElement("span");
+				span.appendChild(avatar);
+				span.appendChild(message);
 				div.appendChild(time);
-				div.appendChild(message)
+				div.appendChild(span);
 				
 				document.getElementById("chatMain").appendChild(div);
 			}
@@ -825,15 +828,7 @@ function startListening() {
 			div.classList.add("chatRowMessage") + div.classList.add("animated") + div.classList.add("fadeInUp");
 			var time = document.createElement("span");
 			time.classList.add("profileTime");
-			time.innerHTML = snapshot.val().time;
-
-			if (lastMessageTime === snapshot.val().time) {
-				time.style.display = "none";
-			}
-
-			else {
-				lastMessageTime = snapshot.val();
-			}		
+			time.innerHTML = snapshot.val().time;	
 
 			var message = document.createElement("p");
 			message.classList.add("profileMessage");
@@ -1187,7 +1182,11 @@ function setTheme() {
 
 	// set color for heading
 	var heading = document.getElementById("chatHeader");
-	heading.style.backgroundColor = color;
+
+	// create rgba color
+	var splitColor = color.split(")");
+	var transparent = splitColor[0].split("(")[0] + "a(" + splitColor[0].split("(")[1] + ", 0.9)";
+	heading.style.backgroundColor = transparent;
 
 	// set color for every message
 	var messages = document.getElementsByClassName("accountMessage");
