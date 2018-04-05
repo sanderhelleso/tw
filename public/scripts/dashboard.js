@@ -675,7 +675,6 @@ function openChat() {
 	profileChatRef.once("value", function(snapshot) {
 		snapshot.forEach((child) => {
 			chatMessages.push(child.val());
-			var avatarImages = document.getElementsByClassName("chatMessageAvatar");
 			var profileRef = firebase.database().ref("accounts/" + key);
 			profileRef.once("value", function(snapshot) {
 				if (snapshot.val().Avatar_url != undefined) {
@@ -826,6 +825,19 @@ function startListening() {
 	   else {
 	       	var div = document.createElement("div");
 			div.classList.add("chatRowMessage") + div.classList.add("animated") + div.classList.add("fadeInUp");
+			var avatar = document.createElement("img");
+			avatar.classList.add("chatMessageAvatar");
+			profRef = firebase.database().ref("accounts/" + key);
+			profRef.once("value", function(snapshot) {
+				if (snapshot.val().Avatar_url != undefined) {
+					avatar.src = snapshot.val().Avatar_url;
+				}
+		
+				else {
+					avatar.src = "/img/avatar.png";
+				}
+			});
+
 			var time = document.createElement("span");
 			time.classList.add("profileTime");
 			time.innerHTML = snapshot.val().time;	
@@ -834,8 +846,11 @@ function startListening() {
 			message.classList.add("profileMessage");
 			message.innerHTML = snapshot.val().message;
 
+			var span = document.createElement("span");
+			span.appendChild(avatar);
+			span.appendChild(message);
 			div.appendChild(time);
-			div.appendChild(message)
+			div.appendChild(span);
 						
 			document.getElementById("chatMain").appendChild(div);
 
