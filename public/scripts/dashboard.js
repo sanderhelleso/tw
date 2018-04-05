@@ -627,22 +627,6 @@ function openChat() {
 		document.getElementById("chatAvatar").src = snapshot.val().Avatar_url;
 	});
 
-	// get timestamp
-	var now = new Date(); 
-	var hour = now.getHours();
- 	var minute = now.getMinutes();
-
-	// add zeros if needed 
-	if (hour.toString().length == 1) {
-		var hour = '0' + hour;
-	}
-
-	if (minute.toString().length == 1) {
-		var minute = '0' + minute;
-	}
-
-	timestamp = hour + ' ' + minute; 
-
 	var chatMessages = [];
 
 	// load chats
@@ -655,6 +639,10 @@ function openChat() {
 	var colorRef = firebase.database().ref("accounts/" + uidKey + "/chat/theme");
 	colorRef.once("value", function(snapshot) {
 		themeColor = snapshot.val().color;
+
+		// set color for heading
+		var heading = document.getElementById("chatHeader");
+		heading.style.backgroundColor = themeColor;
 
 		// set border color input 
 		document.getElementById("writeChatMessage").style.border = "1px solid " + themeColor;
@@ -688,14 +676,28 @@ function openChat() {
 		chatMessages.sort(function(a,b){return a.timestamp - b.timestamp});
 		for (var i = 0; i < chatMessages.length; i++) {
 			if (chatMessages[i].uid === uidKey) {
+				console.log(chatMessages[i].time);
 				var div = document.createElement("div");
 				div.classList.add("chatRowMessage") + div.classList.add("animated") + div.classList.add("fadeInUp");
+				var time = document.createElement("span");
+				time.classList.add("accountTime");
+				time.innerHTML = chatMessages[i].time;
+
+				if (lastMessageReceivedAcc === chatMessages[i].time) {
+					console.log(time.parentElement);
+					time.style.display = "none";
+				}
+
+				else {
+					lastMessageReceivedAcc = chatMessages[i].time;
+				}
 
 				var message = document.createElement("p");
 				message.style.backgroundColor = themeColor;
 				message.classList.add("accountMessage");
 				message.innerHTML = chatMessages[i].message;
 
+				div.appendChild(time);
 				div.appendChild(message)
 				
 				document.getElementById("chatMain").appendChild(div);
@@ -704,11 +706,23 @@ function openChat() {
 			else {
 				var div = document.createElement("div");
 				div.classList.add("chatRowMessage") + div.classList.add("animated") + div.classList.add("fadeInUp");
+				var time = document.createElement("span");
+				time.classList.add("profileTime");
+				time.innerHTML = chatMessages[i].time;
 
+				if (lastMessageReceivedProf === chatMessages[i].time) {
+					time.style.display = "none";
+				}
+
+				else {
+					lastMessageReceivedProf = chatMessages[i].time;
+				}
+				
 				var message = document.createElement("p");
 				message.classList.add("profileMessage");
 				message.innerHTML = chatMessages[i].message;
 
+				div.appendChild(time);
 				div.appendChild(message)
 				
 				document.getElementById("chatMain").appendChild(div);
@@ -734,6 +748,22 @@ function openChat() {
 			return;
 		}
 
+		// get timestamp
+		var now = new Date(); 
+		var hour = now.getHours();
+	 	var minute = now.getMinutes();
+
+		// add zeros if needed 
+		if (hour.toString().length == 1) {
+			var hour = '0' + hour;
+		}
+
+		if (minute.toString().length == 1) {
+			var minute = '0' + minute;
+		}
+
+		timestamp = hour + ' ' + minute; 
+
 		// message
 		var sendMessageRef = firebase.database().ref("accounts/" + uidKey + "/chat/" + key + "/" + new Date().getTime());
 		sendMessageRef.update({
@@ -746,12 +776,15 @@ function openChat() {
 
 		var div = document.createElement("div");
 		div.classList.add("chatRowMessage") + div.classList.add("animated") + div.classList.add("fadeInUp");
-
+		var time = document.createElement("span");
+		time.classList.add("accountTime");
+		time.innerHTML = timestamp;
 		var message = document.createElement("p");
 		message.style.backgroundColor = themeColor;
 		message.classList.add("accountMessage");
 		message.innerHTML = chatMessage.value;
 
+		div.appendChild(time);
 		div.appendChild(message)
 				
 		document.getElementById("chatMain").appendChild(div);
@@ -785,7 +818,18 @@ function startListening() {
 
 	   else {
 	       	var div = document.createElement("div");
-			div.classList.add("chatRowMessage") + div.classList.add("animated") + div.classList.add("fadeInUp")	
+			div.classList.add("chatRowMessage") + div.classList.add("animated") + div.classList.add("fadeInUp");
+			var time = document.createElement("span");
+			time.classList.add("profileTime");
+			time.innerHTML = snapshot.val().time;
+
+			if (lastMessageTime === snapshot.val().time) {
+				time.style.display = "none";
+			}
+
+			else {
+				lastMessageTime = snapshot.val();
+			}		
 
 			var message = document.createElement("p");
 			message.classList.add("profileMessage");
@@ -1136,6 +1180,10 @@ function setTheme() {
 	colorRef.update({
 		color: color
 	});
+
+	// set color for heading
+	var heading = document.getElementById("chatHeader");
+	heading.style.backgroundColor = color;
 
 	// set color for every message
 	var messages = document.getElementsByClassName("accountMessage");
