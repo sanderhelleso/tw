@@ -2040,6 +2040,10 @@ function displayBlocked() {
 
 var settingsKey;
 function openProfile() {
+	//scroll top of div
+	var modal = document.getElementById("profileModal");
+	modal.scrollTop = 0;
+
 	// get profile key
 	var profileKey = this.id.split("-")[1];
 	profileRequestKey = profileKey;
