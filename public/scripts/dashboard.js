@@ -1254,6 +1254,7 @@ function openMail() {
 		document.getElementById("emailAvatar").src = snapshot.val().Avatar_url;
 		document.getElementById("sendEmailName").innerHTML = snapshot.val().First_Name.capitalizeFirstLetter() + " " + snapshot.val().Last_Name.capitalizeFirstLetter();
 		document.getElementById("sendEmailAddress").value = snapshot.val().Email;
+		document.getElementById("sendEmailContent").placeholder = "Tell " + snapshot.val().First_Name.capitalizeFirstLetter() + " whats on your mind..."
 	});
 
 	// show email modal and hide profile
@@ -2086,6 +2087,7 @@ function openProfile() {
 	var profileBio = document.getElementById("profileModalBio");
 	var chat = document.getElementById("profileModalCommunication").childNodes[2];
 	var mail = document.getElementById("profileModalCommunication").childNodes[0];
+	var coverImg = document.getElementById("coverImg");
 
 	// init open mail event
 	mail.addEventListener("click", openMail);
