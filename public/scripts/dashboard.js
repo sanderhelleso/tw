@@ -409,6 +409,7 @@ function loadFriends() {
 			cont.appendChild(nameCont);
 			cont.appendChild(email);
 			cont.appendChild(options);
+			options.childNodes[0].addEventListener("click", openMail);
 			options.childNodes[2].addEventListener("click", openChat);
 			document.getElementById("friendsListCont").appendChild(cont);
 
@@ -638,6 +639,7 @@ function openChat() {
 		document.getElementById("chatHeaderName").innerHTML = snapshot.val().First_Name.capitalizeFirstLetter() + " " + snapshot.val().Last_Name.capitalizeFirstLetter();
 	});
 
+	// array to hold and sort messages after timestamp
 	var chatMessages = [];
 
 	// load chats
@@ -1240,6 +1242,25 @@ function setTheme() {
 	$('#themeModal').modal('hide');
 }
 
+// open mail editor for seleted user
+var emailKey;
+function openMail() {
+	// get key
+	var key = emailKey;
+	var emailRef = firebase.database().ref("accounts/" + key);
+	emailRef.once("value", function(snapshot) {
+		nameProfile = snapshot.val().First_Name.capitalizeFirstLetter();
+		// set data about user in email modal
+		document.getElementById("emailAvatar").src = snapshot.val().Avatar_url;
+		document.getElementById("sendEmailName").innerHTML = snapshot.val().First_Name.capitalizeFirstLetter() + " " + snapshot.val().Last_Name.capitalizeFirstLetter();
+		document.getElementById("sendEmailAddress").value = snapshot.val().Email;
+	});
+
+	// show email modal and hide profile
+	$('#profileModal').modal('hide');
+	$('#emailModal').modal('show');
+}
+
 // not in use for the moment
 function positionSearchbar() {}
 
@@ -1371,6 +1392,9 @@ function findFriend() {
 					var icons = document.createElement("span");
 					icons.classList.add("searchResultsIcons");
 					icons.innerHTML = document.getElementById("masterResult").childNodes[1].innerHTML;
+
+					// init send mail event
+					icons.childNodes[2].addEventListener("click", openMail);
 
 					// append
 					cont.appendChild(name);
@@ -2019,6 +2043,7 @@ function openProfile() {
 	var profileKey = this.id.split("-")[1];
 	profileRequestKey = profileKey;
 	modalChatKey = profileKey;
+	emailKey = profileKey;
 
 	// check if profile is from friend request
 	if (this.id.split("-")[0] === "friendRequest") {
@@ -2060,6 +2085,10 @@ function openProfile() {
 	var profileEmail = document.getElementById("profileModalEmail");
 	var profileBio = document.getElementById("profileModalBio");
 	var chat = document.getElementById("profileModalCommunication").childNodes[2];
+	var mail = document.getElementById("profileModalCommunication").childNodes[0];
+
+	// init open mail event
+	mail.addEventListener("click", openMail);
 
 	// set data from profile ref
 	var profileRef = firebase.database().ref("accounts/" + profileKey);

@@ -135,7 +135,7 @@
 							</div>
 							<!-- SEARCH REULTS -->
 							<div id="masterResult" class=" col col-lg-12 text-center">
-								<span><span class="sendFriendRequest"><i data-feather="user-plus"></i></span> <span class="sendFriendMessage"><i data-feather="message-circle"></i></span></span>
+								<span><span class="sendFriendRequest"><i data-feather="user-plus"></i></span> <span class="sendFriendMail"><i data-feather="mail"></i></span></span>
 							</div>
 							<div id="searchResults" class="row searchResults">
 							</div>
@@ -429,6 +429,25 @@
 		</div>
 	</div>
 	<!-- END COLOR THEME MODAL -->
+
+	<!-- EMAIL MODAL -->
+	<div id="emailModal" class="modal fade emailModal modal-md" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-md">
+		   	<div id="sendEmailModal" class="modal-content">
+                <button id="exitLoginModal" type="button" class="close text-right" data-dismiss="modal" aria-label="Close"><i data-feather="x"></i>
+                </button>
+                <div class="row justify-content-center">
+					<img id="emailAvatar" src="/img/avatar.png" alt="profile avatar">
+	            </div>
+                <h3 id="sendEmailName" class="text-center">Send Email</h3>
+                <div id="emailDiv" class="row justify-content-center">
+    				<input type="email" class="form-control col col-lg-10" id="sendEmailAddress" disabled>
+				</div>
+            </div>
+		</div>
+	</div>
+
+	<!-- End EMAIL MODAL -->
 
 
 	<!-- SNACKBAR -->
