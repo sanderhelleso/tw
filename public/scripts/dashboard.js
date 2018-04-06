@@ -2059,6 +2059,7 @@ function openProfile() {
 	var profileName = document.getElementById("profileModalName");
 	var profileEmail = document.getElementById("profileModalEmail");
 	var profileBio = document.getElementById("profileModalBio");
+	var chat = document.getElementById("profileModalCommunication").childNodes[2];
 
 	// set data from profile ref
 	var profileRef = firebase.database().ref("accounts/" + profileKey);
@@ -2071,11 +2072,15 @@ function openProfile() {
 			if (snapshot.val() != null || snapshot.val() != undefined) {
 				document.getElementById("unfriendUser").style.display = "block";
 				document.getElementById("unfriendDivider").style.display = "block";
+				// init chat event for profile
+				chat.style.display = "inline-block";
+				chat.addEventListener("click", openChat);
 			}
 
 			else {
 				document.getElementById("unfriendUser").style.display = "none";
 				document.getElementById("unfriendDivider").style.display = "none";
+				chat.style.display = "none";
 			}
 		});
 
@@ -2189,10 +2194,6 @@ function openProfile() {
 
 				else {
 					document.getElementById("profileModalCommunication").style.display = "block";
-
-					// init chat event for profile
-					var chat = document.getElementById("profileModalCommunication").childNodes[2];
-					chat.addEventListener("click", openChat);
 
 					// count amount of common friends
 					var commonsCount = 0;
