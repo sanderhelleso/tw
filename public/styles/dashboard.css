@@ -916,7 +916,7 @@
 	position: absolute;
 	top: 0;
 	overflow: hidden;
-	z-index: 1000;
+	z-index: 10;
 }
 
 #chatHeaderName {
@@ -1402,7 +1402,6 @@ li .active {
 	display: none;
 }
 
-
 #noFriendsRow h5, #noFriendsRow p {
 	margin-left: 2%;
 	color: #9e9e9e;
@@ -1524,6 +1523,15 @@ li .active {
 
 #profileModalCommunication .feather {
 	stroke: #8c9eff;
+}
+
+#profileModalCommunication span {
+	transition: all 0.3s;
+}
+
+#profileModalCommunication span:hover {
+	cursor: pointer;
+	opacity: 0.5;
 }
 
 #profileModalCont .dropdown-divider {

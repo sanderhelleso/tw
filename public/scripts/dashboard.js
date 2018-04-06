@@ -600,6 +600,7 @@ var listenChat = false;
 var themeColor;
 var lastMessageReceivedAcc;
 var lastMessageReceivedProf;
+var modalChatKey;
 function openChat() {
 	// clear and display chat
 	clear();
@@ -619,12 +620,22 @@ function openChat() {
 
 	var key = this.parentElement.parentElement.id.split("-")[1];
 	profileListenKey = key;
+
+	// if opened via modal
+	if (this.id === "modalChat") {
+		// set key and close modal
+		key = modalChatKey;
+		profileListenKey = modalChatKey;
+		$('#profileModal').modal('hide');
+	}
+
 	var chatRef = firebase.database().ref("accounts/" + key);
 	chatRef.once("value", function(snapshot) {
 		nameProfile = snapshot.val().First_Name.capitalizeFirstLetter();
 		// set data about user in chat
 		document.getElementById("chattingWith").innerHTML = "Now chatting with " + snapshot.val().First_Name.capitalizeFirstLetter();
 		document.getElementById("chatAvatar").src = snapshot.val().Avatar_url;
+		document.getElementById("chatHeaderName").innerHTML = snapshot.val().First_Name.capitalizeFirstLetter() + " " + snapshot.val().Last_Name.capitalizeFirstLetter();
 	});
 
 	var chatMessages = [];
@@ -770,7 +781,7 @@ function openChat() {
 
 		timestamp = hour + ' ' + minute; 
 
-		// message
+		// save message
 		var sendMessageRef = firebase.database().ref("accounts/" + uidKey + "/chat/" + key + "/" + new Date().getTime());
 		sendMessageRef.update({
 			name: nameAccount,
@@ -780,6 +791,7 @@ function openChat() {
 			uid: uidKey
 		});
 
+		// create and render message in realtime
 		var div = document.createElement("div");
 		div.classList.add("chatRowMessage") + div.classList.add("animated") + div.classList.add("fadeInUp");
 		var time = document.createElement("span");
@@ -790,10 +802,12 @@ function openChat() {
 		message.classList.add("accountMessage");
 		message.innerHTML = chatMessage.value;
 
+		// append
 		div.appendChild(time);
 		div.appendChild(message)
 				
 		document.getElementById("chatMain").appendChild(div);
+
 		// reset message input
 		chatMessage.value = "";
 		// scroll to bottom
@@ -813,7 +827,6 @@ function openChat() {
 var lastMessageTime;
 function startListening() {
 	var key = profileListenKey;
-	console.log(profileListenKey);
 
 	var first = true;
 	var chatListenRef = firebase.database().ref("accounts/" + key + "/chat/" + uidKey);
@@ -1279,6 +1292,7 @@ function addFriend() {
 
 	// hide default container
 	document.getElementById("socialiconCont").style.display = "none";
+	document.getElementById("chatCont").style.display = "none";
 
 	// show add friend container
 	document.getElementById("addFriendCont").style.display = "block";
@@ -2004,6 +2018,7 @@ function openProfile() {
 	// get profile key
 	var profileKey = this.id.split("-")[1];
 	profileRequestKey = profileKey;
+	modalChatKey = profileKey;
 
 	// check if profile is from friend request
 	if (this.id.split("-")[0] === "friendRequest") {
@@ -2174,6 +2189,10 @@ function openProfile() {
 
 				else {
 					document.getElementById("profileModalCommunication").style.display = "block";
+
+					// init chat event for profile
+					var chat = document.getElementById("profileModalCommunication").childNodes[2];
+					chat.addEventListener("click", openChat);
 
 					// count amount of common friends
 					var commonsCount = 0;
