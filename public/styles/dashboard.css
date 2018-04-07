@@ -1470,8 +1470,8 @@ li .active {
 	height: 150px;
 	width: 100%;
 	background: linear-gradient(
-    rgba(20,20,20, .7), 
-    rgba(20,20,20, .7)),
+    rgba(20,20,20, .6), 
+    rgba(20,20,20, .6)),
     url("../img/cover.jpg");
 	background-attachment: fixed;
 	margin: 0;
@@ -1483,7 +1483,11 @@ li .active {
 	margin-bottom: 2vh;
 	border-radius: 50%;
 	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19);
-	background-color: #9fa8da;
+	background: linear-gradient(
+    rgba(20,20,20, .6), 
+    rgba(20,20,20, .6)),
+    url("../img/cover.jpg");
+	background-attachment: fixed;
 	margin-top: 70px;
 	border: 3px solid white;
 }
@@ -1496,8 +1500,8 @@ li .active {
 #exitProfileModal {
 	width: 100%;
 	background: linear-gradient(
-    rgba(20,20,20, .7), 
-    rgba(20,20,20, .7)),
+    rgba(20,20,20, .6), 
+    rgba(20,20,20, .6)),
     url("../img/cover.jpg");
 	background-attachment: fixed;
 	margin: 0;
@@ -1607,9 +1611,10 @@ li .active {
 }
 
 #exitProfileModal .feather {
-	stroke: #bdbdbd;
+	stroke: #9e9e9e;
 	width: 22px;
 	height: 22px
+	opacity: 0.7;
 }
 
 #exitProfileModal .close .feather {
@@ -1618,7 +1623,7 @@ li .active {
 }
 
 #exitProfileModal .feather:hover {
-	stroke: #8c9eff;
+	color: #8c9eff;
 	cursor: pointer;
 }
 
@@ -1766,12 +1771,12 @@ li .active {
 
 /******************************** EMAIL MODAL ****************************************/
 #sendEmailModal {
-	max-height: 90vh;
+	max-height: 95vh;
 	overflow: auto;
 }
 
 #sendEmailModal {
-	padding-bottom: 5vh;
+	padding-bottom: 4vh;
 }
 
 #sendEmailName {
@@ -1789,11 +1794,20 @@ li .active {
 
 #sendEmailAddress {
 	margin-top: 2.5vh;
+	margin-bottom: 2vh;
 }
 
-#sendEmailAddress:disabled {
+#sendEmailAddress:readonly {
 	background-color: #e8eaf6;
 	color: #757575;
+}
+
+#sendEmailAddress:focus {
+	border: 1px solid #e0e0e0;
+}
+
+#sendEmailAddress:hover {
+	cursor: not-allowed;
 }
 
 #sendEmailContent {
@@ -1802,7 +1816,7 @@ li .active {
 	min-height: 200px;
 }
 
-#sendEmailContent:focus {
+#sendEmailContent:focus, #emailSubject:focus {
 	border: 1px solid #8c9eff;
 }
 
@@ -1819,6 +1833,10 @@ li .active {
 #sendEmailBtn:hover {
 	background-color: #536dfe;
 	border: 1px solid #536dfe;
+}
+
+#fromEmailAddress {
+	display: none;
 }
 
 

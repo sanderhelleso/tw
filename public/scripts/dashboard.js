@@ -1250,16 +1250,35 @@ function openMail() {
 	var emailRef = firebase.database().ref("accounts/" + key);
 	emailRef.once("value", function(snapshot) {
 		nameProfile = snapshot.val().First_Name.capitalizeFirstLetter();
+
 		// set data about user in email modal
 		document.getElementById("emailAvatar").src = snapshot.val().Avatar_url;
 		document.getElementById("sendEmailName").innerHTML = snapshot.val().First_Name.capitalizeFirstLetter() + " " + snapshot.val().Last_Name.capitalizeFirstLetter();
 		document.getElementById("sendEmailAddress").value = snapshot.val().Email;
-		document.getElementById("sendEmailContent").placeholder = "Tell " + snapshot.val().First_Name.capitalizeFirstLetter() + " whats on your mind..."
+		document.getElementById("sendEmailContent").placeholder = "Tell " + snapshot.val().First_Name.capitalizeFirstLetter() + " whats on your mind...";
+
+		// get sender address
+		accountRef.once("value", function(snapshot) {
+			// format for nodemailer
+			document.getElementById("fromEmailAddress").value = snapshot.val().First_Name.capitalizeFirstLetter() + " " + snapshot.val().Last_Name.capitalizeFirstLetter() + " - " + snapshot.val().Email + " <" +  snapshot.val().Email + ">";
+			console.log(document.getElementById("fromEmailAddress").value);
+
+			// init send mail event after data is loaded
+			document.getElementById("sendEmailBtn").addEventListener("click", sendEmail);
+		});
 	});
 
 	// show email modal and hide profile
 	$('#profileModal').modal('hide');
 	$('#emailModal').modal('show');
+}
+
+function sendEmail() {
+	
+
+	// show email modal and hide profile
+	//$('#emailModal').modal('hide');
+	//$('#profileModal').modal('show');
 }
 
 // not in use for the moment
@@ -2183,7 +2202,7 @@ function openProfile() {
 				// create friend container
 				var cont = document.createElement("div");
 				cont.id = "profile-" + child.key;
-				cont.classList.add("col") + cont.classList.add("col-lg-5") + cont.classList.add("profileModalFriendsCont") + cont.classList.add("fadeIn") + cont.classList.add("fadeIn") + cont.classList.add("profile-" + child.key);
+				cont.classList.add("col") + cont.classList.add("col-lg-5") + cont.classList.add("profileModalFriendsCont") + cont.classList.add("animated") + cont.classList.add("fadeIn") + cont.classList.add("profile-" + child.key);
 
 				// create avatar img
 				var friendImg = document.createElement("img");
