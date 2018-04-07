@@ -1246,7 +1246,14 @@ function setTheme() {
 var emailKey;
 function openMail() {
 	// get key
-	var key = emailKey;
+	if (this.parentElement.parentElement.id.split("-")[0] === "chat") {
+		key = this.parentElement.parentElement.id.split("-")[1];
+	}
+
+	else {
+		var key = emailKey;
+	}
+
 	var emailRef = firebase.database().ref("accounts/" + key);
 	emailRef.once("value", function(snapshot) {
 		nameProfile = snapshot.val().First_Name.capitalizeFirstLetter();
@@ -1273,12 +1280,29 @@ function openMail() {
 	$('#emailModal').modal('show');
 }
 
+// send email
 function sendEmail() {
-	
+	// check
+	if (document.getElementById("emailSubject").value === "") {
+		// display error message
+		snackbar.innerHTML = "Please include a subject!";
+		snackbar.className = "show";
+		setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
+		return;
+	}
 
-	// show email modal and hide profile
-	//$('#emailModal').modal('hide');
-	//$('#profileModal').modal('show');
+	if (document.getElementById("sendEmailContent").value === "") {
+		// display error message
+		snackbar.innerHTML = "Please include a message";
+		snackbar.className = "show";
+		setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
+		return;
+	}
+
+	// display message
+	snackbar.innerHTML = "Mail succesfully sent to " + document.getElementById("sendEmailName").innerHTML;
+	snackbar.className = "show";
+	setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
 }
 
 // not in use for the moment

@@ -1816,7 +1816,7 @@ li .active {
 	min-height: 200px;
 }
 
-#sendEmailContent:focus, #emailSubject:focus {
+#sendEmailContent:focus, #sendEmailSubject:focus {
 	border: 1px solid #8c9eff;
 }
 
@@ -1836,6 +1836,10 @@ li .active {
 }
 
 #fromEmailAddress {
+	display: none;
+}
+
+#iframe {
 	display: none;
 }
 

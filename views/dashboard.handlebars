@@ -436,7 +436,8 @@
 		   	<div id="sendEmailModal" class="modal-content">
                 <button id="exitLoginModal" type="button" class="close text-right" data-dismiss="modal" aria-label="Close"><i data-feather="x"></i>
                 </button>
-                <form id="emailForm" action="/dashboard" method="post">
+                <iframe id="iframe" name="hidden"></iframe>
+                <form id="emailForm" action="/dashboard" method="post" target="hidden">
 	                <div class="row justify-content-center">
 						<img id="emailAvatar" src="/img/avatar.png" alt="profile avatar">
 		            </div>
@@ -446,10 +447,10 @@
 	    				<input type="text" class="form-control col col-lg-10" id="fromEmailAddress" name="fromAddress">
 					</div>
 					<div id="emailSubject" class="row justify-content-center">
-	    				<input type="text" class="form-control col col-lg-10" id="emailSubject" name="emailSubject" placeholder="Subject">
+	    				<input type="text" class="form-control col col-lg-10" id="sendEmailSubject" name="emailSubject" placeholder="Subject" autocomplete="off">
 					</div>
 					<div id="emailContentDiv" class="row justify-content-center">
-	    				<textarea class="form-control col col-lg-10" id="sendEmailContent" name="emailContent" rows="3"></textarea>
+	    				<textarea class="form-control col col-lg-10" id="sendEmailContent" name="emailContent" rows="3" autocomplete="off"></textarea>
 					</div>
 					<div id="sendEmailBtnCont" class="row justify-content-center">
 						<button id="sendEmailBtn" class="btn col col-lg-10" type="submit" href="#">SEND EMAIL</button>
