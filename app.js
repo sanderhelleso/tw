@@ -3,6 +3,7 @@ const http = require("http");
 const bodyParser = require("body-parser");
 const handlebars = require("express-handlebars");
 const ejs = require("ejs");
+const nodemailer = require("nodemailer");
 
 const app = express();
 const server = http.createServer(app);
@@ -24,6 +25,46 @@ app.get("/", (req, res) => {
 app.get("/dashboard", (req, res) => {
 	res.render("dashboard");
 });
+
+// nodemailer, used for email communication amongs users
+function sendMail() {
+	// mail data
+	var mailFrom;
+	var mailTo;
+	var mailSubject;
+	var mailContent;
+
+	// smpt setup
+	nodemailer.createTestAccount((err, account) => {
+	    let transporter = nodemailer.createTransport({
+	        host: 'smtp.gmail.com',
+	        port: 587,
+	        secure: false, 
+	        auth: {
+	            user: "twappmailer@gmail.com", // secure this later, test acc
+	            pass: "twappmailer1"
+	        }
+	    });
+
+	    // setup email data
+	    let mailOptions = {
+	        from: mailFrom, 
+	        to: mailTo,
+	        subject: mailSubject,
+	        text: mailContent
+	    };
+
+	    // send mail with defined transport object
+	    transporter.sendMail(mailOptions, (error, info) => {
+	        if (error) {
+	            return console.log(error);
+	        }
+
+	        // mail sendt
+	        console.log('Message sent: %s', info.messageId);
+	    });
+	});
+}
 
 server.listen(port, () => {
 	console.log(`Server started on ${port}`);
