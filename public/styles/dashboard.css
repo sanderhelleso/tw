@@ -1846,6 +1846,13 @@ li .active {
 
 /******************************** END EMAIL MODAL *********************************/
 
+/******************************* PROJECTS MENU ***********************************/
+#projectsMenu .card {
+	margin-bottom: 5vh;
+}
+
+/******************************* END PROJECTS MENU *******************************/
+
 /* Animations to fade the snackbar in and out */
 @-webkit-keyframes fadein {
     from {bottom: 0; opacity: 0;} 
