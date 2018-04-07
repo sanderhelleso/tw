@@ -26,13 +26,19 @@ app.get("/dashboard", (req, res) => {
 	res.render("dashboard");
 });
 
-// nodemailer, used for email communication amongs users
-function sendMail() {
+// get mail data from form
+app.post("/dashboard", (req, res) => {
 	// mail data
-	var mailFrom;
-	var mailTo;
-	var mailSubject;
-	var mailContent;
+	let mailFrom = req.body.fromAddress;
+	let mailTo = req.body.toAddress;
+	let mailSubject = req.body.emailSubject;
+	let mailContent =  req.body.emailContent;
+
+	console.log(req.body);
+	console.log(mailFrom);
+	console.log(mailTo);
+	console.log(mailSubject);
+	console.log(mailContent);
 
 	// smpt setup
 	nodemailer.createTestAccount((err, account) => {
@@ -64,7 +70,8 @@ function sendMail() {
 	        console.log('Message sent: %s', info.messageId);
 	    });
 	});
-}
+});
+
 
 server.listen(port, () => {
 	console.log(`Server started on ${port}`);

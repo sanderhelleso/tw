@@ -436,19 +436,25 @@
 		   	<div id="sendEmailModal" class="modal-content">
                 <button id="exitLoginModal" type="button" class="close text-right" data-dismiss="modal" aria-label="Close"><i data-feather="x"></i>
                 </button>
-                <div class="row justify-content-center">
-					<img id="emailAvatar" src="/img/avatar.png" alt="profile avatar">
-	            </div>
-                <h3 id="sendEmailName" class="text-center">Send Email</h3>
-                <div id="emailDiv" class="row justify-content-center">
-    				<input type="email" class="form-control col col-lg-10" id="sendEmailAddress" disabled>
-				</div>
-				<div id="emailContentDiv" class="row justify-content-center">
-    				<textarea class="form-control col col-lg-10" id="sendEmailContent" rows="3"></textarea>
-				</div>
-				<div id="sendEmailBtnCont" class="row justify-content-center">
-					<a id="sendEmailBtn" class="btn col col-lg-10" href="#">SEND EMAIL</a>
-				</div>
+                <form id="emailForm" action="/dashboard" method="post">
+	                <div class="row justify-content-center">
+						<img id="emailAvatar" src="/img/avatar.png" alt="profile avatar">
+		            </div>
+	                <h3 id="sendEmailName" class="text-center"></h3>
+	                <div id="emailDiv" class="row justify-content-center">
+	    				<input type="email" class="form-control col col-lg-10" id="sendEmailAddress" name="toAddress" readonly>
+	    				<input type="text" class="form-control col col-lg-10" id="fromEmailAddress" name="fromAddress">
+					</div>
+					<div id="emailSubject" class="row justify-content-center">
+	    				<input type="text" class="form-control col col-lg-10" id="emailSubject" name="emailSubject" placeholder="Subject">
+					</div>
+					<div id="emailContentDiv" class="row justify-content-center">
+	    				<textarea class="form-control col col-lg-10" id="sendEmailContent" name="emailContent" rows="3"></textarea>
+					</div>
+					<div id="sendEmailBtnCont" class="row justify-content-center">
+						<button id="sendEmailBtn" class="btn col col-lg-10" type="submit" href="#">SEND EMAIL</button>
+					</div>
+				</form>
             </div>
 		</div>
 	</div>
