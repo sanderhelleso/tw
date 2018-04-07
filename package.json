@@ -1,0 +1,36 @@
+{
+  "name": "tw",
+  "version": "1.0.0",
+  "description": "Application for easy project management",
+  "main": "app.js",
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.4",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "babel-register": "^6.26.0",
+    "body-parser": "^1.18.2",
+    "brain.js": "^1.1.2",
+    "css-loader": "^0.28.11",
+    "ejs": "^2.5.7",
+    "express": "^4.16.3",
+    "express-handlebars": "^3.0.0",
+    "less": "^3.0.1",
+    "less-loader": "^4.1.0",
+    "nodemailer": "^4.6.4",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "style-loader": "^0.20.3",
+    "webpack": "^4.2.0",
+    "webpack-dev-server": "^3.1.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Sander Lade Hellesø",
+  "license": "ISC"
+}
