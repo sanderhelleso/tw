@@ -194,20 +194,25 @@
 					    <p id="noProjects">You have no active projects</p>
 					    <div class="row">
 						  <div class="col-sm-6">
-						    <div class="card">
+						    <div id="newProject" class="card text-center">
 						      <div class="card-body">
-						        <h5 class="card-title">Special title treatment</h5>
-						        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-						        <a href="#" class="btn btn-primary">Go somewhere</a>
+						        <h5 id="newProjectIcon" class="card-title newProjectIcon"><i data-feather="plus"></i></h5>
+						        <p>New Project</p>
 						      </div>
 						    </div>
 						  </div>
 						  <div class="col-sm-6">
 						    <div class="card">
 						      <div class="card-body">
-						        <h5 class="card-title">Special title treatment</h5>
-						        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-						        <a href="#" class="btn btn-primary">Go somewhere</a>
+						        <h5 id="projectTitle" class="card-title projectTitle">Mission to moon</h5>
+						        <p class="projectId">mission-to-moon-13f58</p>
+						        <img src="/img/avatar.png" class="col col-sm-2 projectAvatar">
+						        <img src="/img/avatar.png" class="col col-sm-2 projectAvatar">
+						        <img src="/img/avatar.png" class="col col-sm-2 projectAvatar">
+						        <img src="/img/avatar.png" class="col col-sm-2 projectAvatar">
+						        <div class="row col-sm-12 gotoProject">
+						        	<a href="#" class="btn gotoProjectBtn">Go to project</a>
+						        </div>
 						      </div>
 						    </div>
 						  </div>
@@ -488,8 +493,26 @@
             </div>
 		</div>
 	</div>
-
 	<!-- End EMAIL MODAL -->
+
+	<!-- NEW PROJECT MODAL -->
+	<div id="newProjectModal" class="modal fade newProjectModal modal-md" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-md">
+		   	<div id="newProjectModalCont" class="modal-content">
+                <button id="exitLoginModal" type="button" class="close text-right" data-dismiss="modal" aria-label="Close"><i data-feather="x"></i>
+                </button>
+                <h3 class="text-center">New Project</h3>
+                <div id="newProjectCont" class="row justify-content-center">
+                	
+                </div>
+                <div class="modal-footer">
+                	<button type="button" id="cancelProject" class="btn" data-dismiss="modal">CANCEL</button>
+		        	<button type="button" id="createProject" class="btn">CREATE PROJECT</button>
+		    	</div>
+            </div>
+		</div>
+	</div>
+	<!-- END NEW PROJECT MODAL -->
 
 
 	<!-- SNACKBAR -->

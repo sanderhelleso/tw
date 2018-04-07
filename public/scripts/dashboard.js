@@ -1841,6 +1841,7 @@ function profile() {
 	// show profile
 	document.getElementById("mainProfile").style.display = "block";
 	document.getElementById("profileCont").style.display = "block"
+
 	// new password btn
 	document.getElementById("changeProfilePassword").addEventListener("click", updatePassword);
 
@@ -1849,6 +1850,9 @@ function profile() {
 	for (var i = 0; i < inputs.length; i++) {
 		inputs[i].addEventListener("keyup", updateProfile);
 	}
+
+	// init project events
+	document.getElementById("newProjectIcon").addEventListener("click", newProject);
 
 	// init social media events
 	document.getElementById("addGithubURL").addEventListener("click", addGithubURL);
@@ -3182,6 +3186,17 @@ function removeTwitterURL() {
 	}, 3000);
 }
 
-
-
 /********************************* END PROFILE ***********************************/
+
+
+
+/******************************** PROJECT ***************************************/
+
+function newProject() {
+	console.log(123);
+	$('#newProjectModal').modal('show');
+}
+
+
+
+/******************************** END PROJECT ***********************************/

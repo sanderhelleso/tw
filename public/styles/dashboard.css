@@ -1849,7 +1849,79 @@ li .active {
 /******************************* PROJECTS MENU ***********************************/
 #projectsMenu .card {
 	margin-bottom: 5vh;
+	height: 200px;
+	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19);
+	border: none;
+	overflow: hidden;
+	overflow-y: scroll;
 }
+
+#projectsMenu .card:hover {
+	cursor: pointer;
+	background-color: #fafafa;
+}
+
+#newProject p {
+	color: #9e9e9e;
+}
+
+.newProjectIcon {
+	margin-top: 35px;
+}
+
+.projectTitle {
+	margin-bottom: 0px;
+}
+
+.projectId {
+	font-size: 14px;
+	color: #9e9e9e;
+	margin-bottom: 5px;
+}
+
+.newProjectIcon .feather {
+	height: 45px;
+	width: 45px;
+	stroke: #8c9eff;
+}
+
+.projectAvatar {
+	padding: 0;
+	border-radius: 50%;
+	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19);
+	max-height: 35px;
+	max-width: 35px;
+}
+
+.gotoProject {
+	margin-top: 5vh;
+}
+
+.gotoProjectBtn {
+	background-color: #8c9eff;
+	color: white;
+	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19);
+	transition: all 0.3s;
+}
+
+.gotoProjectBtn:hover {
+	background-color: #536dfe;
+	color: white;
+}
+
+#cancelProject {
+	background-color: white;
+	color: #9e9e9e;
+	font-size: 14px;
+}
+
+#createProject {
+	background-color: #8c9eff;
+	color: white;
+	font-size: 14px;
+	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19);
+}
+
 
 /******************************* END PROJECTS MENU *******************************/
 
