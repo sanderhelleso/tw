@@ -3373,16 +3373,50 @@ function selectProjectFriend() {
 	}
 }
 
+// create project and project referances
 function createProject() {
 	// check validation
 	if (validProjectName === true && validProjectDesc === true) {
+
+		// get project data
+		var projectId = document.getElementById("newProjectId").innerHTML;
+		var projectName = document.getElementById("newProjectName").value;
+		var projectDesc = document.getElementById("newProjectDesc").value;
+		var members = [];
 		
-		console.log(123);
 		// get selected friends to join project
 		var selected = document.getElementsByClassName("selectedProjectMember");
 		for (var i = 0; i < selected.length; i++) {
-			console.log(selected[i].parentElement.id.split("-")[1]);
+			var key = selected[i].parentElement.id.split("-")[1];
+			members.push(key);
+
+			// set project to every member
+			var memberRef = firebase.database().ref("accounts/" + key + "/projects/" + projectId);
+			memberRef.update({
+				id: projectId,
+				name: projectName,
+				description: projectDesc,
+				members: members
+			});
 		}
+
+		// set project creator
+		var memberRef = firebase.database().ref("accounts/" + uidKey+ "/projects/" + projectId);
+		memberRef.update({
+			id: projectId,
+			name: projectName,
+			description: projectDesc,
+			members: members
+		});
+
+		// create project and store
+		var projectRef = firebase.database().ref("projects/" + projectId);
+		projectRef.update({
+			id: projectId,
+			name: projectName,
+			description: projectDesc,
+			members: members
+		});
 	}
 }
 
