@@ -3615,8 +3615,9 @@ function createProject() {
 }
 
 // open selected project
+var selectedProject;
 function openProject() {
-	console.log(123);
+	selectedProject = this.parentElement.parentElement.parentElement.parentElement.id.split("t-")[1];
 	clear();
 
 	// open project
@@ -3676,6 +3677,19 @@ function addTimesheetEntry() {
 	console.log(hours.value);
 	console.log(description.value);
 	console.log(date.value);
+
+	// create timesheet and store
+	var timesheetRef = firebase.database().ref("projects/" + selectedProject + "/timesheet/" + uidKey + "/" + new Date().getTime());
+	timesheetRef.update({
+		hours: hours.value,
+		description: description.value,
+		date: date.value
+	});
+
+	// display message
+	snackbar.innerHTML = "Entry succesfully added!";
+	snackbar.className = "show";
+	setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
 }
 
 
