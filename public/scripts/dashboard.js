@@ -1509,10 +1509,6 @@ function findFriend() {
 		for (var i = 0; i < sendFriendRequestTrigger.length; i++) {
 			sendFriendRequestTrigger[i].addEventListener("click", sendFriendRequest);
 		}
-
-		// init send friend message trigger
-		/******* COMMING SOON ***********/
-
 	});
 }
 
@@ -2052,9 +2048,11 @@ function loadBlockedUsers() {
 // load projects connected to user
 function loadProjects() {
 	// clear and load
+	var count = 0;
 	document.getElementById("projectsCont").innerHTML = "";
 	var projectRef = firebase.database().ref("accounts/" + uidKey + "/projects");
 	projectRef.once("value", function(snapshot) {
+		count++;
 		snapshot.forEach((child) => {
 
 			console.log(child.val());
@@ -2115,6 +2113,14 @@ function loadProjects() {
 			// display
 			document.getElementById("projectsCont").appendChild(cont);
 		});
+
+		if (count > 0) {
+			document.getElementById("noProjects").style.display = "none";
+		}
+
+		else {
+			document.getElementById("noProjects").style.display = "block";
+		}
 	});
 }
 
@@ -3455,15 +3461,18 @@ function createProject() {
 		var projectName = document.getElementById("newProjectName").value;
 		var projectDesc = document.getElementById("newProjectDesc").value;
 		var members = [];
+		members.push(uidKey);
 		
 		// get selected friends to join project
 		var selected = document.getElementsByClassName("selectedProjectMember");
 		for (var i = 0; i < selected.length; i++) {
 			var key = selected[i].parentElement.id.split("-")[1];
 			members.push(key);
+		}
 
+		for (var i = 0; i < members.length; i++) {
 			// set project to every member
-			var memberRef = firebase.database().ref("accounts/" + key + "/projects/" + projectId);
+			var memberRef = firebase.database().ref("accounts/" + members[i] + "/projects/" + projectId);
 			memberRef.update({
 				id: projectId,
 				name: projectName,
@@ -3473,15 +3482,15 @@ function createProject() {
 		}
 
 		// set project creator
-		var memberRef = firebase.database().ref("accounts/" + uidKey+ "/projects/" + projectId);
-		memberRef.update({
+		var leaderRef = firebase.database().ref("accounts/" + uidKey + "/projects/" + projectId);
+		leaderRef.update({
 			id: projectId,
 			name: projectName,
 			description: projectDesc,
 			members: members
 		});
 
-		// create project and store
+		// create project and store data
 		var projectRef = firebase.database().ref("projects/" + projectId);
 		projectRef.update({
 			id: projectId,
@@ -3489,6 +3498,77 @@ function createProject() {
 			description: projectDesc,
 			members: members
 		});
+
+		// create leader ref
+		var projectRoleRef = firebase.database().ref("projects/" + projectId + "/roles");
+		projectRoleRef.update({
+			leader: uidKey
+		});
+
+		// create project elements
+		var cont = document.createElement("div");
+		cont.classList.add("col-sm-6");
+		cont.id = "project-" + projectId;
+
+		var card = document.createElement("div");
+		card.classList.add("card");
+
+		var cardBody = document.createElement("div");
+		cardBody.classList.add("card-body");
+
+		var title = document.createElement("h5");
+		title.classList.add("card-title") + title.classList.add("projectTitle");
+		title.innerHTML = projectName.capitalizeFirstLetter();
+
+		var id = document.createElement("p");
+		id.classList.add("projectId");
+		id.innerHTML = projectId.toLowerCase();
+
+		var avatarRow = document.createElement("div");
+
+		var btnCont = document.createElement("div");
+		btnCont.classList.add("row") + btnCont.classList.add("col-sm-12") + btnCont.classList.add("gotoProject");
+
+		var btn = document.createElement("a");
+		btn.classList.add("btn") + btn.classList.add("gotoProjectBtn");
+		btn.innerHTML = "Go to project";
+		btn.style.color = "white";
+
+		var justCreated = document.createElement("p");
+		justCreated.classList.add("justCreated");
+		justCreated.innerHTML = "New!";
+
+		// appends
+		cardBody.appendChild(justCreated);
+		cardBody.appendChild(title);
+		cardBody.appendChild(id);
+		cardBody.appendChild(avatarRow);
+
+		// images;
+		for (var i = 0; i < members.length; i++) {
+			var memberRef = firebase.database().ref("accounts/" + members[i]);
+			memberRef.once("value", function(snapshot) {
+				var avatar = document.createElement("img");
+				avatar.id = "member-" + snapshot.key;
+				avatar.classList.add("col-sm-2") + avatar.classList.add("projectAvatar");
+				avatar.src = snapshot.val().Avatar_url;
+				avatar.addEventListener("click", openProfile);
+				avatarRow.appendChild(avatar);
+			});
+		}
+
+		btnCont.appendChild(btn);
+		cardBody.appendChild(btnCont);
+		card.appendChild(cardBody);
+		cont.appendChild(card);
+
+		// display
+		document.getElementById("projectsCont").appendChild(cont);
+
+		// scroll animation to project
+		$('#mainProfile').animate({
+			scrollTop: $("#mainProfile")[0].scrollHeight,
+		}, 1500);
 
 		// close modal and show message
 		$('#newProjectModal').modal('hide');
