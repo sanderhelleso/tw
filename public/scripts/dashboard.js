@@ -3622,6 +3622,8 @@ function openProject() {
 	// open project
 	var project = document.getElementById("projectMain");
 	project.style.display = "block";
+
+	document.getElementById("timesheetTrigger").click();
 }
 
 

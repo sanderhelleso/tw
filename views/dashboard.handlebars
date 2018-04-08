@@ -84,7 +84,7 @@
 					  <li><a id="gotoProjects" data-toggle="tab" href="#project2">Milestones</a></li>
 					  <li><a data-toggle="tab" href="#project3">Members</a></li>
 					  <li><a data-toggle="tab" href="#project3">Report</a></li>
-					  <li><a data-toggle="tab" href="#project3">Timesheet</a></li>
+					  <li><a id="timesheetTrigger" data-toggle="tab" href="#timesheet">Timesheet</a></li>
 					  <li><a data-toggle="tab" href="#project4">Settings</a></li>
 					</ul>
 
@@ -95,8 +95,36 @@
 					  <div id="project2" class="tab-pane fade">
 					    <h3>Projects</h3>
 					  </div>
-					  <div id="project3" class="tab-pane fade">
-					    <h3 id="friendsHeading">Friends</h3>
+					  <div id="timesheet" class="tab-pane fade">
+					  	<div class="media">
+						  <img id="timesheetAvatar" class="mr-3" src="/img/pbgit.png" alt="Generic placeholder image">
+						  <div class="media-body">
+						    <h5 class="mt-0 timesheetName">Sander Hellesø</h5>
+						    <p>Project Member</p>
+						  </div>
+						</div>
+					    <div class="row col-lg-12">
+					    	<div class="col-lg-2">
+					    		<h5 class="timesheetHeading"><i data-feather="clock"></i> Hours</h5>
+								<input type="text" class="form-control" id="timesheetHour" aria-describedby="timesheetHour" placeholder="4">
+					    	</div>
+					    	<div class="col-lg-7">
+					    		<h5 class="timesheetHeading"><i data-feather="clipboard"></i> Description</h5>
+					    		<input type="text" class="form-control" id="timesheetDescription" aria-describedby="timesheetDescription" placeholder="Contacted space station...">
+					    	</div>
+					    	<div class="col-lg-3">
+					    		<h5 class="timesheetHeading"><i data-feather="calendar"></i> Date</h5>
+					    		<input type="text" class="form-control" id="timesheetDate" aria-describedby="timesheetDate" placeholder="08.04.2018">
+					    	</div>
+					    </div>
+					    <div class="row">
+					    	<div id="addTimesheetNoteCont" class="col-lg-2">
+					    		<div class="col-lg-12">
+					    			<p id="addTimesheetNoteError" class="btn col-lg-12"></p>
+					    			<a id="addTimesheetNote" class="btn col-lg-12">Add <i data-feather="plus-circle"></i></a>
+					    		</div>
+					    	</div>
+					    </div>
 					  </div>
 					  <div id="project4" class="tab-pane fade">
 					    <h3 id="settingsHeading">Settings</h3>
