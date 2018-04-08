@@ -1861,6 +1861,9 @@ function profile() {
 	document.getElementById("addFacebookURL").addEventListener("click", addFacebookURL);
 	document.getElementById("addTwitterURL").addEventListener("click", addTwitterURL);
 
+	// load user projects
+	loadProjects();
+
 	// load profile data
 	accountRef.once("value", function(snapshot) {
 		// set profile data into settings
@@ -2044,6 +2047,75 @@ function loadBlockedUsers() {
 	});
 	// init display blocked users
 	document.getElementById("toggleBlockedUsers").addEventListener("click", displayBlocked);
+}
+
+// load projects connected to user
+function loadProjects() {
+	// clear and load
+	document.getElementById("projectsCont").innerHTML = "";
+	var projectRef = firebase.database().ref("accounts/" + uidKey + "/projects");
+	projectRef.once("value", function(snapshot) {
+		snapshot.forEach((child) => {
+
+			console.log(child.val());
+			// create project elements
+			var cont = document.createElement("div");
+			cont.classList.add("col-sm-6");
+			cont.id = "project-" + child.val().id;
+
+			var card = document.createElement("div");
+			card.classList.add("card");
+
+			var cardBody = document.createElement("div");
+			cardBody.classList.add("card-body");
+
+			var title = document.createElement("h5");
+			title.classList.add("card-title") + title.classList.add("projectTitle");
+			title.innerHTML = child.val().name.capitalizeFirstLetter();
+
+			var id = document.createElement("p");
+			id.classList.add("projectId");
+			id.innerHTML = child.val().id;
+
+			var avatarRow = document.createElement("div");
+
+			var btnCont = document.createElement("div");
+			btnCont.classList.add("row") + btnCont.classList.add("col-sm-12") + btnCont.classList.add("gotoProject");
+
+			var btn = document.createElement("a");
+			btn.classList.add("btn") + btn.classList.add("gotoProjectBtn");
+			btn.innerHTML = "Go to project";
+			btn.style.color = "white";
+
+			// appends
+			cardBody.appendChild(title);
+			cardBody.appendChild(id);
+			cardBody.appendChild(avatarRow);
+
+			// images
+			var members = child.val().members;
+			for (var key in members) {
+				var key = members[key];
+				var memberRef = firebase.database().ref("accounts/" + key);
+				memberRef.once("value", function(snapshot) {
+					var avatar = document.createElement("img");
+					avatar.id = "member-" + snapshot.key;
+					avatar.classList.add("col-sm-2") + avatar.classList.add("projectAvatar");
+					avatar.src = snapshot.val().Avatar_url;
+					avatar.addEventListener("click", openProfile);
+					avatarRow.appendChild(avatar);
+				});
+			}
+
+			btnCont.appendChild(btn);
+			cardBody.appendChild(btnCont);
+			card.appendChild(cardBody);
+			cont.appendChild(card);
+
+			// display
+			document.getElementById("projectsCont").appendChild(cont);
+		});
+	});
 }
 
 // unblocks the user
@@ -3417,6 +3489,12 @@ function createProject() {
 			description: projectDesc,
 			members: members
 		});
+
+		// close modal and show message
+		$('#newProjectModal').modal('hide');
+		snackbar.innerHTML = "Project succesfully created!";
+		snackbar.className = "show";
+		setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
 	}
 }
 
