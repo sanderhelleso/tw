@@ -3624,6 +3624,58 @@ function openProject() {
 	project.style.display = "block";
 
 	document.getElementById("timesheetTrigger").click();
+
+	timesheet();
+}
+
+// timesheet for project members
+function timesheet() {
+	// style rows
+	var rowCount = 0;
+	var rowsHour = document.getElementsByClassName("timesheetRowHour");
+	var rowsDesc = document.getElementsByClassName("timesheetRowDesc");
+	var rowsDate = document.getElementsByClassName("timesheetRowDate");
+	for (var i = 0; i < rowsHour.length; i++) {
+		rowCount++;
+		if (rowCount > 1) {
+			rowsHour[i].style.borderTop = "none";
+			rowsDesc[i].style.borderTop = "none";
+			rowsDate[i].style.borderTop = "none";
+		}
+	}
+
+	// get time stamp
+	var now = new Date();
+	var year = now.getFullYear();
+	var month = now.getMonth()+1; 
+	var day = now.getDate();
+
+	// add zeros if needed
+	if (month.toString().length == 1) {
+		var month = '0' + month;
+	}
+	if (day.toString().length == 1) {
+		var day = '0' + day;
+	}   
+
+	// set todays date
+	var dateTime = day + '.' + month + '.' + year;
+	document.getElementById("timesheetDate").value = dateTime;
+
+	// init new timesheet entry
+	document.getElementById("addTimesheetNote").addEventListener("click", addTimesheetEntry);
+}
+
+// add a new entry to the timesheet table
+function addTimesheetEntry() {
+	// get input values
+	var hours = document.getElementById("timesheetHour");
+	var description = document.getElementById("timesheetDescription");
+	var date = document.getElementById("timesheetDate");
+
+	console.log(hours.value);
+	console.log(description.value);
+	console.log(date.value);
 }
 
 

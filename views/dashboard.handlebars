@@ -106,7 +106,7 @@
 					    <div class="row col-lg-12">
 					    	<div class="col-lg-2">
 					    		<h5 class="timesheetHeading"><i data-feather="clock"></i> Hours</h5>
-								<input type="text" class="form-control" id="timesheetHour" aria-describedby="timesheetHour" placeholder="4">
+								<input type="number" class="form-control" id="timesheetHour" aria-describedby="timesheetHour" placeholder="4" maxlength="3">
 					    	</div>
 					    	<div class="col-lg-7">
 					    		<h5 class="timesheetHeading"><i data-feather="clipboard"></i> Description</h5>
@@ -114,7 +114,7 @@
 					    	</div>
 					    	<div class="col-lg-3">
 					    		<h5 class="timesheetHeading"><i data-feather="calendar"></i> Date</h5>
-					    		<input type="text" class="form-control" id="timesheetDate" aria-describedby="timesheetDate" placeholder="08.04.2018">
+					    		<input type="text" class="form-control" id="timesheetDate" aria-describedby="timesheetDate" placeholder="08.04.2018" readonly="true">
 					    	</div>
 					    </div>
 					    <div class="row">
@@ -122,6 +122,33 @@
 					    		<div class="col-lg-12">
 					    			<p id="addTimesheetNoteError" class="btn col-lg-12"></p>
 					    			<a id="addTimesheetNote" class="btn col-lg-12">Add <i data-feather="plus-circle"></i></a>
+					    		</div>
+					    	</div>
+					    </div>
+					    <h5 id="entries">Entries</h5>
+					    <div id="mainTimesheetRow" class="row col-lg-12">
+					    	<div id="mainTimesheetHour" class="col-lg-2">
+								<div class="col-lg-12 timesheetRow timesheetRowHour">
+									<p>4</p>
+								</div>
+								<div class="col-lg-12 timesheetRow timesheetRowHour">
+									<p>8</p>
+								</div>
+					    	</div>
+					    	<div id="mainTimesheetDesc" class="col-lg-7">
+					    		<div class="col-lg-12 timesheetRow timesheetRowDesc">
+					    			<p>Contacted space station</p>
+					    		</div>
+					    		<div class="col-lg-12 timesheetRow timesheetRowDesc">
+					    			<p>Went to Mars</p>
+					    		</div>
+					    	</div>
+					    	<div id="mainTimesheetHour" class="col-lg-3">
+					    		<div class="col-lg-12 timesheetRow timesheetRowDate">
+					    			<p>08.04.2018</p>
+					    		</div>
+					    		<div class="col-lg-12 timesheetRow timesheetRowDate">
+					    			<p>10.04.2018</p>
 					    		</div>
 					    	</div>
 					    </div>

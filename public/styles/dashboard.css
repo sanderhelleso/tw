@@ -2116,6 +2116,7 @@ li .active {
 	margin-top: 1vh;
 	font-size: 14px;
 	transition: all 0.3s;
+	margin-bottom: 5vh;
 }
 
 #addTimesheetNote .feather {
@@ -2134,6 +2135,42 @@ li .active {
 	color: #ef5350;
 	margin-bottom: 0;
 	display: none;
+}
+
+.timesheetRow {
+	padding: 10px;
+	border: 1px solid #e0e0e0;
+}
+
+.timesheetRow p {
+	margin-bottom: 0;
+	font-size: 14px;
+	padding: 5px;
+}
+
+.timesheetRowDesc {
+	border-left: 0;
+	border-right: 0;
+}
+
+#mainTimesheetRow {
+	margin-left: 0.25%;
+}
+
+#mainTimesheetRow div {
+	padding: 0;
+}
+
+#entries {
+	margin-left: 2%;
+	font-weight: 400;
+	margin-bottom: 2vh;
+	color: #9e9e9e;
+}
+
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    display: none;
 }
 
 /******************************* END PROJECTS MENU *******************************/
