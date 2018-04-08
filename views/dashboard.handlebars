@@ -26,8 +26,8 @@
 			        <a id="userAccount" class="nav-link" href="#"  role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 			      	</a>
 			        <div id="userAccountMenu" class="dropdown-menu dropleft animated" aria-labelledby="userAccount">
-			          <a id="newProject" class="dropdown-item" href="#"><i data-feather="plus-square"></i> New Project</a>
-			          <a class="dropdown-item" href="#"><i data-feather="folder"></i> My Projects</a>
+			          <a id="newProjectTrigger" class="dropdown-item" href="#"><i data-feather="plus-square"></i> New Project</a>
+			          <a id="myProjectsTrigger" class="dropdown-item" href="#"><i data-feather="folder"></i> My Projects</a>
 			          <a id="profileTrigger" class="dropdown-item" href="#"><i data-feather="user"></i> Profile</a>
 			          <a id="socialTrigger" class="dropdown-item" href="#"><i data-feather="globe"></i> Social</a>
 			          <div class="dropdown-divider"></div>
@@ -76,6 +76,34 @@
 	    </div>
 	  	<div id="mainDashboard">
 	  		<div id="dashboardContainer" class="row">
+
+	  			<!-- PROJECT START -->
+				<div id="projectMain" class="col-lg-12 animated justify-content-center">
+					<ul id="profileTabsProject" class="nav nav-tabs">
+					  <li class="active"><a id="overviewTrigger" data-toggle="tab" href="#project1">Overview</a></li>
+					  <li><a id="gotoProjects" data-toggle="tab" href="#project2">Milestones</a></li>
+					  <li><a data-toggle="tab" href="#project3">Members</a></li>
+					  <li><a data-toggle="tab" href="#project3">Report</a></li>
+					  <li><a data-toggle="tab" href="#project3">Timesheet</a></li>
+					  <li><a data-toggle="tab" href="#project4">Settings</a></li>
+					</ul>
+
+					<div class="tab-content">
+					  <div id="project1" class="tab-pane fade in active">
+					    <h3>Overview</h3>
+					  </div>
+					  <div id="project2" class="tab-pane fade">
+					    <h3>Projects</h3>
+					  </div>
+					  <div id="project3" class="tab-pane fade">
+					    <h3 id="friendsHeading">Friends</h3>
+					  </div>
+					  <div id="project4" class="tab-pane fade">
+					    <h3 id="settingsHeading">Settings</h3>
+					  </div>
+					</div>
+				</div>
+	  			<!-- END PROJECT -->
 
 	  			<!-- SOCIAL START -->
 	  			<div id="socialMain" class="col col-lg-9 animated">
@@ -179,7 +207,7 @@
 	  			<div id="mainProfile" class="col col-lg-8">
 	  				<ul id="profileTabs" class="nav nav-tabs">
 					  <li class="active"><a id="overviewTrigger" data-toggle="tab" href="#home">Overview</a></li>
-					  <li><a data-toggle="tab" href="#projectsMenu">Projects</a></li>
+					  <li><a id="gotoProjects" data-toggle="tab" href="#projectsMenu">Projects</a></li>
 					  <li><a data-toggle="tab" href="#menu2">Friends</a></li>
 					  <li><a data-toggle="tab" href="#menu3">Settings</a></li>
 					</ul>

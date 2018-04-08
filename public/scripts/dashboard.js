@@ -105,7 +105,7 @@ function start() {
 				loadFriends();
 
 				// load overview on profile load
-				//document.getElementById("overviewTrigger").click();
+				document.getElementById("overviewTrigger").click();
 				
 				// file upload on avatar click
 				$('#profileImg').click(function(){ $('#avatarUpload').trigger('click'); });
@@ -132,6 +132,12 @@ function start() {
 
 	// notifications
 	document.getElementById("notificationsOff").addEventListener("click", toggleNotifications);
+
+	// trigger new project event
+	document.getElementById("newProjectTrigger").addEventListener("click", openNewProject);
+
+	// trigger my projects event
+	document.getElementById("myProjectsTrigger").addEventListener("click", openMyProjects);
 
 	// trigger social events
 	document.getElementById("socialTrigger").addEventListener("click", social);
@@ -2084,6 +2090,7 @@ function loadProjects() {
 			btn.classList.add("btn") + btn.classList.add("gotoProjectBtn");
 			btn.innerHTML = "Go to project";
 			btn.style.color = "white";
+			btn.addEventListener("click", openProject);
 
 			// appends
 			cardBody.appendChild(title);
@@ -3270,6 +3277,34 @@ function removeTwitterURL() {
 
 /******************************** PROJECT ***************************************/
 
+// open new project modal
+function openNewProject() {
+	// open profile
+	profile();
+
+	// go to projects
+	document.getElementById("gotoProjects").click();
+	newProject();
+}
+
+// open my projects
+function openMyProjects() {
+	// open profile
+	profile();
+
+	// go to projects
+	document.getElementById("gotoProjects").click();
+	document.getElementById("myProjects").scrollIntoView();
+
+	// scroll animation to my projects
+	var ele = document.getElementById("myProjects");
+	topPos = ele.offsetTop;
+	console.log(topPos);
+	$('#mainProfile').animate({
+		scrollTop: topPos - 20,
+	}, 1000);
+}
+
 // create a new project
 function newProject() {
 	// reset elements
@@ -3533,6 +3568,7 @@ function createProject() {
 		btn.classList.add("btn") + btn.classList.add("gotoProjectBtn");
 		btn.innerHTML = "Go to project";
 		btn.style.color = "white";
+		btn.addEventListener("click", openProject);
 
 		var justCreated = document.createElement("p");
 		justCreated.classList.add("justCreated");
@@ -3578,6 +3614,15 @@ function createProject() {
 	}
 }
 
+// open selected project
+function openProject() {
+	console.log(123);
+	clear();
+
+	// open project
+	var project = document.getElementById("projectMain");
+	project.style.display = "block";
+}
 
 
 /******************************** END PROJECT ***********************************/

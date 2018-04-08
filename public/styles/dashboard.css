@@ -2045,6 +2045,39 @@ li .active {
 	padding-top: 10px;
 }
 
+#projectMain {
+	display: none;
+}
+
+#profileTabsProject {
+	width: 96%;
+	margin-top: 2%;
+	margin-bottom: 2%;
+	margin-left: 2%;
+}
+
+#profileTabsProject li {
+	margin-right: 8%;
+	padding-bottom: 2%;
+}
+
+#profileTabsProject li a {
+	text-decoration: none;
+	color: #8c9eff;
+}
+
+#profileTabsProject a .active {
+	padding-bottom: 20px;
+}
+
+#profileTabsProject li a:hover {
+	opacity: 0.8;
+}
+
+li .active {
+	
+}
+
 /******************************* END PROJECTS MENU *******************************/
 
 /* Animations to fade the snackbar in and out */
