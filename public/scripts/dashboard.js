@@ -3192,9 +3192,198 @@ function removeTwitterURL() {
 
 /******************************** PROJECT ***************************************/
 
+// create a new project
 function newProject() {
-	console.log(123);
+	// reset elements
+	document.getElementById("newProjectFriends").innerHTML = "";
+	document.getElementById("newProjectId").innerHTML = "";
+	var inputs = document.getElementsByClassName("newProjectInput");
+	for (var i = 0; i < inputs.length; i++) {
+		inputs[i].value = "";
+	}
+
+	// init input events
+	document.getElementById("newProjectName").addEventListener("keyup", newProjectName);
+	document.getElementById("newProjectDesc").addEventListener("keyup", newProjectDesc);
+
+	// init create project event
+	document.getElementById("createProject").addEventListener("click", createProject);
+
+	// load friends available to join project
+	var friendsRef = firebase.database().ref("accounts/" + uidKey + "/friends");
+	friendsRef.once("value", function(snapshot) {
+		console.log(snapshot.val());
+		snapshot.forEach((child) => {
+			
+			// create friend container
+			var cont = document.createElement("div");
+			cont.id = "profile-" + child.key;
+			cont.classList.add("col") + cont.classList.add("col-lg-6") + cont.classList.add("newProjectFriendsCont") + cont.classList.add("fadeIn") + cont.classList.add("fadeIn") + cont.classList.add("profile-" + child.key);
+
+			// create avatar img
+			var friendImg = document.createElement("img");
+			friendImg.classList.add("newProjectFriendAvatar");
+
+			// add select friend for project event
+			friendImg.addEventListener("click", selectProjectFriend);
+
+			// set img src to be avatar url
+			friendRef = firebase.database().ref("accounts/" + child.key);
+			friendRef.once("value", function(snapshot) {
+				if (snapshot.val().Avatar_url != undefined) {
+					friendImg.src = snapshot.val().Avatar_url;
+				}
+
+				else {
+					friendImg.src = "/img/avatar.png";
+				}
+			});
+
+			// create friend name
+			var friendName = document.createElement("h5");
+			friendName.classList.add("friendsName") + friendName.classList.add("text-center");
+			friendName.innerHTML = child.val().First_Name.capitalizeFirstLetter() + " " + child.val().Last_Name.capitalizeFirstLetter();
+
+			// create friend email
+			var friendEmail = document.createElement("p");
+			friendEmail.classList.add("friendsEmail") + friendEmail.classList.add("text-center");
+			friendEmail.innerHTML = child.val().Email;
+
+			// append
+			cont.appendChild(friendImg);
+			cont.appendChild(friendName);
+			cont.appendChild(friendEmail);
+
+			// display
+			document.getElementById("newProjectFriends").appendChild(cont);
+  		});
+	});
+
+	// open modal
 	$('#newProjectModal').modal('show');
+}
+
+// globals used for project check
+var validProjectName = false;
+var validProjectDesc = true;
+
+// timer
+var typingTimer;
+var doneTypingInterval = 1000;
+// check name and create project id
+function newProjectName() {
+	// get input
+	var projectName = this;
+
+	// form check
+	if (projectName.value === "") {
+		document.getElementById("projectNameError").innerHTML = "";
+		validProjectName = false;
+	}
+
+	else if (projectName.value.length < 4) {
+		document.getElementById("projectNameError").innerHTML = "Must be at least 4 characters long";
+		validProjectName = false;
+		return;
+	}
+
+	else if (projectName.value.length > 30) {
+		document.getElementById("projectNameError").innerHTML = "Cannot be longer than 30 characters";
+		validProjectName = false;
+		return;
+	}
+
+	else {
+		document.getElementById("projectNameError").innerHTML = "";
+		validProjectName = true;
+	}
+
+	// start countdown
+	clearTimeout(typingTimer);
+  	typingTimer = setTimeout(doneTyping, doneTypingInterval);
+
+  	// clear countdown
+  	projectName.addEventListener("keydown", function () {
+	  clearTimeout(typingTimer);
+	});
+
+	//user display generated id when user is done typing
+	function doneTyping () {
+		// replace space with binding
+		var bind = projectName.value.replace(/ /g, "-");
+	 	
+	 	// generate e random id
+	 	var possible = "abcdefghijklmnopqrstuvwxyz0123456789";
+	 	var id = "-";
+
+	 	// create id
+	  	for (var i = 0; i < 5; i++) {
+	    	id += possible.charAt(Math.floor(Math.random() * possible.length));
+		}
+
+		var projectId = bind + id;
+		if (projectName.value === "") {
+			document.getElementById("newProjectId").innerHTML = "";
+		}
+
+		// display the ID if the input is not empty
+		else {
+			document.getElementById("newProjectId").innerHTML = projectId.toLowerCase();
+			console.log(projectId);
+		}
+	}
+}
+
+// project description
+function newProjectDesc() {
+	console.log(this);
+	// form check
+	var projectDesc = this;
+	if (projectDesc.value === "") {
+		document.getElementById("projectDescError").innerHTML = "";
+		validProjectDesc = true;
+	}
+
+	else if (projectDesc.value.length > 255) {
+		document.getElementById("projectDescError").innerHTML = "Connot be longer than 255 characters";
+		validProjectDesc = false;
+		return;
+	}
+
+	else {
+		validProjectDesc = true;
+	}
+}
+
+// select new project members / friends
+function selectProjectFriend() {
+
+	console.log(this.parentElement.childNodes[0]);
+
+	if (this.classList.contains("selectedProjectMember")) {
+		this.classList.remove("selectedProjectMember");
+		this.parentElement.childNodes[1].classList.remove("selectedProjectMemberInfo");
+		this.parentElement.childNodes[2].classList.remove("selectedProjectMemberInfo");
+	}
+
+	else {
+		this.classList.add("selectedProjectMember");
+		this.parentElement.childNodes[1].classList.add("selectedProjectMemberInfo");
+		this.parentElement.childNodes[2].classList.add("selectedProjectMemberInfo");
+	}
+}
+
+function createProject() {
+	// check validation
+	if (validProjectName === true && validProjectDesc === true) {
+		
+		console.log(123);
+		// get selected friends to join project
+		var selected = document.getElementsByClassName("selectedProjectMember");
+		for (var i = 0; i < selected.length; i++) {
+			console.log(selected[i].parentElement.id.split("-")[1]);
+		}
+	}
 }
 
 
