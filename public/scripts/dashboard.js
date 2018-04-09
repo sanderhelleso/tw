@@ -3696,10 +3696,13 @@ function members() {
 }
 
 // display a selected project member
+var selectedMemberKey;
 function selectMember() {
-	// init update role event
+	// init update role event and reset values on member change
 	var select = document.getElementById("selectRole");
+	select.value = "Choose";
 	select.addEventListener("change", checkRole);
+	checkRole();
 
 	// set selected styling
 	var membersConts = document.getElementsByClassName("memberMedia");
@@ -3711,11 +3714,13 @@ function selectMember() {
 	var key;
 	if (this.tagName === "DIV") {
 		key = this.id.split("-")[1];
+		selectedMemberKey = this.id.split("-")[1];
 		this.classList.add("activeMember");
 	}
 
 	else {
 		key = uidKey;
+		selectedMemberKey = uidKey;
 		document.getElementById("projectmember-" + uidKey).classList.add("activeMember");
 	}
 
@@ -3776,15 +3781,17 @@ function selectMember() {
 
 // check selected role
 function checkRole() {
-	console.log(this.value);
 	var btn = document.getElementById("updateRoleBtn");
-	if (this.value != "Choose") {
+	if (document.getElementById("selectRole").value != "Choose") {
 		btn.classList.add("updateRoleBtnOK");
 		btn.classList.remove("disabled");
 		btn.style.border = "1px solid #8c9eff"
 		btn.style.backgroundColor = "#8c9eff";
 		btn.style.color = "white";
 		btn.style.opacity = "1";
+
+		// init confirm role change event
+		btn.addEventListener("click", updateRole);
 	}
 
 	else {
@@ -3794,7 +3801,35 @@ function checkRole() {
 		btn.style.backgroundColor = "white";
 		btn.style.color = "#9e9e9e";
 		btn.style.opacity = "0.5";
+
+		// remove event listener
+		btn.removeEventListener("click", updateRole);
 	}
+}
+
+// update selected members project role
+function updateRole() {
+	// get value
+	var value = document.getElementById("selectRole").value;
+
+	// get ref
+	var projectRoleRef = firebase.database().ref("projects/" + selectedProject + "/roles/" + selectedMemberKey);
+	projectRoleRef.update({
+		role: value
+	});
+
+	// update values
+	document.getElementById("projectmember-" + selectedMemberKey).childNodes[1].childNodes[1].innerHTML = value;
+	document.getElementById("projectRole").innerHTML = value;
+
+	// display message
+	snackbar.innerHTML = "Role succesfully updated!";
+	snackbar.className = "show";
+	setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
+
+	// reset
+	document.getElementById("selectRole").value = "Choose";
+	checkRole();
 }
 
 // timesheet for project member
