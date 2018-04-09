@@ -2116,11 +2116,11 @@ li .active {
 	color: #9e9e9e;
 }
 
-.timesheetName {
+.timesheetName, .memberName {
 	margin-bottom: 0;
 }
 
-#timesheetAvatar {
+#timesheetAvatar, .memberAvatar {
 	height: 45px;
 	width: 45px;
 	border-radius: 50%;
@@ -2243,6 +2243,38 @@ li .active {
 input[type=number]::-webkit-inner-spin-button {
     -webkit-appearance: none;
     display: none;
+}
+
+#membersAside {
+	border-right: 1px solid #e0e0e0;
+	overflow: hidden;
+	overflow-y: scroll;
+	padding: 0;
+}
+
+#members h4 {
+	margin-left: 2%;
+	font-weight: 400;
+	font-size: 18px;
+	color: #9e9e9e;
+}
+
+#members h4 .feather {
+	stroke: #8c9eff;
+	margin-right: 5px;
+}
+
+.memberMedia {
+	padding: 2%;
+	padding-left: 4%;
+	padding-top: 4%;
+	padding-bottom: 1%;
+	margin: 0;
+}
+
+.memberMedia:hover {
+	cursor: pointer;
+	background-color: #eeeeee
 }
 
 /******************************* END PROJECTS MENU *******************************/

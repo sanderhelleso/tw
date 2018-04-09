@@ -3613,6 +3613,7 @@ function createProject() {
 
 // open selected project
 var selectedProject;
+var selectedAvatar;
 function openProject() {
 	selectedProject = this.parentElement.parentElement.parentElement.parentElement.id.split("t-")[1];
 	clear();
@@ -3621,13 +3622,73 @@ function openProject() {
 	var project = document.getElementById("projectMain");
 	project.style.display = "block";
 
-	document.getElementById("timesheetTrigger").click();
+	document.getElementById("membersTrigger").click();
+	//document.getElementById("timesheetTrigger").click();
 
+	members();
 	timesheet();
 }
 
+// members for project
+function members() {
+	// get key
+	selectedAvatar = uidKey;
+	if (this.tagName === "IMG") {
+		selectedAvatar = this.id.split("-")[1];
+	}
+
+	// load members
+	var members = [];
+	var projectMembersRef = firebase.database().ref("projects/" + selectedProject + "/members");
+	projectMembersRef.once("value", function(snapshot) {
+		snapshot.forEach((child) => {
+			members.push(child.val());
+		});
+		
+		// create member avatars
+		for (var i = 0; i < members.length; i++) {
+			// set img src to be avatar url
+			var memberRef = firebase.database().ref("accounts/" + members[i]);
+			memberRef.once("value", function(snapshot) {
+				var cont = document.createElement("div");
+				cont.classList.add("media") + cont.classList.add("col-lg-12") + cont.classList.add("memberMedia");
+
+				var img = document.createElement("img");
+				img.classList.add("memberAvatar") + img.classList.add("mr-3");
+
+				if (snapshot.val().Avatar_url != undefined) {
+					img.src = snapshot.val().Avatar_url;
+				}
+
+				else {
+					img.src = "/img/avatar.png";
+				}
+
+				img.id = "projmember-" + snapshot.key;
+				//membersCont.appendChild(img);
+
+				var body = document.createElement("div");
+				body.classList.add("media-body");
+
+				var name = document.createElement("h5");
+				name.classList.add("memberName") + name.classList.add("mt-0");
+				name.innerHTML = snapshot.val().First_Name.capitalizeFirstLetter() + " " + snapshot.val().Last_Name.capitalizeFirstLetter();
+				var role = document.createElement("p");
+				role.innerHTML = "Project Member";
+
+				cont.appendChild(img);
+				body.appendChild(name);
+				body.appendChild(role);
+				cont.appendChild(body);
+
+				document.getElementById("membersAside").appendChild(cont);
+			});
+			console.log(members);
+		}
+	});
+}
+
 // timesheet for project members
-var selectedAvatar;
 var commitCount = 0;
 var hoursCount = 0;
 var dayCount = 0;
