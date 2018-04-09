@@ -3674,8 +3674,13 @@ function members() {
 				var name = document.createElement("h5");
 				name.classList.add("memberName") + name.classList.add("mt-0");
 				name.innerHTML = snapshot.val().First_Name.capitalizeFirstLetter() + " " + snapshot.val().Last_Name.capitalizeFirstLetter();
+
+				// get role
 				var role = document.createElement("p");
-				role.innerHTML = "Project Member";
+				var projectRoleRef = firebase.database().ref("projects/" + selectedProject + "/roles/" + snapshot.key + "/role");
+				projectRoleRef.once("value", function(snapshot) {
+					role.innerHTML = snapshot.val().split(" ")[0].capitalizeFirstLetter() + " " + snapshot.val().split(" ")[1].capitalizeFirstLetter();
+				});
 
 				cont.appendChild(img);
 				body.appendChild(name);
@@ -3683,16 +3688,18 @@ function members() {
 				cont.appendChild(body);
 
 				document.getElementById("membersAside").appendChild(cont);
+				// run to open logged inn account
+				selectMember();
 			});
-			console.log(members);
 		}
 	});
 }
 
 // display a selected project member
 function selectMember() {
-	//get key
-	var key = this.id.split("-")[1];
+	// init update role event
+	var select = document.getElementById("selectRole");
+	select.addEventListener("change", checkRole);
 
 	// set selected styling
 	var membersConts = document.getElementsByClassName("memberMedia");
@@ -3700,28 +3707,97 @@ function selectMember() {
 		membersConts[i].classList.remove("activeMember");
 	}
 
-	this.classList.add("activeMember");
+	//get key
+	var key;
+	if (this.tagName === "DIV") {
+		key = this.id.split("-")[1];
+		this.classList.add("activeMember");
+	}
+
+	else {
+		key = uidKey;
+		document.getElementById("projectmember-" + uidKey).classList.add("activeMember");
+	}
 
 	// get data
 	var avatar = document.getElementById("selectedMemberAvatar");
 	var name = document.getElementById("selectedMemberName");
 	var mail = document.getElementById("selectedMemberMail");
 	avatar.style.width = avatar.parentElement.offsetWidth + "px";
+	avatar.style.height = avatar.parentElement.offsetWidth + "px";
 
 	var memberRef = firebase.database().ref("accounts/" + key);
 	memberRef.once("value", function(snapshot) {
 		avatar.src = snapshot.val().Avatar_url;
 		name.innerHTML = snapshot.val().First_Name.capitalizeFirstLetter() + " " + snapshot.val().Last_Name.capitalizeFirstLetter();
 		mail.innerHTML = snapshot.val().Email;
+		avatar.style.display = "block";
+	});
+
+	// get users role
+	var projectRoleRef = firebase.database().ref("projects/" + selectedProject + "/roles/" + key + "/role");
+	projectRoleRef.once("value", function(snapshot) {
+		// check if a role is set
+		if (snapshot.val() === null || snapshot.val() === undefined) {
+			// set project member if no role
+			var setRoleRef = firebase.database().ref("projects/" + selectedProject + "/roles/" + key);
+			setRoleRef.update({
+				role: "Project Member"
+			});
+			document.getElementById("projectRole").innerHTML = "Project Member";
+		}
+
+		else {
+			// set role
+			document.getElementById("projectRole").innerHTML = snapshot.val().split(" ")[0].capitalizeFirstLetter() + " " + snapshot.val().split(" ")[1].capitalizeFirstLetter();
+		}
+		
+		// disable role from update menu
+		for (var i = 0; i < select.childNodes.length; i++) {
+			if (select.childNodes[i].tagName === "OPTION") {
+				if (select.childNodes[i].value === snapshot.val()) {
+					select.childNodes[i].setAttribute("disabled", true);
+				}
+
+				else {
+					select.childNodes[i].removeAttribute("disabled");
+				}
+			}
+		}
+		document.getElementById("currentRole").style.display = "block";
 	});
 
 	// responsive img / auto resize
 	window.onresize = function(event) {
 		avatar.style.width = avatar.parentElement.offsetWidth + "px";
+		avatar.style.height = avatar.parentElement.offsetWidth + "px";
 	};
 }
 
-// timesheet for project members
+// check selected role
+function checkRole() {
+	console.log(this.value);
+	var btn = document.getElementById("updateRoleBtn");
+	if (this.value != "Choose") {
+		btn.classList.add("updateRoleBtnOK");
+		btn.classList.remove("disabled");
+		btn.style.border = "1px solid #8c9eff"
+		btn.style.backgroundColor = "#8c9eff";
+		btn.style.color = "white";
+		btn.style.opacity = "1";
+	}
+
+	else {
+		btn.classList.remove("updateRoleBtnOK");
+		btn.classList.add("disabled");
+		btn.style.border = "1px solid #9e9e9e";
+		btn.style.backgroundColor = "white";
+		btn.style.color = "#9e9e9e";
+		btn.style.opacity = "0.5";
+	}
+}
+
+// timesheet for project member
 var commitCount = 0;
 var hoursCount = 0;
 var dayCount = 0;
