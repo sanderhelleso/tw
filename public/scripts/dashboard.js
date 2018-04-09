@@ -3651,7 +3651,9 @@ function members() {
 			var memberRef = firebase.database().ref("accounts/" + members[i]);
 			memberRef.once("value", function(snapshot) {
 				var cont = document.createElement("div");
+				cont.id = "projectmember-" + snapshot.key;
 				cont.classList.add("media") + cont.classList.add("col-lg-12") + cont.classList.add("memberMedia");
+				cont.addEventListener("click", selectMember);
 
 				var img = document.createElement("img");
 				img.classList.add("memberAvatar") + img.classList.add("mr-3");
@@ -3665,7 +3667,6 @@ function members() {
 				}
 
 				img.id = "projmember-" + snapshot.key;
-				//membersCont.appendChild(img);
 
 				var body = document.createElement("div");
 				body.classList.add("media-body");
@@ -3686,6 +3687,38 @@ function members() {
 			console.log(members);
 		}
 	});
+}
+
+// display a selected project member
+function selectMember() {
+	//get key
+	var key = this.id.split("-")[1];
+
+	// set selected styling
+	var membersConts = document.getElementsByClassName("memberMedia");
+	for (var i = 0; i < membersConts.length; i++) {
+		membersConts[i].classList.remove("activeMember");
+	}
+
+	this.classList.add("activeMember");
+
+	// get data
+	var avatar = document.getElementById("selectedMemberAvatar");
+	var name = document.getElementById("selectedMemberName");
+	var mail = document.getElementById("selectedMemberMail");
+	avatar.style.width = avatar.parentElement.offsetWidth + "px";
+
+	var memberRef = firebase.database().ref("accounts/" + key);
+	memberRef.once("value", function(snapshot) {
+		avatar.src = snapshot.val().Avatar_url;
+		name.innerHTML = snapshot.val().First_Name.capitalizeFirstLetter() + " " + snapshot.val().Last_Name.capitalizeFirstLetter();
+		mail.innerHTML = snapshot.val().Email;
+	});
+
+	// responsive img / auto resize
+	window.onresize = function(event) {
+		avatar.style.width = avatar.parentElement.offsetWidth + "px";
+	};
 }
 
 // timesheet for project members
