@@ -3449,7 +3449,6 @@ function newProjectName() {
 
 // project description
 function newProjectDesc() {
-	console.log(this);
 	// form check
 	var projectDesc = this;
 	if (projectDesc.value === "") {
@@ -3470,9 +3469,7 @@ function newProjectDesc() {
 
 // select new project members / friends
 function selectProjectFriend() {
-
-	console.log(this.parentElement.childNodes[0]);
-
+	// check class
 	if (this.classList.contains("selectedProjectMember")) {
 		this.classList.remove("selectedProjectMember");
 		this.parentElement.childNodes[1].classList.remove("selectedProjectMemberInfo");
@@ -3630,20 +3627,150 @@ function openProject() {
 }
 
 // timesheet for project members
+var selectedAvatar;
+var commitCount = 0;
+var hoursCount = 0;
+var dayCount = 0;
+var timesheetName;
 function timesheet() {
-	// style rows
-	var rowCount = 0;
-	var rowsHour = document.getElementsByClassName("timesheetRowHour");
-	var rowsDesc = document.getElementsByClassName("timesheetRowDesc");
-	var rowsDate = document.getElementsByClassName("timesheetRowDate");
-	for (var i = 0; i < rowsHour.length; i++) {
-		rowCount++;
-		if (rowCount > 1) {
-			rowsHour[i].style.borderTop = "none";
-			rowsDesc[i].style.borderTop = "none";
-			rowsDate[i].style.borderTop = "none";
-		}
+	// get key
+	selectedAvatar = uidKey;
+	if (this.tagName === "IMG") {
+		selectedAvatar = this.id.split("-")[1];
 	}
+
+	// set img and name
+	var accRef = firebase.database().ref("accounts/" + selectedAvatar);
+	accRef.once("value", function(snapshot) {
+		document.getElementById("timesheetAvatar").src = snapshot.val().Avatar_url;
+		document.getElementById("timesheetUsername").innerHTML = snapshot.val().First_Name.capitalizeFirstLetter() + " " + snapshot.val().Last_Name.capitalizeFirstLetter();
+		timesheetName = snapshot.val().First_Name.capitalizeFirstLetter();
+	});
+
+	// get main container
+	var hoursCont = document.getElementById("mainTimesheetHour");
+	var descCont = document.getElementById("mainTimesheetDesc");
+	var dateCont = document.getElementById("mainTimesheetDate");
+
+	// reset on load
+	document.getElementById("mainTimesheetHour").innerHTML = "";
+	document.getElementById("mainTimesheetDesc").innerHTML = "";
+	document.getElementById("mainTimesheetDate").innerHTML = "";
+	document.getElementById("timesheetInputCont").style.display = "none";
+	document.getElementById("addTimesheetNoteMainCont").style.display = "none";
+	commitCount = 0;
+	hoursCount = 0;
+
+	// load members
+	var members = [];
+	var membersCont = document.getElementById("timesheetAvatars");
+	membersCont.innerHTML = "";
+	var projectMembersRef = firebase.database().ref("projects/" + selectedProject + "/members");
+	projectMembersRef.once("value", function(snapshot) {
+		snapshot.forEach((child) => {
+				members.push(child.val());
+		});
+		
+		// create member avatars
+		for (var i = 0; i < members.length; i++) {
+			// set img src to be avatar url
+			var memberRef = firebase.database().ref("accounts/" + members[i]);
+			memberRef.once("value", function(snapshot) {
+				var img = document.createElement("img");
+				if (snapshot.val().Avatar_url != undefined) {
+					img.src = snapshot.val().Avatar_url;
+				}
+
+				else {
+					img.src = "/img/avatar.png";
+				}
+
+				// init timesheet event for members
+				img.id = "member-" + snapshot.key;
+				img.addEventListener("click", timesheet);
+				membersCont.appendChild(img);
+
+				// modificate timesheet styles and inputs depending on who user is viewing
+				if (selectedAvatar === uidKey) {
+					document.getElementById("member-" + uidKey).style.display = "none";
+					document.getElementById("timesheetInputCont").style.display = "inline-flex";
+					document.getElementById("addTimesheetNoteMainCont").style.display = "block";
+				}
+
+				else {
+					document.getElementById("member-" + uidKey).style.display = "inline-block";
+					document.getElementById("timesheetInputCont").style.display = "none";
+					document.getElementById("addTimesheetNoteMainCont").style.display = "none";
+				}
+			});
+		}
+	});
+
+	// load timesheet values
+	var timesheetRef = firebase.database().ref("projects/" + selectedProject + "/timesheet/" + selectedAvatar);
+	timesheetRef.once("value", function(snapshot) {
+		snapshot.forEach((child) => {
+
+			// commits and hours count
+			commitCount++;
+			hoursCount += parseInt(child.val().hours);
+
+			// hour
+			var contH = document.createElement("div");
+			contH.classList.add("col-lg-12") + contH.classList.add("timesheetRow") + contH.classList.add("timesheetRowHour") + contH.classList.add("animated") + contH.classList.add("fadeIn");
+			var hour = document.createElement("p");
+			hour.innerHTML = child.val().hours;
+			contH.appendChild(hour);
+
+			// description
+			var contD = document.createElement("div");
+			contD.classList.add("col-lg-12") + contD.classList.add("timesheetRow") + contD.classList.add("timesheetRowDesc") + contD.classList.add("animated") + contD.classList.add("fadeIn");;
+			var desc = document.createElement("p");
+			desc.innerHTML = child.val().description;
+			contD.appendChild(desc);
+
+			// date
+			var contDt = document.createElement("div");
+			contDt.classList.add("col-lg-12") + contDt.classList.add("timesheetRow") + contDt.classList.add("timesheetRowDate") + contDt.classList.add("animated") + contDt.classList.add("fadeIn");;
+			var date = document.createElement("p");
+			date.innerHTML = child.val().date;
+			contDt.appendChild(date);
+
+			hoursCont.appendChild(contH);
+			descCont.appendChild(contD);
+			dateCont.appendChild(contDt);
+		});
+
+		// commit data
+		document.getElementById("commitsDataInfo").innerHTML = timesheetName +  " has made a total of " + commitCount + " commits over " + hoursCount + " days.";
+
+		// style rows
+		var rowCount = 0;
+		var rowsHour = document.getElementsByClassName("timesheetRowHour");
+		var rowsDesc = document.getElementsByClassName("timesheetRowDesc");
+		var rowsDate = document.getElementsByClassName("timesheetRowDate");
+		for (var i = 0; i < rowsHour.length; i++) {
+			rowCount++;
+			if (rowCount > 1) {
+				rowsHour[i].style.borderTop = "none";
+				rowsDesc[i].style.borderTop = "none";
+				rowsDate[i].style.borderTop = "none";
+			}
+		}
+
+		// display message if no rows
+		if (rowCount === 0) {
+			document.getElementById("noEntries").style.display = "block";
+			document.getElementById("noEntriesImg").style.display = "block";
+			document.getElementById("commitsData").style.display = "none";
+		}
+
+		else {
+			document.getElementById("noEntries").style.display = "none";
+			document.getElementById("noEntriesImg").style.display = "none";
+			document.getElementById("commitsData").style.display = "block";
+		}
+	});
 
 	// get time stamp
 	var now = new Date();
@@ -3667,16 +3794,21 @@ function timesheet() {
 	document.getElementById("addTimesheetNote").addEventListener("click", addTimesheetEntry);
 }
 
+function displayMemberTimesheet() {
+
+}
+
 // add a new entry to the timesheet table
 function addTimesheetEntry() {
+	// get main container
+	var hoursCont = document.getElementById("mainTimesheetHour");
+	var descCont = document.getElementById("mainTimesheetDesc");
+	var dateCont = document.getElementById("mainTimesheetDate");
+
 	// get input values
 	var hours = document.getElementById("timesheetHour");
 	var description = document.getElementById("timesheetDescription");
 	var date = document.getElementById("timesheetDate");
-
-	console.log(hours.value);
-	console.log(description.value);
-	console.log(date.value);
 
 	// create timesheet and store
 	var timesheetRef = firebase.database().ref("projects/" + selectedProject + "/timesheet/" + uidKey + "/" + new Date().getTime());
@@ -3686,10 +3818,60 @@ function addTimesheetEntry() {
 		date: date.value
 	});
 
+	// hour
+	var contH = document.createElement("div");
+	contH.classList.add("col-lg-12") + contH.classList.add("timesheetRow") + contH.classList.add("timesheetRowHour");
+	var hour = document.createElement("p");
+	hour.innerHTML = hours.value;
+	contH.appendChild(hour);
+
+	// description
+	var contD = document.createElement("div");
+	contD.classList.add("col-lg-12") + contD.classList.add("timesheetRow") + contD.classList.add("timesheetRowDesc");
+	var desc = document.createElement("p");
+	desc.innerHTML = description.value;
+	contD.appendChild(desc);
+
+	// date
+	var contDt = document.createElement("div");
+	contDt.classList.add("col-lg-12") + contDt.classList.add("timesheetRow") + contDt.classList.add("timesheetRowDate");
+	var dateTime = document.createElement("p");
+	dateTime.innerHTML = date.value;
+	contDt.appendChild(dateTime);
+
+	// append to cont
+	hoursCont.appendChild(contH);
+	descCont.appendChild(contD);
+	dateCont.appendChild(contDt);
+
+	// style rows
+	var rowCount = 0;
+	var rowsHour = document.getElementsByClassName("timesheetRowHour");
+	var rowsDesc = document.getElementsByClassName("timesheetRowDesc");
+	var rowsDate = document.getElementsByClassName("timesheetRowDate");
+	for (var i = 0; i < rowsHour.length; i++) {
+		rowCount++;
+		if (rowCount > 1) {
+			rowsHour[i].style.borderTop = "none";
+			rowsDesc[i].style.borderTop = "none";
+			rowsDate[i].style.borderTop = "none";
+		}
+	}
+
+	// update data
+	commitCount++;
+	hoursCount += parseInt(hours.value);
+	document.getElementById("commitsData").style.display = "block";
+	document.getElementById("commitsDataInfo").innerHTML = timesheetName +  " has made a total of " + commitCount + " commits over " + hoursCount + " days.";
+
+
 	// display message
 	snackbar.innerHTML = "Entry succesfully added!";
 	snackbar.className = "show";
 	setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
+
+	hours.value = "";
+	description.value = "";
 }
 
 

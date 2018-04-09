@@ -1856,6 +1856,28 @@ li .active {
 	overflow-y: scroll;
 }
 
+#commitsData {
+	margin-top: -8vh;
+	display: none;
+}
+
+#timesheet input::placeholder {
+	font-size: 14px;
+	color: #9e9e9e;
+}
+
+#timesheet input:focus {
+	border: 1px solid #8c9eff;
+}
+
+#commitsDataInfo {
+	float: right;
+}
+
+.media {
+	padding-left: 0;
+}
+
 #newProject {
 	margin-top: 5vh;
 }
@@ -2078,6 +2100,12 @@ li .active {
 	
 }
 
+#timesheet {
+	max-height: 65vh;
+	overflow: hidden;
+	overflow-y: scroll;
+}
+
 .media {
 	margin-left: 2%;
 	margin-bottom: 2.5vh;
@@ -2098,6 +2126,33 @@ li .active {
 	border-radius: 50%;
 	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19);
 	margin-bottom: 5px;
+}
+
+#timesheetAvatars {
+	margin-left: 1%;
+}
+
+#timesheetAvatars img {
+	height: 30px;
+	width: 30px;
+	border-radius: 50%;
+	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19);
+	margin-bottom: 15px;
+	margin-right: 5px;
+	transition: all 0.3s;
+}
+
+#timesheetAvatars img:hover {
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	cursor: pointer;
+}
+
+#timesheetInputCont {
+	display: none;
+}
+
+#addTimesheetNoteMainCont {
+	display: none;
 }
 
 .timesheetHeading {
@@ -2166,6 +2221,22 @@ li .active {
 	font-weight: 400;
 	margin-bottom: 2vh;
 	color: #9e9e9e;
+}
+
+#noEntries {
+	margin-top: 2.5vh;
+	margin-left: 2%;
+	font-size: 16px;
+	margin-bottom: 0;
+	display: none;
+}
+
+#noEntriesImg {
+	height: 150px;
+	width: 150px;
+	margin-left: 70%;
+	opacity: 0.3;
+	display: none;
 }
 
 input[type=number]::-webkit-inner-spin-button {

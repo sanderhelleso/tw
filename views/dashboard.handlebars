@@ -96,14 +96,18 @@
 					    <h3>Projects</h3>
 					  </div>
 					  <div id="timesheet" class="tab-pane fade">
-					  	<div class="media">
-						  <img id="timesheetAvatar" class="mr-3" src="/img/pbgit.png" alt="Generic placeholder image">
+					  	<div id="timesheetAvatars" class="row col-lg-8"></div>
+					  	<div class="media col-lg-12">
+						  <img id="timesheetAvatar" class="mr-3" src="/img/avatar.png" alt="Generic placeholder image">
 						  <div class="media-body">
-						    <h5 class="mt-0 timesheetName">Sander Hellesø</h5>
+						    <h5 id="timesheetUsername" class="mt-0 timesheetName">Sander Hellesø</h5>
 						    <p>Project Member</p>
 						  </div>
+						  <div id="commitsData" class="col-lg-3 offset-lg-5">
+							<p id="commitsDataInfo"></p>
 						</div>
-					    <div class="row col-lg-12">
+						</div>
+					    <div id="timesheetInputCont" class="row col-lg-12 animated fadeIn">
 					    	<div class="col-lg-2">
 					    		<h5 class="timesheetHeading"><i data-feather="clock"></i> Hours</h5>
 								<input type="number" class="form-control" id="timesheetHour" aria-describedby="timesheetHour" placeholder="4" maxlength="3">
@@ -117,7 +121,7 @@
 					    		<input type="text" class="form-control" id="timesheetDate" aria-describedby="timesheetDate" placeholder="08.04.2018" readonly="true">
 					    	</div>
 					    </div>
-					    <div class="row">
+					    <div id="addTimesheetNoteMainCont" class="row animated fadeIn">
 					    	<div id="addTimesheetNoteCont" class="col-lg-2">
 					    		<div class="col-lg-12">
 					    			<p id="addTimesheetNoteError" class="btn col-lg-12"></p>
@@ -126,30 +130,14 @@
 					    	</div>
 					    </div>
 					    <h5 id="entries">Entries</h5>
+					    <p id="noEntries" class="animated fadeIn">This user has not commited any entries yet</p>
+					    <img id="noEntriesImg" src="/img/project.png" alt="No entries are commited by this user">
 					    <div id="mainTimesheetRow" class="row col-lg-12">
 					    	<div id="mainTimesheetHour" class="col-lg-2">
-								<div class="col-lg-12 timesheetRow timesheetRowHour">
-									<p>4</p>
-								</div>
-								<div class="col-lg-12 timesheetRow timesheetRowHour">
-									<p>8</p>
-								</div>
 					    	</div>
 					    	<div id="mainTimesheetDesc" class="col-lg-7">
-					    		<div class="col-lg-12 timesheetRow timesheetRowDesc">
-					    			<p>Contacted space station</p>
-					    		</div>
-					    		<div class="col-lg-12 timesheetRow timesheetRowDesc">
-					    			<p>Went to Mars</p>
-					    		</div>
 					    	</div>
-					    	<div id="mainTimesheetHour" class="col-lg-3">
-					    		<div class="col-lg-12 timesheetRow timesheetRowDate">
-					    			<p>08.04.2018</p>
-					    		</div>
-					    		<div class="col-lg-12 timesheetRow timesheetRowDate">
-					    			<p>10.04.2018</p>
-					    		</div>
+					    	<div id="mainTimesheetDate" class="col-lg-3">
 					    	</div>
 					    </div>
 					  </div>
