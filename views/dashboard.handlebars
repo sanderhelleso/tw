@@ -110,7 +110,7 @@
 					    <div id="timesheetInputCont" class="row col-lg-12 animated fadeIn">
 					    	<div class="col-lg-2">
 					    		<h5 class="timesheetHeading"><i data-feather="clock"></i> Hours</h5>
-								<input type="number" class="form-control" id="timesheetHour" aria-describedby="timesheetHour" placeholder="4" maxlength="3">
+								<input type="number" class="form-control" id="timesheetHour" pattern="[0-9]" min="1" max="24" aria-describedby="timesheetHour" placeholder="4" maxlength="3">
 					    	</div>
 					    	<div class="col-lg-7">
 					    		<h5 class="timesheetHeading"><i data-feather="clipboard"></i> Description</h5>
@@ -124,7 +124,7 @@
 					    <div id="addTimesheetNoteMainCont" class="row animated fadeIn">
 					    	<div id="addTimesheetNoteCont" class="col-lg-2">
 					    		<div class="col-lg-12">
-					    			<p id="addTimesheetNoteError" class="btn col-lg-12"></p>
+					    			<p id="addTimesheetNoteError" class="btn col-lg-12 animated fadeIn"></p>
 					    			<a id="addTimesheetNote" class="btn col-lg-12">Add <i data-feather="plus-circle"></i></a>
 					    		</div>
 					    	</div>

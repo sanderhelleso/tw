@@ -2190,6 +2190,7 @@ li .active {
 	color: #ef5350;
 	margin-bottom: 0;
 	display: none;
+	padding-left: 0;
 }
 
 .timesheetRow {

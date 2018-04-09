@@ -3632,6 +3632,7 @@ var commitCount = 0;
 var hoursCount = 0;
 var dayCount = 0;
 var timesheetName;
+var recentActivityName;
 function timesheet() {
 	// get key
 	selectedAvatar = uidKey;
@@ -3639,12 +3640,16 @@ function timesheet() {
 		selectedAvatar = this.id.split("-")[1];
 	}
 
+	// init hour check
+	document.getElementById("timesheetHour").addEventListener("keyup", checkHour);
+
 	// set img and name
 	var accRef = firebase.database().ref("accounts/" + selectedAvatar);
 	accRef.once("value", function(snapshot) {
 		document.getElementById("timesheetAvatar").src = snapshot.val().Avatar_url;
 		document.getElementById("timesheetUsername").innerHTML = snapshot.val().First_Name.capitalizeFirstLetter() + " " + snapshot.val().Last_Name.capitalizeFirstLetter();
 		timesheetName = snapshot.val().First_Name.capitalizeFirstLetter();
+		recentActivityName = snapshot.val().First_Name.capitalizeFirstLetter() + " " + snapshot.val().Last_Name.capitalizeFirstLetter();
 	});
 
 	// get main container
@@ -3794,8 +3799,35 @@ function timesheet() {
 	document.getElementById("addTimesheetNote").addEventListener("click", addTimesheetEntry);
 }
 
-function displayMemberTimesheet() {
+// check hour for valid number input
+var validHour = false;
+var splitCheck;
+function checkHour(evt) {
+	if (this.value.length > 2) {
+        this.value = this.value.slice(0,2);
+    }
 
+   else if (this.value.length > 2) {
+   		validHour = false;
+   }
+
+    else {
+    	validHour = true;
+    }
+
+    // replace first index if 0
+    if (parseInt(this.value.split("")[0]) === 0) {
+    	console.log(123);
+    	this.value = this.value.slice(0,0);
+    }
+
+    // check values
+    splitCheck = this.value.split("");
+    if (splitCheck === "" || splitCheck.length === 0) {
+    	validHour = false;
+    }
+
+    console.log(validHour);
 }
 
 // add a new entry to the timesheet table
@@ -3809,6 +3841,44 @@ function addTimesheetEntry() {
 	var hours = document.getElementById("timesheetHour");
 	var description = document.getElementById("timesheetDescription");
 	var date = document.getElementById("timesheetDate");
+
+	// check hour
+	if (validHour === false) {
+		document.getElementById("addTimesheetNoteError").style.display = "block";
+		document.getElementById("addTimesheetNoteError").innerHTML = "Hour input is not valid!";
+		return;
+	}
+
+	// check desc
+	if (description.value === "") {
+		document.getElementById("addTimesheetNoteError").style.display = "block";
+		document.getElementById("addTimesheetNoteError").innerHTML = "Please enter a description!";
+		return;
+	}
+
+	if (description.value.length < 10) {
+		document.getElementById("addTimesheetNoteError").style.display = "block";
+		document.getElementById("addTimesheetNoteError").innerHTML = "Description needs to be atleast 10 characters!";
+		return;
+	}
+
+	if (description.value.length > 255) {
+		document.getElementById("addTimesheetNoteError").style.display = "block";
+		document.getElementById("addTimesheetNoteError").innerHTML = "Description cant be longer than 255 characters!";
+		return;
+	}
+
+	document.getElementById("addTimesheetNoteError").style.display = "none";
+
+	// add commit to project recent activites
+	var recentActivity = firebase.database().ref("projects/" + selectedProject + "/activity/" + new Date().getTime());
+	recentActivity.update({
+		name : recentActivityName,
+		userKey: uidKey,
+		hours: hours.value,
+		description: description.value,
+		date: date.value
+	});
 
 	// create timesheet and store
 	var timesheetRef = firebase.database().ref("projects/" + selectedProject + "/timesheet/" + uidKey + "/" + new Date().getTime());
