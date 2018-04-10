@@ -103,10 +103,11 @@
 					  				<img id="selectedMemberAvatar" alt="project member avatar">
 					  				<h3 id="selectedMemberName" class="text-center"></h3>
 					  				<p id="selectedMemberMail" class="text-center"></p>
+					  				<p class="selectedMemberHomepage text-center"><i data-feather="home"></i> View Profile</p>
 					  			</div>
 					  			<div id="roleCont" class="col-lg-5 offset-lg-1">
-					  				<h5 id="currentRole">Current role<br><span id="projectRole"></span></h5>
-					  				<label class="my-1 mr-2" for="selectRole">Update Role</label>
+					  				<h5 id="currentRole">Role <span id="roleInfo"><i data-feather="info"></i></span><br><span id="projectRole"></span></h5>
+					  				<label class="my-1 mr-2" for="selectRole">Assign Role</label>
 									<select class="custom-select my-1 mr-sm-2" id="selectRole">
 										<option value="Choose" selected>Choose...</option>
 									    <option value="Project Manager">Project Manager</option>
@@ -118,6 +119,8 @@
 									    <option value="Application Developer">Application Developer</option>
 									    <option value="Business Analyst">Business Analyst</option>
 									</select>
+									<ul id="roleJobs" class="list-group animated fadeInRight">
+									</ul>
 									<a id="updateRoleBtn" class="btn disabled col-lg-12">Confirm & Update</a>
 					  			</div>
 					  		</div>

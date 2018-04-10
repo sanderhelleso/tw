@@ -2352,6 +2352,48 @@ input[type=number]::-webkit-inner-spin-button {
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
+.selectedMemberHomepage {
+	color: #9e9e9e;
+	transition: all 0.3s;
+	font-weight: 100;
+}
+
+.selectedMemberHomepage:hover {
+	color: #8c9eff;
+	cursor: pointer;
+}
+
+.selectedMemberHomepage .feather {
+	stroke: #8c9eff;
+	height: 16px;
+	width: 16px;
+}
+
+#roleJobs li {
+	border: none;
+	padding: 2%;
+	font-size: 10px;
+	color: #66bb6a;
+}
+
+#roleInfo {
+	float: right;
+}
+
+#roleInfo:hover {
+	cursor: pointer;
+}
+
+#roleInfo .feather {
+	width: 16px;
+	height: 16px;
+	stroke: #9e9e9e;
+}
+
+#roleJobs {
+	display: none;
+}
+
 /******************************* END PROJECTS MENU *******************************/
 
 /* Animations to fade the snackbar in and out */

@@ -3631,6 +3631,9 @@ function openProject() {
 
 // members for project
 function members() {
+	// reset 
+	document.getElementById("membersAside").innerHTML = "";
+
 	// get key
 	selectedAvatar = uidKey;
 	if (this.tagName === "IMG") {
@@ -3695,6 +3698,61 @@ function members() {
 	});
 }
 
+// arrays with role jobs
+var job;
+var manager_Roles = ["Participates in and approves project plan and deliverables", 
+	"Manages, reviews, and prioritizes the project work plans with objective to stay on time and on budget",
+	"Manages project resources",
+	"Identifies required project team members and constructs project teams",
+	"Motivates and coaches project managers* and team members"];
+
+var leader_Roles = ["Assigned full or part time to participate in project team activities",
+	"Responsible for contributing to overall project objectives and specific team deliverables",
+	"Manages specific project plan activities and contributes to project plan development in collaboration with project manager",
+	"Coordinates documentation, testing, and training efforts related to project plan"];
+
+var member_Roles = ["Assigned full or part time to participate in project team activities",
+	"Responsible for contributing to overall project objectives and specific team deliverables",
+	"Escalates policy issues to team lead for referral to appropriate policy making bodies",
+	"This role includes all various resources necessary to execute the project plan"];
+
+var sponsor_Roles = ["Makes the business decisions for the program/project",
+	"Participates day-to-day in one or more programs/projects",
+	"Makes user resources available",
+	"Approves work products",
+	"Disposes of issues and project scope change requests"];
+
+var support_Roles = ["This role is comprised of various team members who perform technology support for the project",
+	"Membership includes DBA, App Admin, App Dev, Business Analyst, etc",
+	"Establishes project support technology standards",
+	"Assists team members in the use of project support technology",
+	"Maintains project support technology",
+	"Ensures that the technical environment is in place and operational throughout the project",
+	"Establishes and maintains target environment for new applications"];
+
+var user_Roles = ["Provides source information to the team",
+	"Provides expert business understanding of the organization",
+	"Represents the users area in identifying current or future procedures",
+	"Reviews and confirms major SDLC work products for the project",
+	"Participates as required in User Acceptance Testing Activities"];
+
+var developer_Roles = ["Designs systems from a user perspective",
+	"Designs human factors (windowing, ease-of-use)",
+	"Designs externals (screens, reports, forms)",
+	"Designs usability of the application",
+	"Designs application software components, including programs, modules, and run units",
+	"Prototypes, develops, and unit tests application software components or fragments",
+	"Typically knowledgeable in one or more development environments",
+	"Participates with Business Analysts in application documentation"];
+
+var analyst_Roles = ["Assesses current systems",
+	"Develops and maintains models of business requirements",
+	"Designs business transactions",
+	"Designs and organizes procedures",
+	"Documents and analyzes business processes using value-added/non-value added, process modeling tools, cost-time charts, and root cause analysis or other tools as appropriate",
+	"Documents “ability to” functional requirements for use by application designers and developers",
+	"Is an active participant in unit testing, system testing, and regression testing"];
+
 // display a selected project member
 var selectedMemberKey;
 function selectMember() {
@@ -3723,6 +3781,10 @@ function selectMember() {
 		selectedMemberKey = uidKey;
 		document.getElementById("projectmember-" + uidKey).classList.add("activeMember");
 	}
+
+	// init open profile link
+	document.getElementsByClassName("selectedMemberHomepage")[0].id = "projectmemberlink-" + key;
+	document.getElementsByClassName("selectedMemberHomepage")[0].addEventListener("click", openProfile);
 
 	// get data
 	var avatar = document.getElementById("selectedMemberAvatar");
@@ -3753,8 +3815,10 @@ function selectMember() {
 		}
 
 		else {
-			// set role
+			// set role and role jobs
+			job = snapshot.val().split(" ")[1].toLowerCase();
 			document.getElementById("projectRole").innerHTML = snapshot.val().split(" ")[0].capitalizeFirstLetter() + " " + snapshot.val().split(" ")[1].capitalizeFirstLetter();
+			displayJobs();
 		}
 		
 		// disable role from update menu
@@ -3779,6 +3843,23 @@ function selectMember() {
 	};
 }
 
+
+function displayJobs() {
+	// clear before appending
+	document.getElementById("roleJobs").innerHTML = "";
+
+	// get role job data
+	var jobRoles = eval(job + "_Roles");
+	for (var i = 0; i < jobRoles.length; i++) {
+		var listEle = document.createElement("li");
+		listEle.classList.add("list-group-item");
+		listEle.innerHTML = jobRoles[i];
+		document.getElementById("roleJobs").appendChild(listEle);
+	}
+	document.getElementById("roleInfo").addEventListener("click", roleInfo);
+	return;
+}
+
 // check selected role
 function checkRole() {
 	var btn = document.getElementById("updateRoleBtn");
@@ -3792,6 +3873,8 @@ function checkRole() {
 
 		// init confirm role change event
 		btn.addEventListener("click", updateRole);
+		job = document.getElementById("selectRole").value.split(" ")[1].toLowerCase();
+		displayJobs();
 	}
 
 	else {
@@ -3804,6 +3887,20 @@ function checkRole() {
 
 		// remove event listener
 		btn.removeEventListener("click", updateRole);
+		document.getElementById("roleJobs").style.display = "none";
+	}
+}
+
+// show and hide role info list
+function roleInfo() {
+	console.log(123);
+	var list = document.getElementById("roleJobs");
+	if (list.style.display === "block") {
+		list.style.display = "none";
+	}
+
+	else {
+		list.style.display = "block";
 	}
 }
 
