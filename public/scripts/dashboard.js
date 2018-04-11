@@ -3997,9 +3997,21 @@ function newPreReportEditor() {
 	  theme: 'snow'
 	});
 
+	// get report data and insert into editor
+	var preReportListenRef = firebase.database().ref("projects/" + selectedProject + "/pre-report/report/main");
+	preReportListenRef.once("value", function(snapshot) {
+		snapshot.forEach((child) => {
+			document.getElementsByClassName("ql-editor")[0].innerHTML = child.val();
+		});
+	});
+
 	// init count event
 	document.getElementsByClassName("ql-editor")[0].addEventListener("keyup", wordCount);
 	document.getElementsByClassName("ql-editor")[0].addEventListener("keyup", editorPosition);
+
+	// start to listen for changes
+	document.getElementsByClassName("ql-editor")[0].addEventListener("keyup", preReportChanges);
+
 }
 
 // count words in editor
@@ -4041,7 +4053,7 @@ function editorPosition() {
 	                return [range.startContainer, range.startOffset];
 	            }
 	        } 
-	        
+
 	        // Webkit browsers
 	        else if (selection.focusNode) { 
 	            return [selection.focusNode, selection.focusOffset];
@@ -4053,7 +4065,7 @@ function editorPosition() {
 // display a indicator where the user have worked / is working
 function displayPosition() {
 	// clear blanks and <br>
-	var writtenBy = document.getElementsByClassName("writtenBy");
+	var writtenBy = document.getElementsByClassName("writtenBy-" + uidKey);
 	for (var i = 0; i < writtenBy.length; i++) {
 		if (writtenBy[i].childNodes[0].tagName === "BR") {
 			writtenBy[i].style.borderLeft = "none";
@@ -4066,19 +4078,17 @@ function displayPosition() {
 
 	// set indicator
 	if (currentText.innerHTML != "<br>") {
-		currentText.classList.add("writtenBy");
+		currentText.classList.add("writtenBy-" + uidKey);
 		currentText.style.borderLeft = "2px solid " + color;
 		currentText.style.paddingLeft = "5px";
 	}
 
 	// clear blanks and childs for smooth transition
-	writtenBy = document.getElementsByClassName("writtenBy");
 	for (var i = 0; i < writtenBy.length; i++) {
 		if (writtenBy[i].childNodes[0].tagName === "BR") {
 			writtenBy[i].style.borderLeft = "none";
 		}
 
-		console.log(writtenBy[i].parentElement);
 		if (writtenBy[i].parentElement.tagName != "DIV") {
 			currentText.style.borderLeft = "none";
 			currentText.style.paddingLeft = "0px";
@@ -4104,11 +4114,30 @@ function checkLivePreReport() {
 					avatar.classList.add("col-sm-2") + avatar.classList.add("projectAvatar") + avatar.classList.add("livePreReportMember");
 					avatar.src = snapshot.val().Avatar_url;
 					avatar.style.border = "2px solid " + colors[count];
-					avatar.addEventListener("click", openProfile);
 					document.getElementById("preReportLiveMembers").appendChild(avatar);
 					count++;
 				});
 			}
+		});
+	});
+}
+
+// listen for changes
+function preReportChanges() {
+	// create new listen ref if not present
+	var preReportListenRef = firebase.database().ref("projects/" + selectedProject + "/pre-report/report/main");
+	var content =  document.getElementsByClassName("ql-editor")[0].innerHTML;
+	preReportListenRef.update({
+		content: content
+	});
+
+	// update values in realtime
+	var listenParent = firebase.database().ref("projects/" + selectedProject + "/pre-report/report");
+	listenParent.on("child_changed", function(snapshot) {
+		preReportListenRef.once("value", function(snapshot) {
+			snapshot.forEach((child) => {
+				document.getElementsByClassName("ql-editor")[0].innerHTML = child.val();
+			});
 		});
 	});
 }
