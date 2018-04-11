@@ -3950,13 +3950,25 @@ function newPreReport() {
 	// show pre report editor modal
 	$('#newPreReportModal').modal('show');
 
+	// make user editing status live 
+	var preReportLiveRef = firebase.database().ref("projects/" + selectedProject + "/pre-report/live/" + uidKey);
+	preReportLiveRef.update({
+		live: true
+	});
+
+	// check for live members
+	checkLivePreReport();
+
 	// display editor
 	newPreReportEditor();
+
+	// init exit editor event
+	document.getElementById("exitPreReportModal").addEventListener("click", exitPreReport);
 }
 
+// prep toolbar and editor
 function newPreReportEditor() {
-	//document.getElementById("newPreReportEditor").innerHTML = "";
-	//document.getElementById("toolbar").innerHTML = "";
+	// editor toolbar
 	var toolbarOptions = [
 	  ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
 	  ['blockquote', 'code-block'],
@@ -3973,6 +3985,7 @@ function newPreReportEditor() {
 	  [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
 	  [{ 'font': [] }],
 	  [{ 'align': [] }],
+	   [ 'link', 'image', 'video', 'formula' ],
 
 	  ['clean']                                         // remove formatting button
 	];
@@ -3984,22 +3997,49 @@ function newPreReportEditor() {
 	  theme: 'snow'
 	});
 
-	//wordCount();
+	// init count event
 	document.getElementsByClassName("ql-editor")[0].addEventListener("keyup", wordCount);
 }
 
+// count words in editor
 function wordCount() {
-
 	var counter = 0;
 	var sentences = this.childNodes;
-	console.log(sentences);
 	var words = document.getElementById("words");
 	for (var i = 0; i < sentences.length; i++) {
+		// count total words
 		if (sentences[i].innerHTML != "<br>") {
 			counter += sentences[i].innerHTML.split(" ").length;
 			words.innerHTML = counter + " words";
 		}
+
+		// check if empty
+		if (sentences[0].innerHTML === "<br>") {
+			words.innerHTML = "";
+		}
 	}
+}
+
+// check for members currently editing the report
+function checkLivePreReport() {
+	// make user editing status live 
+	var preReportLiveRef = firebase.database().ref("projects/" + selectedProject + "/pre-report/live");
+	preReportLiveRef.once("value", function(snapshot) {
+		snapshot.forEach((child) => {
+			if (child.val().live === true) {
+				console.log(snapshot.val().key);
+			}
+		});
+	});
+}
+
+// exit pre report
+function exitPreReport() {
+	// make user status offline
+	var preReportLiveRef = firebase.database().ref("projects/" + selectedProject + "/pre-report/live/" + uidKey);
+	preReportLiveRef.update({
+		live: false
+	});
 }
 
 // timesheet for project member

@@ -2450,9 +2450,9 @@ input[type=number]::-webkit-inner-spin-button {
 	min-height: 100vh;
 }
 
-#newPreReportModalCont #exitLoginModal {
-	padding-bottom: 0;
+#newPreReportModalCont #exitPreReportModal {
 	padding: 1%;
+	padding-bottom: 0;
 }
 
 #newPreReportEditor {
