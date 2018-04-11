@@ -2394,6 +2394,64 @@ input[type=number]::-webkit-inner-spin-button {
 	display: none;
 }
 
+#newReportCont {
+	margin-top: 10vh;
+}
+
+#newReportCont .newCard {
+	min-height: 200px;
+	min-width: 200px;
+	padding: 0;
+	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19);
+	border: none;
+	overflow: hidden;
+	overflow-y: scroll;
+}
+
+#newRepoerCont .card-body {
+	margin-bottom: 0;
+}
+
+#newReportCont .newCard:hover {
+	cursor: pointer;
+	background-color: #fafafa;
+}
+
+#reports h3 {
+	margin-left: 9%;
+}
+
+#reports #reportIntro {
+	width: 65%;
+	font-size: 14px;
+	color: #9e9e9e;
+	margin-left: 9%;
+}
+
+.reportDivider {
+	width: 82.5%;
+	margin-left: 9%;
+}
+
+.newPreReportModal {
+	max-width: none;
+    padding: 0;
+    margin: 0;
+    border-radius: none;
+}
+
+#newPreReportModalCont {
+	border-radius: 0px;
+	margin: 0;
+	border: none;
+	min-height: 200vh;
+}
+
+#newPreReportEditorRow {
+	margin-top: 5vh;
+}
+
+
 /******************************* END PROJECTS MENU *******************************/
 
 /* Animations to fade the snackbar in and out */
