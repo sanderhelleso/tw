@@ -2498,6 +2498,14 @@ input[type=number]::-webkit-inner-spin-button {
 	font-size: 14px;
 }
 
+#preReportLiveMembers img {
+	float: right !important;
+}
+
+.livePreReportMember:hover {
+	cursor: pointer;
+}
+
 
 /******************************* END PROJECTS MENU *******************************/
 

@@ -4022,12 +4022,26 @@ function wordCount() {
 
 // check for members currently editing the report
 function checkLivePreReport() {
+	// color array
+	var colors = ["#ef5350", "#ab47bc", "#b388ff", "#3f51b5", "#8c9eff", "#03a9f4", "#4db6ac", "#66bb6a", "#9ccc65", "#afb42b", "#fbc02d", "#ff6d00", "#6d4c41"];
+	var count = 0;
 	// make user editing status live 
 	var preReportLiveRef = firebase.database().ref("projects/" + selectedProject + "/pre-report/live");
 	preReportLiveRef.once("value", function(snapshot) {
 		snapshot.forEach((child) => {
 			if (child.val().live === true) {
-				console.log(snapshot.val().key);
+				// display online members avatars
+				var memberRef = firebase.database().ref("accounts/" + child.key);
+				memberRef.once("value", function(snapshot) {
+					var avatar = document.createElement("img");
+					avatar.id = "livemember-" + child.key;
+					avatar.classList.add("col-sm-2") + avatar.classList.add("projectAvatar") + avatar.classList.add("livePreReportMember");
+					avatar.src = snapshot.val().Avatar_url;
+					avatar.style.border = "2px solid " + colors[count];
+					avatar.addEventListener("click", openProfile);
+					document.getElementById("preReportLiveMembers").appendChild(avatar);
+					count++;
+				});
 			}
 		});
 	});
