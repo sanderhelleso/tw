@@ -3999,6 +3999,7 @@ function newPreReportEditor() {
 
 	// init count event
 	document.getElementsByClassName("ql-editor")[0].addEventListener("keyup", wordCount);
+	document.getElementsByClassName("ql-editor")[0].addEventListener("keyup", editorPosition);
 }
 
 // count words in editor
@@ -4016,6 +4017,71 @@ function wordCount() {
 		// check if empty
 		if (sentences[0].innerHTML === "<br>") {
 			words.innerHTML = "";
+		}
+	}
+}
+
+// track and display current position
+var currentText;
+function editorPosition() {
+	if (window.getSelection) {
+	    var selection = window.getSelection();
+	    if (selection) {
+	    	// Mozilla browsers
+	        if (selection.getRangeAt) {
+	            if (selection.rangeCount >=1 ) {
+	                var range = selection.getRangeAt(0);
+	                var parentEl = range.commonAncestorContainer;
+	                if (parentEl.nodeType != 1) {
+		                currentText = parentEl.parentNode;
+		            }
+
+		            // run display position after finding element
+	                displayPosition();
+	                return [range.startContainer, range.startOffset];
+	            }
+	        } 
+	        
+	        // Webkit browsers
+	        else if (selection.focusNode) { 
+	            return [selection.focusNode, selection.focusOffset];
+	        }
+	    }
+	}
+}
+
+// display a indicator where the user have worked / is working
+function displayPosition() {
+	// clear blanks and <br>
+	var writtenBy = document.getElementsByClassName("writtenBy");
+	for (var i = 0; i < writtenBy.length; i++) {
+		if (writtenBy[i].childNodes[0].tagName === "BR") {
+			writtenBy[i].style.borderLeft = "none";
+		}
+	}
+
+	// set color id
+	var colorCont = document.getElementById("livemember-" + uidKey).style.border.split(" ");
+	var color = colorCont[2] + colorCont[3] + colorCont[4];
+
+	// set indicator
+	if (currentText.innerHTML != "<br>") {
+		currentText.classList.add("writtenBy");
+		currentText.style.borderLeft = "2px solid " + color;
+		currentText.style.paddingLeft = "5px";
+	}
+
+	// clear blanks and childs for smooth transition
+	writtenBy = document.getElementsByClassName("writtenBy");
+	for (var i = 0; i < writtenBy.length; i++) {
+		if (writtenBy[i].childNodes[0].tagName === "BR") {
+			writtenBy[i].style.borderLeft = "none";
+		}
+
+		console.log(writtenBy[i].parentElement);
+		if (writtenBy[i].parentElement.tagName != "DIV") {
+			currentText.style.borderLeft = "none";
+			currentText.style.paddingLeft = "0px";
 		}
 	}
 }
