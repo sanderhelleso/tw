@@ -3938,11 +3938,25 @@ function reports() {
 
 // opens a new pre-report modal
 function newPreReport() {
+	// get data
+	var projectRef = firebase.database().ref("projects/" + selectedProject);
+	projectRef.once("value", function(snapshot) {
+		document.getElementById("newPreReportName").innerHTML = snapshot.val().name.capitalizeFirstLetter();
+		snapshot.forEach((child) => {
+
+		});
+	});
+
+	// show pre report editor modal
 	$('#newPreReportModal').modal('show');
+
+	// display editor
 	newPreReportEditor();
 }
 
 function newPreReportEditor() {
+	//document.getElementById("newPreReportEditor").innerHTML = "";
+	//document.getElementById("toolbar").innerHTML = "";
 	var toolbarOptions = [
 	  ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
 	  ['blockquote', 'code-block'],
@@ -3969,8 +3983,24 @@ function newPreReportEditor() {
 	  },
 	  theme: 'snow'
 	});
+
+	//wordCount();
+	document.getElementsByClassName("ql-editor")[0].addEventListener("keyup", wordCount);
 }
 
+function wordCount() {
+
+	var counter = 0;
+	var sentences = this.childNodes;
+	console.log(sentences);
+	var words = document.getElementById("words");
+	for (var i = 0; i < sentences.length; i++) {
+		if (sentences[i].innerHTML != "<br>") {
+			counter += sentences[i].innerHTML.split(" ").length;
+			words.innerHTML = counter + " words";
+		}
+	}
+}
 
 // timesheet for project member
 var commitCount = 0;
