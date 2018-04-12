@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const handlebars = require("express-handlebars");
 const ejs = require("ejs");
 const nodemailer = require("nodemailer");
+var Pusher = require('pusher');
 
 const app = express();
 const server = http.createServer(app);
@@ -71,6 +72,20 @@ app.post("/dashboard", (req, res) => {
 	    });
 	});
 });
+
+// realtime editor
+var pusher = new Pusher({
+  appId: '508573',
+  key: '5a02536f423cc287a275',
+  secret: 'c7c212b06196179eea5c',
+  cluster: 'eu',
+  encrypted: true
+});
+
+app.post("/pre-report", (req, res) => {
+	console.log(req.body.preReportID);
+});
+
 
 
 server.listen(port, () => {

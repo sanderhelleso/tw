@@ -3614,8 +3614,10 @@ function createProject() {
 // open selected project
 var selectedProject;
 var selectedAvatar;
+var projectId;
 function openProject() {
 	selectedProject = this.parentElement.parentElement.parentElement.parentElement.id.split("t-")[1];
+	projectId = this.parentElement.parentElement.parentElement.parentElement.id.split("t-")[1];
 	clear();
 
 	// open project
@@ -3628,6 +3630,8 @@ function openProject() {
 	members();
 	reports();
 	timesheet();
+
+	console.log(projectId);
 }
 
 // members for project
@@ -3962,6 +3966,9 @@ function newPreReport() {
 	// display editor
 	newPreReportEditor();
 
+	// send id to server for realtime collaboration
+	preReportCollaboration();
+
 	// init exit editor event
 	document.getElementById("exitPreReportModal").addEventListener("click", exitPreReport);
 }
@@ -4012,6 +4019,25 @@ function newPreReportEditor() {
 	// start to listen for changes
 	document.getElementsByClassName("ql-editor")[0].addEventListener("keyup", preReportChanges);
 
+}
+
+function preReportCollaboration() {
+	// set method
+	var method = "post";
+
+	// create form
+    var form = document.createElement("form");
+    form.setAttribute("method", method);
+    form.setAttribute("action", "/pre-report");
+
+    // create a hidden input and set data attributes
+    var hiddenField = document.createElement("input");
+    hiddenField.setAttribute("type", "hidden");
+    hiddenField.setAttribute("name", "preReportID");
+    hiddenField.setAttribute("value", projectId);
+    form.appendChild(hiddenField);
+    document.body.appendChild(form);
+    form.submit();
 }
 
 // count words in editor
@@ -4079,7 +4105,7 @@ function displayPosition() {
 	// set indicator
 	if (currentText.innerHTML != "<br>") {
 		currentText.classList.add("writtenBy-" + uidKey);
-		currentText.style.borderLeft = "2px solid " + color;
+		currentText.style.borderLeft = "1px solid " + color;
 		currentText.style.paddingLeft = "5px";
 	}
 
@@ -4127,16 +4153,27 @@ function preReportChanges() {
 	// create new listen ref if not present
 	var preReportListenRef = firebase.database().ref("projects/" + selectedProject + "/pre-report/report/main");
 	var content =  document.getElementsByClassName("ql-editor")[0].innerHTML;
+
+	// clear current
+	var current = document.getElementsByClassName("current");
+	for (var i = 0; i < current.length; i++){
+		current[i].classList.remove("current");
+	}
+
+	currentText.classList.add("current");
+
+	// update data
 	preReportListenRef.update({
-		content: content
+		//content: content
 	});
 
-	// update values in realtime
+	// set updated values in realtime
 	var listenParent = firebase.database().ref("projects/" + selectedProject + "/pre-report/report");
 	listenParent.on("child_changed", function(snapshot) {
 		preReportListenRef.once("value", function(snapshot) {
 			snapshot.forEach((child) => {
-				document.getElementsByClassName("ql-editor")[0].innerHTML = child.val();
+				//document.getElementsByClassName("ql-editor")[0].innerHTML = child.val();
+				console.log(document.getElementsByClassName("current"));
 			});
 		});
 	});
