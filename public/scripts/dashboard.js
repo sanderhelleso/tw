@@ -53,15 +53,6 @@ function start() {
 	    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
 	};
 
-    // Enable pusher logging - don't include this in production
-    Pusher.logToConsole = true;
-
-    var pusher = new Pusher('5a02536f423cc287a275', {
-      cluster: 'eu',
-      encrypted: true
-    });
-    pusherID = pusher;
-
 	// init tooltips
 	$(document).ready(function(){
     	$('[data-toggle="tooltip"]').tooltip();   
@@ -3992,9 +3983,6 @@ function newPreReport() {
 		live: true
 	});
 
-	// check for live members
-	checkLivePreReport();
-
 	// display editor
 	newPreReportEditor();
 
@@ -4004,90 +3992,105 @@ function newPreReport() {
 
 // prep toolbar and editor
 function newPreReportEditor() {
-	// editor toolbar
-	var toolbarOptions = [
-	  ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-	  ['blockquote', 'code-block'],
+	// init new editor if not present
+	if (document.getElementsByClassName("ql-editor")[0] === undefined) {
+		// check for live members
+		checkLivePreReport();
 
-	  [{ 'header': 1 }, { 'header': 2 }],               // custom button values
-	  [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-	  [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
-	  [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
-	  [{ 'direction': 'rtl' }],                         // text direction
+		// editor toolbar
+		var toolbarOptions = [
+		  ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+		  ['blockquote', 'code-block'],
 
-	  [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-	  [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+		  [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+		  [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+		  [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+		  [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+		  [{ 'direction': 'rtl' }],                         // text direction
 
-	  [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-	  [{ 'font': [] }],
-	  [{ 'align': [] }],
-	   [ 'link', 'image', 'video', 'formula' ],
+		  [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+		  [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
 
-	  ['clean']                                         // remove formatting button
-	];
+		  [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+		  [{ 'font': [] }],
+		  [{ 'align': [] }],
+		   [ 'link', 'image', 'video', 'formula' ],
 
-	var quill = new Quill('#newPreReportEditor', {
-	  modules: {
-	    toolbar: toolbarOptions
-	  },
-	  theme: 'snow'
-	});
+		  ['clean']                                         // remove formatting button
+		];
 
-	// get report data and insert into editor
-	var preReportListenRef = firebase.database().ref("projects/" + selectedProject + "/pre-report/report/main");
-	preReportListenRef.once("value", function(snapshot) {
-		snapshot.forEach((child) => {
-			document.getElementsByClassName("ql-editor")[0].innerHTML = child.val();
+		var quill = new Quill('#newPreReportEditor', {
+		  modules: {
+		    toolbar: toolbarOptions
+		  },
+		  theme: 'snow'
 		});
-	});
 
-	// init count event
-	document.getElementsByClassName("ql-editor")[0].addEventListener("keyup", wordCount);
-	document.getElementsByClassName("ql-editor")[0].addEventListener("keyup", editorPosition);
+		// get report data and insert into editor
+		var preReportListenRef = firebase.database().ref("projects/" + selectedProject + "/pre-report/report/main");
+		preReportListenRef.once("value", function(snapshot) {
+			snapshot.forEach((child) => {
+				document.getElementsByClassName("ql-editor")[0].innerHTML = child.val();
+			});
+		});
 
-	// start to listen for changes
-	document.getElementsByClassName("ql-editor")[0].addEventListener("keyup", preReportChanges);
+		var liveUserRef = firebase.database().ref("projects/" + selectedProject + "/pre-report/live");
+		liveUserRef.on("child_changed", function(snapshot) {
+			// remove bounce animation to prep for new
+			var avatars = document.getElementsByClassName("livePreReportMember");
+			for (var i = 0; i < avatars.length; i++) {
+				avatars[i].classList.remove("bounceInDown");
+			}
+			var connectionUser = document.getElementById("livemember-" + snapshot.key);
+			console.log(snapshot.val());
+			console.log(connectionUser);
+			if (snapshot.val().live === false && connectionUser != null) {
+				connectionUser.classList.add("bounceOutUp");
+				setTimeout(function(){
+					connectionUser.remove();
+				}, 1000);
+			}
 
-	 var editor = document.getElementsByClassName("ql-editor")[0];
-	return new Promise(function (resolve, reject) {
-    // subscribe to the changes via Pusher
-    console.log(editor);
-    var pusher = new Pusher('5a02536f423cc287a275', {
-      cluster: 'eu',
-      encrypted: true
-    });
-    var channel = pusher.subscribe(collabID);
-    channel.bind('client-text-edit', function(html) {
-      editor.innerHTML = html;
-    });
-    channel.bind('pusher:subscription_succeeded', function() {
-      resolve(channel);
-    });
-  }).then(function (channel) {
-    function triggerChange (e) {
-      channel.trigger('client-text-edit', e.target.innerHTML);
-    }
+			else if (snapshot.val().live === true && connectionUser === null) {
+				checkLivePreReport();
+			}
+		});
 
-    editor.addEventListener('input', triggerChange);
-  })
+		// init count event
+		document.getElementsByClassName("ql-editor")[0].addEventListener("keyup", wordCount);
+		document.getElementsByClassName("ql-editor")[0].addEventListener("keyup", editorPosition);
+
+		// start to listen for changes
+		document.getElementsByClassName("ql-editor")[0].addEventListener("keyup", preReportChanges);
+
+		// enables collaboration
+		var editor = document.getElementsByClassName("ql-editor")[0];
+		return new Promise(function (resolve, reject) {
+			Pusher.logToConsole = true;
+		    var pusher = new Pusher('5a02536f423cc287a275', {
+		      cluster: 'eu',
+		      encrypted: true
+		    });
+		    console.log(collabID);
+		    var channel = pusher.subscribe(collabID);
+		    channel.bind('client-text-edit', function(html) {
+		    	console.log(html);
+		      editor.innerHTML = html;
+		    });
+		    channel.bind('pusher:subscription_succeeded', function() {
+		      resolve(channel);
+		      console.log(channel);
+		    });
+		  	}).then(function (channel) {
+			function triggerChange (e) {
+			    channel.trigger('client-text-edit', e.target.innerHTML);
+			    console.log(123);
+			}
+		// update UI
+	    editor.addEventListener('input', triggerChange);
+	  	});
+	}
 }
-
-/*function triggerChange (e) {
-	/*var method = "post"; 
-
-    var form = document.createElement("form");
-    form.setAttribute("method", method);
-    form.setAttribute("action", "/pre-report");
-    form.setAttribute("target", document.getElementById("iframe").name);
-
-    var hiddenField = document.createElement("input");
-    hiddenField.setAttribute("type", "hidden");
-    hiddenField.setAttribute("name", "preReportText");
-    hiddenField.setAttribute("value", e.target.innerHTML);
-    form.appendChild(hiddenField);
-    document.body.appendChild(form);
-    form.submit();
-}*/
 
 // count words in editor
 function wordCount() {
@@ -4172,10 +4175,11 @@ function editorPosition() {
 }*/
 
 // check for members currently editing the report
+var takenColors = [];
+var liveCount = 0;
 function checkLivePreReport() {
 	// color array
 	var colors = ["#ef5350", "#ab47bc", "#b388ff", "#3f51b5", "#8c9eff", "#03a9f4", "#4db6ac", "#66bb6a", "#9ccc65", "#afb42b", "#fbc02d", "#ff6d00", "#6d4c41"];
-	var count = 0;
 	// make user editing status live 
 	var preReportLiveRef = firebase.database().ref("projects/" + selectedProject + "/pre-report/live");
 	preReportLiveRef.once("value", function(snapshot) {
@@ -4184,13 +4188,29 @@ function checkLivePreReport() {
 				// display online members avatars
 				var memberRef = firebase.database().ref("accounts/" + child.key);
 				memberRef.once("value", function(snapshot) {
-					var avatar = document.createElement("img");
-					avatar.id = "livemember-" + child.key;
-					avatar.classList.add("col-sm-2") + avatar.classList.add("projectAvatar") + avatar.classList.add("livePreReportMember");
-					avatar.src = snapshot.val().Avatar_url;
-					avatar.style.border = "2px solid " + colors[count];
-					document.getElementById("preReportLiveMembers").appendChild(avatar);
-					count++;
+					if (document.getElementById("livemember-" + child.key) === null) {
+						var avatar = document.createElement("img");
+						avatar.id = "livemember-" + child.key;
+						avatar.classList.add("col-sm-2") + avatar.classList.add("projectAvatar") + avatar.classList.add("livePreReportMember") + avatar.classList.add("animated") + avatar.classList.add("bounceInDown");
+						avatar.src = snapshot.val().Avatar_url;
+
+						// color code check
+						var colorRef = firebase.database().ref("projects/" + selectedProject + "/pre-report/live/" + child.key);
+						colorRef.once("value", function(snapshot) {
+							if (snapshot.val().colorCode === null || snapshot.val().colorCode === undefined) {
+								colorRef.update({
+									colorCode: colors[liveCount]
+								});
+								avatar.style.border = "2px solid " + colors[liveCount];
+							}
+
+							else {
+								avatar.style.border = "2px solid " + snapshot.val().colorCode;
+							}
+							document.getElementById("preReportLiveMembers").appendChild(avatar);
+							liveCount++;
+						});
+					}
 				});
 			}
 		});
