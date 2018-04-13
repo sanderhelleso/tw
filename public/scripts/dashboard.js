@@ -9,6 +9,11 @@ window.onresize = function(event) {
 var accountRef;
 var uidKey;
 
+// live editor
+var collabID;
+var pusherID;
+var pusherChannel;
+
 var notificationRef;
 var socialRef;
 
@@ -29,6 +34,33 @@ function start() {
 	    messagingSenderId: "744116401403"
 	};
 	firebase.initializeApp(config);
+
+	collabID = getUrlParameter('id');
+	if (!collabID) {
+	    location.search = location.search
+	    ? '&id=' + getUniqueId() : 'id=' + getUniqueId();
+	    return;
+	}
+
+	function getUniqueId () {
+	    return 'private-' + Math.random().toString(36).substr(2, 9);
+	 }
+
+	 function getUrlParameter(name) {
+	    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+	    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+	    var results = regex.exec(location.search);
+	    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+	};
+
+    // Enable pusher logging - don't include this in production
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher('5a02536f423cc287a275', {
+      cluster: 'eu',
+      encrypted: true
+    });
+    pusherID = pusher;
 
 	// init tooltips
 	$(document).ready(function(){
@@ -3966,9 +3998,6 @@ function newPreReport() {
 	// display editor
 	newPreReportEditor();
 
-	// send id to server for realtime collaboration
-	preReportCollaboration();
-
 	// init exit editor event
 	document.getElementById("exitPreReportModal").addEventListener("click", exitPreReport);
 }
@@ -4019,26 +4048,46 @@ function newPreReportEditor() {
 	// start to listen for changes
 	document.getElementsByClassName("ql-editor")[0].addEventListener("keyup", preReportChanges);
 
+	 var editor = document.getElementsByClassName("ql-editor")[0];
+	return new Promise(function (resolve, reject) {
+    // subscribe to the changes via Pusher
+    console.log(editor);
+    var pusher = new Pusher('5a02536f423cc287a275', {
+      cluster: 'eu',
+      encrypted: true
+    });
+    var channel = pusher.subscribe(collabID);
+    channel.bind('client-text-edit', function(html) {
+      editor.innerHTML = html;
+    });
+    channel.bind('pusher:subscription_succeeded', function() {
+      resolve(channel);
+    });
+  }).then(function (channel) {
+    function triggerChange (e) {
+      channel.trigger('client-text-edit', e.target.innerHTML);
+    }
+
+    editor.addEventListener('input', triggerChange);
+  })
 }
 
-function preReportCollaboration() {
-	// set method
-	var method = "post";
+/*function triggerChange (e) {
+	/*var method = "post"; 
 
-	// create form
     var form = document.createElement("form");
     form.setAttribute("method", method);
     form.setAttribute("action", "/pre-report");
+    form.setAttribute("target", document.getElementById("iframe").name);
 
-    // create a hidden input and set data attributes
     var hiddenField = document.createElement("input");
     hiddenField.setAttribute("type", "hidden");
-    hiddenField.setAttribute("name", "preReportID");
-    hiddenField.setAttribute("value", projectId);
+    hiddenField.setAttribute("name", "preReportText");
+    hiddenField.setAttribute("value", e.target.innerHTML);
     form.appendChild(hiddenField);
     document.body.appendChild(form);
     form.submit();
-}
+}*/
 
 // count words in editor
 function wordCount() {
@@ -4075,7 +4124,7 @@ function editorPosition() {
 		            }
 
 		            // run display position after finding element
-	                displayPosition();
+	                //displayPosition();
 	                return [range.startContainer, range.startOffset];
 	            }
 	        } 
@@ -4089,7 +4138,7 @@ function editorPosition() {
 }
 
 // display a indicator where the user have worked / is working
-function displayPosition() {
+/*function displayPosition() {
 	// clear blanks and <br>
 	var writtenBy = document.getElementsByClassName("writtenBy-" + uidKey);
 	for (var i = 0; i < writtenBy.length; i++) {
@@ -4120,7 +4169,7 @@ function displayPosition() {
 			currentText.style.paddingLeft = "0px";
 		}
 	}
-}
+}*/
 
 // check for members currently editing the report
 function checkLivePreReport() {
@@ -4160,7 +4209,7 @@ function preReportChanges() {
 		current[i].classList.remove("current");
 	}
 
-	currentText.classList.add("current");
+	//currentText.classList.add("current");
 
 	// update data
 	preReportListenRef.update({

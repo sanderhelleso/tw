@@ -5,6 +5,18 @@ const handlebars = require("express-handlebars");
 const ejs = require("ejs");
 const nodemailer = require("nodemailer");
 var Pusher = require('pusher');
+var pusher = new Pusher({
+  appId: '508573',
+  key: '5a02536f423cc287a275',
+  auth: {
+    params: {
+      CSRFToken: 'some_csrf_token'
+    }
+  },
+  secret: 'c7c212b06196179eea5c',
+  cluster: 'eu',
+  encrypted: true
+});
 
 const app = express();
 const server = http.createServer(app);
@@ -73,17 +85,46 @@ app.post("/dashboard", (req, res) => {
 	});
 });
 
+app.post("/pusher/auth", (req, res) => {
+
+	var socketId = req.body.socket_id;
+	var channel = req.body.channel_name; 
+	var auth = pusher.authenticate(socketId, channel);
+	res.send(auth);
+
+	/*var id = req.body.preReportID;
+	console.log(id);
+	// realtime editor
+	var pusher = new Pusher({
+	  appId: '508573',
+	  key: '5a02536f423cc287a275',
+	  secret: 'c7c212b06196179eea5c',
+	  cluster: 'eu',
+	  encrypted: true
+	});
+	pusher.trigger('my-channel', 'my-event', {"message": "hello world"});
+
+	var channel = pusher.subscribe(req.body.preReportID);
+	channel.bind('client-text-edit', function(html) {
+		 doc.innerHTML = html;
+	});*/
+});
+
 // realtime editor
 var pusher = new Pusher({
-  appId: '508573',
-  key: '5a02536f423cc287a275',
-  secret: 'c7c212b06196179eea5c',
-  cluster: 'eu',
-  encrypted: true
+	appId: '508573',
+	key: '5a02536f423cc287a275',
+	secret: 'c7c212b06196179eea5c',
+	cluster: 'eu',
+	encrypted: true
 });
 
 app.post("/pre-report", (req, res) => {
-	console.log(req.body.preReportID);
+	var preReportText = req.body.preReportText;
+	console.log(preReportText);
+	pusher.trigger('client-text-edit',  {
+		preReportText
+	});
 });
 
 
