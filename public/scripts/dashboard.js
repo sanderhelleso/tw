@@ -4127,7 +4127,7 @@ function editorPosition() {
 		            }
 
 		            // run display position after finding element
-	                //displayPosition();
+	               	displayPosition();
 	                return [range.startContainer, range.startOffset];
 	            }
 	        } 
@@ -4141,7 +4141,7 @@ function editorPosition() {
 }
 
 // display a indicator where the user have worked / is working
-/*function displayPosition() {
+function displayPosition() {
 	// clear blanks and <br>
 	var writtenBy = document.getElementsByClassName("writtenBy-" + uidKey);
 	for (var i = 0; i < writtenBy.length; i++) {
@@ -4172,7 +4172,7 @@ function editorPosition() {
 			currentText.style.paddingLeft = "0px";
 		}
 	}
-}*/
+}
 
 // check for members currently editing the report
 var takenColors = [];
@@ -4228,8 +4228,6 @@ function preReportChanges() {
 	for (var i = 0; i < current.length; i++){
 		current[i].classList.remove("current");
 	}
-
-	//currentText.classList.add("current");
 
 	// update data
 	preReportListenRef.update({
