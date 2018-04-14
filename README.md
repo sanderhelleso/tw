@@ -1,4 +1,6 @@
 # tw
 Application for easy project management
-![Alt text](C:\wamp\www\tw\public\readme.jpg?raw=true "Title")
+<p align="center">
+  <img src="https://github.com/sanderhelleso/tw/blob/master/public/img/readme.jpg?raw=true" width="350"/>
+</p>
 
