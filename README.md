@@ -15,6 +15,6 @@ This application contains tools that will make projects fun and interactive for 
   ... and much more
 
 <p align="center">
-  <img src="https://github.com/sanderhelleso/tw/blob/master/public/img/readme.jpg?raw=true">
+  <img src="https://github.com/sanderhelleso/tw/blob/master/public/img/readme.jpg?raw=true" margin-top="20px">
 </p>
 
