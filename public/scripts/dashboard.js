@@ -3647,14 +3647,26 @@ function openProject() {
 	var project = document.getElementById("projectMain");
 	project.style.display = "block";
 
-	document.getElementById("membersTrigger").click();
+	document.getElementById("teamsTrigger").click();
 	//document.getElementById("timesheetTrigger").click();
 
+	teams();
 	members();
 	reports();
 	timesheet();
 
 	console.log(projectId);
+}
+
+function teams() {
+
+	// init new team event
+	document.getElementById("newTeam").addEventListener("click", openNewTeam);
+}
+
+function openNewTeam() {
+	// show new team modal
+	$('#newTeamModal').modal('show');
 }
 
 // members for project

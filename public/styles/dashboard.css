@@ -2514,6 +2514,45 @@ input[type=number]::-webkit-inner-spin-button {
 	background-color: red;
 }
 
+#teams h3 {
+	margin-left: 9%;
+}
+
+#teams #teamsIntro {
+	width: 70%;
+	font-size: 14px;
+	color: #9e9e9e;
+	margin-left: 9%;
+}
+
+.teamsDivider {
+	width: 82.5%;
+	margin-left: 9%;
+}
+
+#newTeamCont {
+	margin-top: 10vh;
+}
+
+#newTeamCont .newCard {
+	min-height: 200px;
+	min-width: 200px;
+	padding: 0;
+	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19);
+	border: none;
+	overflow: hidden;
+	overflow-y: scroll;
+}
+
+#newTeamCont .card-body {
+	margin-bottom: 0;
+}
+
+#newTeamCont .newCard:hover {
+	cursor: pointer;
+	background-color: #fafafa;
+}
+
 /******************************* END PROJECTS MENU *******************************/
 
 /* Animations to fade the snackbar in and out */

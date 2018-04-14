@@ -163,6 +163,18 @@
 					  </div>
 					  <div id="teams" class="tab-pane fade">
 					  	<h3>Teams</h3>
+					  	<p id="teamsIntro">Teams are used to split the project into different groups, allowing for quick and easy task management.<br>By using teams, the project will have a greater overview and a clearer path to achieve its goals. </p>
+					    <div class="dropdown-divider teamsDivider"></div>
+					    <div id="newTeamMainCont" class="row">
+						  <div id="newTeamCont" class="col-sm-3 offset-sm-1 newCardCont">
+						    <div id="newTeam" class="card text-center newCard">
+						      <div class="card-body">
+						        <h5 class="card-title newProjectIcon"><i data-feather="users"></i></h5>
+						        <p>New Team</p>
+						      </div>
+						    </div>
+						  </div>
+						</div>
 					  </div>
 					  <div id="timesheet" class="tab-pane fade">
 					  	<div id="timesheetAvatars" class="row col-lg-8"></div>
@@ -681,6 +693,20 @@
 		</div>
 	</div>
 	<!-- END NEW PRE-REPORT MODAL -->
+	
+	<!-- NEW TEAM MODAL -->
+	<div id="newTeamModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="static">
+		<div class="modal-dialog modal-lg newTeamModal">
+		   	<div id="newTeamModalCont" class="modal-content newTeamModalContent">
+                <button id="exitPreReportModal" type="button" class="close text-right" data-dismiss="modal" aria-label="Close"><i data-feather="x"></i>
+                </button>
+                <div class="row">
+                	<h3>Hello World</h3>
+                </div>
+            </div>
+		</div>
+	</div>
+	<!-- END NEW TEAM MODAL -->
 
 
 	<!-- SNACKBAR -->
