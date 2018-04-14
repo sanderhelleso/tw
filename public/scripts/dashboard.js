@@ -4079,7 +4079,6 @@ function newPreReportEditor() {
 		    });
 		    channel.bind('pusher:subscription_succeeded', function() {
 		      resolve(channel);
-		      console.log(channel);
 		    });
 		  	}).then(function (channel) {
 			function triggerChange (e) {
