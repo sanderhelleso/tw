@@ -1847,6 +1847,12 @@ li .active {
 /******************************** END EMAIL MODAL *********************************/
 
 /******************************* PROJECTS MENU ***********************************/
+#projectMain {
+	max-height: 100vh;
+	overflow: hidden;
+	overflow-y: scroll;
+}
+
 #projectsMenu .card {
 	margin-bottom: 5vh;
 	height: 225px;
@@ -2513,20 +2519,32 @@ input[type=number]::-webkit-inner-spin-button {
 	margin-left: 9%;
 }
 
+#newTeamIntroHeading {
+	margin-top: 4vh;
+	color: #8c9eff;
+	font-weight: 400;
+}
+
 #teams #teamsIntro {
 	width: 70%;
 	font-size: 14px;
 	color: #9e9e9e;
-	margin-left: 9%;
 }
 
 .teamsDivider {
-	width: 82.5%;
-	margin-left: 9%;
+	width: 75%;
 }
 
 #newTeamCont {
-	margin-top: 10vh;
+	margin-right: 3%;
+}
+
+#teamsCont {
+	margin-bottom: 5vh;
+}
+
+#newTeamMainCont {
+	margin-top: 5vh;
 }
 
 #newTeamModalCont {
@@ -2560,11 +2578,29 @@ input[type=number]::-webkit-inner-spin-button {
 	font-weight: 400;
 }
 
+#newTeamCont {
+	margin-bottom: 5vh;
+}
+
+#newTeamFooter {
+	margin-top: 5vh;
+	margin-bottom: 2.5vh;
+}
+
 #newTeamIntro {
 	color: #9e9e9e;
 	font-weight: 400;
 	font-size: 20px;
 	margin-bottom: 7.5vh;
+}
+
+.teamCard {
+	padding: 0;
+	margin-left: 9%;
+}
+
+#projectTeams {
+	margin-left: 9%;
 }
 
 #newTeamModalCont .card {

@@ -3670,6 +3670,26 @@ function teams() {
 		snapshot.forEach((child) => {
 			// remove the new team option if its allready exist on the project
 			document.getElementById(child.val().name).parentElement.remove();
+
+			// load teams
+			console.log(child.val());
+			var cont = document.createElement("div");
+			cont.classList.add("card") + cont.classList.add("col-lg-4") + cont.classList.add("teamCard");
+
+			var img = document.createElement("img");
+			img.src = "img/engineering.jpg";
+			img.classList.add("card-img-top");
+
+			var body = document.createElement("div");
+			body.classList.add("card-body");
+
+			var teamName = document.createElement("h5");
+			teamName.innerHTML = child.val().name.capitalizeFirstLetter();
+
+			body.appendChild(teamName);
+			cont.appendChild(img);
+			cont.appendChild(body);
+			document.getElementById("teamsCont").appendChild(cont);
 		});
 	});
 }
@@ -3711,7 +3731,6 @@ function selectTopic() {
 
 // displays available team members
 function displayAvailableTeamMembers() {
-	document.getElementById("newTeamModalCont").style.maxHeight = document.getElementById("newTeamModalCont").offsetHeight + "px";
 	this.classList.remove("fadeInDown");
 	this.classList.add("bounceOutRight");
 	document.getElementById("selectedTopicCont").classList.add("fadeOut");
