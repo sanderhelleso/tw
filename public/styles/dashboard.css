@@ -2007,7 +2007,6 @@ li .active {
 	margin: 0 auto;
 	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19);
 	margin-bottom: 5px;
-	transition: all 0.1s;
 }
 
 .newProjectFriendAvatar:hover {
@@ -2319,10 +2318,6 @@ input[type=number]::-webkit-inner-spin-button {
 	background-color: #eeeeee;
 }
 
-#roleCont {
-
-}
-
 #roleCont h5 {
 	font-size: 14px;
 	color: #9e9e9e;
@@ -2534,6 +2529,12 @@ input[type=number]::-webkit-inner-spin-button {
 	margin-top: 10vh;
 }
 
+#newTeamModalCont {
+	max-height: 90vh;
+	overflow: hidden;
+	overflow-y: scroll;
+}
+
 #newTeamCont .newCard {
 	min-height: 200px;
 	min-width: 200px;
@@ -2551,6 +2552,102 @@ input[type=number]::-webkit-inner-spin-button {
 #newTeamCont .newCard:hover {
 	cursor: pointer;
 	background-color: #fafafa;
+}
+
+#newTeamHeading {
+	margin-bottom: 2.5vh;
+	font-size: 35px;
+	font-weight: 400;
+}
+
+#newTeamIntro {
+	color: #9e9e9e;
+	font-weight: 400;
+	font-size: 20px;
+	margin-bottom: 7.5vh;
+}
+
+#newTeamModalCont .card {
+	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19);
+	border-radius: 6px;
+	border: none;
+}
+
+#newTeamModalCont .card:hover {
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	cursor: pointer;
+}
+
+#newTeamModalCont .card-body {
+	border-bottom-right-radius: 6px;
+	border-bottom-left-radius: 6px;
+	color: white;
+}
+
+.card h5 {
+	font-weight: 400;
+}
+
+.engineering-body {
+	background-color: #8c9eff;
+}
+
+.marketing-body {
+	background-color: #b388ff;
+}
+
+.finances-body {
+	background-color: #26a69a;
+}
+
+#selectTeamMembers {
+	display: none;
+	margin-top: 10vh;
+	font-size: 20px;
+	color: #9e9e9e;
+	transition: all 0.3s;
+}
+
+#selectTeamMembers:hover {
+	cursor: pointer;
+	color: #8c9eff;
+}
+
+#selectTeamMembers .feather {
+	height: 28px;
+	width: 28px;
+	margin-left: 5px;
+	stroke: #8c9eff;
+}
+
+#newTeamMembers {
+	opacity: 0;
+	transition: all 1s;
+}
+
+.selectedTeamMember {
+	border: 3px solid #66bb6a;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.selectedTeamMemberInfo {
+	color: #66bb6a;
+}
+
+#createTeam {
+	background-color: white;
+	color: #9e9e9e;
+	border: 0.5px solid #9e9e9e;
+	font-size: 14px;
+	transition: all 0.3s;
+}
+
+#createTeam:hover {
+	cursor: pointer;
+}
+
+.box {
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 /******************************* END PROJECTS MENU *******************************/

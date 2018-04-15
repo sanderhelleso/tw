@@ -698,12 +698,42 @@
 	<div id="newTeamModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="static">
 		<div class="modal-dialog modal-lg newTeamModal">
 		   	<div id="newTeamModalCont" class="modal-content newTeamModalContent">
-                <button id="exitPreReportModal" type="button" class="close text-right" data-dismiss="modal" aria-label="Close"><i data-feather="x"></i>
+               	<button id="exitLoginModal" type="button" class="close text-right" data-dismiss="modal" aria-label="Close"><i data-feather="x"></i>
                 </button>
-                <div class="row">
-                	<h3>Hello World</h3>
-                </div>
-            </div>
+                <h2 id="newTeamHeading" class="text-center">New Team</h2>
+                <h5 id="newTeamIntro" class="text-center">Select the teams topic</h5>
+                <div id="selectedTopicCont" class="row justify-content-center animated">
+                	<div class="col-lg-3">
+                		<div id="engineering" class="card teamCard">
+						  <img class="card-img-top" src="/img/engineering.jpg" alt="Card image cap">
+						  <div class="card-body engineering-body">
+						    <h5 class="text-center">Engineering</h5>
+						  </div>
+						</div>
+                	</div>
+                	<div class="col-lg-3">
+                		<div id="marketing" class="card teamCard">
+						  <img class="card-img-top" src="/img/marketing.jpg" alt="Card image cap">
+						  <div class="card-body marketing-body">
+						    <h5 class="text-center">Marketing</h5>
+						  </div>
+						</div>
+                	</div>
+                	<div class="col-lg-3">
+                		<div id="finances" class="card teamCard">
+						  <img class="card-img-top" src="/img/finance.jpg" alt="Card image cap">
+						  <div class="card-body finances-body">
+						    <h5 class="text-center">Finances</h5>
+						  </div>
+						</div>
+                	</div>
+				</div>
+			<p id="selectTeamMembers" class="text-center animated fadeInDown">Select team members <i data-feather="arrow-right"></i></p>
+			<div id="newTeamMembers" class="row col-lg-10 offset-lg-1"></div>
+			<div id="newTeamFooter" class="modal-footer">
+                <button type="button" id="cancelProject" class="btn" data-dismiss="modal">CANCEL</button>
+		        <button type="button" id="createTeam" class="btn disabled">CREATE TEAM</button>
+		    </div>
 		</div>
 	</div>
 	<!-- END NEW TEAM MODAL -->

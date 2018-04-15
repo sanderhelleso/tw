@@ -3664,9 +3664,136 @@ function teams() {
 	document.getElementById("newTeam").addEventListener("click", openNewTeam);
 }
 
+var topics = document.getElementsByClassName("teamCard");
 function openNewTeam() {
 	// show new team modal
 	$('#newTeamModal').modal('show');
+
+	// get topics
+	for (var i = 0; i < topics.length; i++) {
+		topics[i].addEventListener("click", selectTopic);
+	}
+}
+
+var selectedTopic;
+var selectedTopicColor;
+function selectTopic() {
+	for (var i = 0; i < topics.length; i++) {
+		topics[i].style.transition = "all 0.4s";
+		topics[i].style.opacity = "0.5";
+		topics[i].style.transform = "scale(0.5)";
+	}
+	this.style.opacity = "1";
+	this.style.transform = "scale(1)";
+	selectedTopic = this.id;
+	var ele = this.childNodes[3];
+	var bg = window.getComputedStyle(ele);
+	selectedTopicColor = bg.getPropertyValue("background-color");
+	console.log(selectedTopicColor);
+	document.getElementById("selectTeamMembers").childNodes[1].style.stroke = selectedTopicColor;
+
+	// enable add members function
+	document.getElementById("selectTeamMembers").style.display = "block";
+	document.getElementById("selectTeamMembers").addEventListener("click", displayAvailableTeamMembers);
+}
+
+// displays available team members
+function displayAvailableTeamMembers() {
+	document.getElementById("newTeamModalCont").style.maxHeight = document.getElementById("newTeamModalCont").offsetHeight + "px";
+	this.classList.remove("fadeInDown");
+	this.classList.add("bounceOutRight");
+	document.getElementById("selectedTopicCont").classList.add("fadeOut");
+	var arrow = this;
+
+	// load friends available to join team
+	var friendsRef = firebase.database().ref("accounts/" + uidKey + "/friends");
+	friendsRef.once("value", function(snapshot) {
+		snapshot.forEach((child) => {
+			
+			// create friend container
+			var cont = document.createElement("div");
+			cont.id = "profile-" + child.key;
+			cont.classList.add("col") + cont.classList.add("col-lg-4") + cont.classList.add("newProjectFriendsCont") + cont.classList.add("fadeIn") + cont.classList.add("fadeIn") + cont.classList.add("profile-" + child.key);
+
+			// create avatar img
+			var friendImg = document.createElement("img");
+			friendImg.classList.add("newProjectFriendAvatar");
+
+			// add select friend for project event
+			friendImg.addEventListener("click", selectTeamMember);
+
+			// set img src to be avatar url
+			friendRef = firebase.database().ref("accounts/" + child.key);
+			friendRef.once("value", function(snapshot) {
+				if (snapshot.val().Avatar_url != undefined) {
+					friendImg.src = snapshot.val().Avatar_url;
+				}
+
+				else {
+					friendImg.src = "/img/avatar.png";
+				}
+			});
+
+			// create friend name
+			var friendName = document.createElement("h5");
+			friendName.classList.add("friendsName") + friendName.classList.add("text-center");
+			friendName.innerHTML = child.val().First_Name.capitalizeFirstLetter() + " " + child.val().Last_Name.capitalizeFirstLetter();
+
+			// create friend email
+			var friendEmail = document.createElement("p");
+			friendEmail.classList.add("friendsEmail") + friendEmail.classList.add("text-center");
+			friendEmail.innerHTML = child.val().Email;
+
+			// append
+			cont.appendChild(friendImg);
+			cont.appendChild(friendName);
+			cont.appendChild(friendEmail);
+
+			// display
+			document.getElementById("newTeamMembers").appendChild(cont);
+  		});
+  		arrow.style.display = "none";
+  		document.getElementById("selectedTopicCont").style.display = "none";
+		document.getElementById("newTeamMembers").style.opacity = "1";
+
+		document.getElementById("newTeamIntro").innerHTML = "Select members to join <br><span id='selectedTopic'>" + selectedTopic.capitalizeFirstLetter() + "</span>";
+		document.getElementById("selectedTopic").style.fontSize = "32.5px";
+		document.getElementById("selectedTopic").style.color = selectedTopicColor;
+	});
+}
+
+function selectTeamMember() {
+	// check class
+	if (this.classList.contains("selectedTeamMember")) {
+		this.classList.remove("selectedTeamMember");
+		this.parentElement.childNodes[1].classList.remove("selectedTeamMemberInfo");
+		this.parentElement.childNodes[2].classList.remove("selectedTeamMemberInfo");
+	}
+
+	else {
+		this.classList.add("selectedTeamMember");
+		this.parentElement.childNodes[1].classList.add("selectedTeamMemberInfo");
+		this.parentElement.childNodes[2].classList.add("selectedTeamMemberInfo");
+	}
+
+	var selectedTeamMembers = document.getElementsByClassName("selectedTeamMember");
+	var createTeamBtn = document.getElementById("createTeam");
+	console.log(selectedTeamMembers.length);
+	if (selectedTeamMembers.length >= 1) {
+		createTeamBtn.style.border = "0.5px solid " + selectedTopicColor;
+		createTeamBtn.style.backgroundColor = selectedTopicColor;
+		createTeamBtn.style.color = "white";
+		createTeam.classList.remove("disabled");
+		createTeamBtn.classList.add("box");
+	}
+
+	else {
+		createTeamBtn.style.border = "0.5px solid #9e9e9e";
+		createTeamBtn.style.backgroundColor = "white";
+		createTeamBtn.style.color = "#9e9e9e";
+		createTeam.classList.add("disabled");
+		createTeamBtn.classList.remove("box");
+	}
 }
 
 // members for project
