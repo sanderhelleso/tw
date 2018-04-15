@@ -16,7 +16,9 @@ This application contains tools that will make projects fun and interactive for 
   <li>Create and share project milestones</li>
   ... and much more
 </ul>
+
 <strong>Tecnologies used for the project</strong>
+
 <ul>
   <li>node.js</li>
   <li>firebase</li>
