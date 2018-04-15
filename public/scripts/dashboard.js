@@ -3600,7 +3600,7 @@ function createProject() {
 		cardBody.appendChild(id);
 		cardBody.appendChild(avatarRow);
 
-		// images;
+		// images
 		for (var i = 0; i < members.length; i++) {
 			var memberRef = firebase.database().ref("accounts/" + members[i]);
 			memberRef.once("value", function(snapshot) {
@@ -3658,12 +3658,23 @@ function openProject() {
 	console.log(projectId);
 }
 
+// teams section
 function teams() {
 
 	// init new team event
 	document.getElementById("newTeam").addEventListener("click", openNewTeam);
+
+	// check exsisting teams
+	var projectRef = firebase.database().ref("projects/" + projectId + "/teams/");
+	projectRef.once("value", function(snapshot) {
+		snapshot.forEach((child) => {
+			// remove the new team option if its allready exist on the project
+			document.getElementById(child.val().name).parentElement.remove();
+		});
+	});
 }
 
+// create a new team
 var topics = document.getElementsByClassName("teamCard");
 function openNewTeam() {
 	// show new team modal
@@ -3675,6 +3686,7 @@ function openNewTeam() {
 	}
 }
 
+// select team topic and style
 var selectedTopic;
 var selectedTopicColor;
 function selectTopic() {
@@ -3762,6 +3774,7 @@ function displayAvailableTeamMembers() {
 	});
 }
 
+// select members to join the team
 function selectTeamMember() {
 	// check class
 	if (this.classList.contains("selectedTeamMember")) {
@@ -3776,24 +3789,74 @@ function selectTeamMember() {
 		this.parentElement.childNodes[2].classList.add("selectedTeamMemberInfo");
 	}
 
+	// style button and add event if true
 	var selectedTeamMembers = document.getElementsByClassName("selectedTeamMember");
 	var createTeamBtn = document.getElementById("createTeam");
-	console.log(selectedTeamMembers.length);
 	if (selectedTeamMembers.length >= 1) {
 		createTeamBtn.style.border = "0.5px solid " + selectedTopicColor;
 		createTeamBtn.style.backgroundColor = selectedTopicColor;
 		createTeamBtn.style.color = "white";
-		createTeam.classList.remove("disabled");
+		createTeamBtn.classList.remove("disabled");
 		createTeamBtn.classList.add("box");
+
+		// init event
+		createTeamBtn.addEventListener("click", createTeam);
 	}
 
 	else {
 		createTeamBtn.style.border = "0.5px solid #9e9e9e";
 		createTeamBtn.style.backgroundColor = "white";
 		createTeamBtn.style.color = "#9e9e9e";
-		createTeam.classList.add("disabled");
+		createTeamBtn.classList.add("disabled");
 		createTeamBtn.classList.remove("box");
+		createTeamBtn.removeEventListener("click", createTeam);
 	}
+}
+
+
+// create the selected team and store it with members
+function createTeam() {
+	// array for members
+	var members = [];
+	members.push(uidKey);
+		
+	// get selected members to join team
+	var selected = document.getElementsByClassName("selectedTeamMember");
+	for (var i = 0; i < selected.length; i++) {
+		var key = selected[i].parentElement.id.split("-")[1];
+		members.push(key);
+	}
+
+	for (var i = 0; i < members.length; i++) {
+		// set project to every member
+		var memberRef = firebase.database().ref("accounts/" + members[i] + "/projects/" + projectId + "/teams/" + selectedTopic);
+		memberRef.update({
+			name: selectedTopic,
+			members: members
+		});
+	}
+
+	// set team creator
+	var leaderRef = firebase.database().ref("accounts/" + uidKey + "/projects/" + projectId + "/teams/" + selectedTopic);
+	leaderRef.update({
+		name: selectedTopic,
+		members: members
+	});
+
+	// create team and store data
+	var projectRef = firebase.database().ref("projects/" + projectId + "/teams/" + selectedTopic);
+	projectRef.update({
+		name: selectedTopic,
+		members: members
+	});
+
+	// close modal
+	$('#newTeamModal').modal('hide');
+
+	// display message
+	snackbar.innerHTML = selectedTopic.capitalizeFirstLetter() + " succesfully created!";
+	snackbar.className = "show";
+	setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
 }
 
 // members for project
