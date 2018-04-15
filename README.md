@@ -17,14 +17,15 @@ This application contains tools that will make projects fun and interactive for 
   ... and much more
 </ul>
 
-<strong>Tecnologies used for the project</strong>
+<strong>Tecnologies used in the application</strong>
 
 <ul>
   <li>node.js</li>
   <li>firebase</li>
-  <li>vanilla JS/li>
+  <li>vanilla JS</li>
   <li>pusher.js</li>
   <li>quill.js</li>
+  <li>bootstrap</li>
 </ul>
 <p align="center">
   <br>
