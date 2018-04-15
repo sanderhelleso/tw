@@ -3,17 +3,17 @@ Application for easy project management.
 
 This application contains tools that will make projects fun and interactive for every member contributing.
 
-<bold>What is included</bold>
+<strong>What is included</strong>
 <ul>
-  <li>Social Network - 95% Completed</li>
-  <li>Customizable realtime chats 100% Completed</li>
-  <li>Create and manage projects 100% Completed</li>
-  <li>Assign project members into roles 100% Completed</li>
-  <li>Customizable templates for pre and main project report 20% Completed</li>
-  <li>Edit documents using rich text or LaTex 50% Completed</li>
-  <li>Realtime document collaboration 80% Completed</li> 
-  <li>Split your project into dedicated teams 85% Completed</li>
-  <li>Create and share project milestones 50% Completed</li>
+  <li>Social Network</li>
+  <li>Customizable realtime chats</li>
+  <li>Create and manage projects</li>
+  <li>Assign project members into roles</li>
+  <li>Customizable templates for pre and main project report</li>
+  <li>Edit documents using rich text or LaTex</li>
+  <li>Realtime document collaboration</li> 
+  <li>Split your project into dedicated teams</li>
+  <li>Create and share project milestones</li>
   ... and much more
 
 <p align="center">
