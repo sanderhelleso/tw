@@ -1850,7 +1850,6 @@ li .active {
 #projectMain {
 	max-height: 100vh;
 	overflow: hidden;
-	overflow-y: scroll;
 }
 
 #projectsMenu .card {
@@ -2079,7 +2078,7 @@ li .active {
 #profileTabsProject {
 	width: 96%;
 	margin-top: 2%;
-	margin-bottom: 2%;
+	margin-bottom: 0%;
 	margin-left: 2%;
 }
 
@@ -2106,6 +2105,7 @@ li .active {
 }
 
 #timesheet {
+	padding-top: 2vh;
 	max-height: 65vh;
 	overflow: hidden;
 	overflow-y: scroll;
@@ -2248,6 +2248,10 @@ li .active {
 input[type=number]::-webkit-inner-spin-button {
     -webkit-appearance: none;
     display: none;
+}
+
+#members {
+	padding-top: 2vh;
 }
 
 #membersAside {
@@ -2395,6 +2399,14 @@ input[type=number]::-webkit-inner-spin-button {
 	display: none;
 }
 
+#reports {
+	padding-top: 2%;
+	max-height: 65vh;
+	overflow: hidden;
+	overflow-y: scroll;
+	padding-bottom: 5vh;
+}
+
 #newReportCont {
 	margin-top: 10vh;
 }
@@ -2507,6 +2519,13 @@ input[type=number]::-webkit-inner-spin-button {
 	cursor: pointer;
 }
 
+#teams {
+	padding-top: 2vh;
+	max-height: 65vh;
+	overflow: hidden;
+	overflow-y: scroll;
+}
+
 .marker {
 	margin-left: 5px;
 	height: 20px;
@@ -2594,9 +2613,18 @@ input[type=number]::-webkit-inner-spin-button {
 	margin-bottom: 7.5vh;
 }
 
-.teamCard {
-	padding: 0;
+#teamsCont {
 	margin-left: 9%;
+}
+
+#teamsCont .card {
+	min-height: 150px;
+	min-width: 150px;
+	padding: 0;
+	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19);
+	border: none;
+	border-bottom-left-radius: 6px;
+	border-bottom-right-radius: 6px;
 }
 
 #projectTeams {
@@ -2625,14 +2653,32 @@ input[type=number]::-webkit-inner-spin-button {
 }
 
 .engineering-body {
-	background-color: #8c9eff;
+	border-bottom-left-radius: 6px;
+	border-bottom-right-radius: 6px;
+	color: white;
+	background: #00b09b;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to right, #96c93d, #00b09b);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to right, #96c93d, #00b09b); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+ 	background-color: #8c9eff;
 }
 
 .marketing-body {
-	background-color: #b388ff;
+	border-bottom-left-radius: 6px;
+	border-bottom-right-radius: 6px;
+	color: white;
+	background: #4776E6;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to right, #8E54E9, #4776E6);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to right, #8E54E9, #4776E6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  	background-color: #b388ff;
 }
 
 .finances-body {
+	border-bottom-left-radius: 6px;
+	border-bottom-right-radius: 6px;
+	color: white;
+	background: #FF512F;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to bottom, #DD2476, #FF512F);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to bottom, #DD2476, #FF512F); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 	background-color: #26a69a;
 }
 
@@ -2685,6 +2731,34 @@ input[type=number]::-webkit-inner-spin-button {
 .box {
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
+
+.projectTeams {
+	border-bottom-left-radius: 6px;
+	border-bottom-right-radius: 6px;
+	padding: 0;
+	margin-right: 7.5%;
+	transition: all 0.3s;
+}
+
+.projectTeams:hover {
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	cursor: pointer;
+}
+
+.teamDiv {
+	margin-top: 0;
+	margin-left: 9%;
+	margin-bottom: 5vh;
+	width: 84%;
+}
+
+#projectTeams {
+	margin-bottom: 3vh;
+	font-size: 25px;
+	font-weight: 400;
+	color: #9e9e9e;
+}
+
 
 /******************************* END PROJECTS MENU *******************************/
 

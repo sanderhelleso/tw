@@ -3672,16 +3672,17 @@ function teams() {
 			document.getElementById(child.val().name).parentElement.remove();
 
 			// load teams
-			console.log(child.val());
+			var mainCont = document.createElement("div");
+			mainCont.classList.add("col-sm-3") + mainCont.classList.add("projectTeams");
 			var cont = document.createElement("div");
-			cont.classList.add("card") + cont.classList.add("col-lg-4") + cont.classList.add("teamCard");
+			cont.classList.add("card") + cont.classList.add("teamCard");
 
 			var img = document.createElement("img");
-			img.src = "img/engineering.jpg";
+			img.src = "img/" + child.val().name + ".jpg";
 			img.classList.add("card-img-top");
 
 			var body = document.createElement("div");
-			body.classList.add("card-body");
+			body.classList.add("card-body") + body.classList.add(child.val().name + "-body");
 
 			var teamName = document.createElement("h5");
 			teamName.innerHTML = child.val().name.capitalizeFirstLetter();
@@ -3689,7 +3690,8 @@ function teams() {
 			body.appendChild(teamName);
 			cont.appendChild(img);
 			cont.appendChild(body);
-			document.getElementById("teamsCont").appendChild(cont);
+			mainCont.appendChild(cont);
+			document.getElementById("teamsCont").appendChild(mainCont);
 		});
 	});
 }
