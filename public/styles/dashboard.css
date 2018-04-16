@@ -2831,6 +2831,7 @@ input[type=number]::-webkit-inner-spin-button {
 	padding: 0;
 	margin-right: 7.5%;
 	transition: all 0.3s;
+	margin-bottom: 5vh;
 }
 
 .projectTeams:hover {

@@ -3663,6 +3663,7 @@ function teams() {
 
 	// init new team event
 	document.getElementById("newTeam").addEventListener("click", openNewTeam);
+	document.getElementById("cancelTeam").addEventListener("click", resetNewTeam);
 
 	// check exsisting teams
 	var projectRef = firebase.database().ref("projects/" + projectId + "/teams/");
@@ -3721,11 +3722,6 @@ function selectTopic() {
 	this.style.opacity = "1";
 	this.style.transform = "scale(1)";
 	selectedTopic = this.id;
-	var ele = this.childNodes[3];
-	var bg = window.getComputedStyle(ele);
-	selectedTopicColor = bg.getPropertyValue("background-color");
-	console.log(selectedTopicColor);
-	document.getElementById("selectTeamMembers").childNodes[1].style.stroke = selectedTopicColor;
 
 	// enable add members function
 	document.getElementById("selectTeamMembers").style.display = "block";
@@ -3793,7 +3789,7 @@ function displayAvailableTeamMembers() {
 
 		document.getElementById("newTeamIntro").innerHTML = "Select members to join <br><span id='selectedTopic'>" + selectedTopic.capitalizeFirstLetter() + "</span>";
 		document.getElementById("selectedTopic").style.fontSize = "32.5px";
-		document.getElementById("selectedTopic").style.color = selectedTopicColor;
+		document.getElementById("selectedTopic").style.color = "#8c9eff";
 	});
 }
 
@@ -3816,8 +3812,8 @@ function selectTeamMember() {
 	var selectedTeamMembers = document.getElementsByClassName("selectedTeamMember");
 	var createTeamBtn = document.getElementById("createTeam");
 	if (selectedTeamMembers.length >= 1) {
-		createTeamBtn.style.border = "0.5px solid " + selectedTopicColor;
-		createTeamBtn.style.backgroundColor = selectedTopicColor;
+		createTeamBtn.style.border = "0.5px solid #8c9eff";
+		createTeamBtn.style.backgroundColor = "#8c9eff";
 		createTeamBtn.style.color = "white";
 		createTeamBtn.classList.remove("disabled");
 		createTeamBtn.classList.add("box");
@@ -3835,7 +3831,6 @@ function selectTeamMember() {
 		createTeamBtn.removeEventListener("click", createTeam);
 	}
 }
-
 
 // create the selected team and store it with members
 function createTeam() {
@@ -3881,6 +3876,28 @@ function createTeam() {
 	snackbar.className = "show";
 	setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
 	document.getElementById("newTeamMembers").style.paddingBottom = "0vh";
+}
+
+// reset the new team modal
+function resetNewTeam() {
+	var createTeamBtn = document.getElementById("createTeam");
+	createTeamBtn.style.border = "0.5px solid #9e9e9e";
+	createTeamBtn.style.backgroundColor = "white";
+	createTeamBtn.style.color = "#9e9e9e";
+	createTeamBtn.classList.add("disabled");
+	createTeamBtn.classList.remove("box");
+
+	createTeamBtn.removeEventListener("click", createTeam);
+	for (var i = 0; i < topics.length; i++) {
+		topics[i].style.opacity = "1";
+		topics[i].style.transform = "scale(1)";
+	}
+
+	document.getElementById("selectTeamMembers").classList.remove("bounceOutRight");
+	document.getElementById("selectedTopicCont").classList.remove("fadeOut");
+	document.getElementById("selectedTopicCont").style.display = "inline-flex";
+	document.getElementById("newTeamMembers").innerHTML = "";
+	document.getElementById("newTeamIntro").innerHTML = "Select the teams topic";
 }
 
 // members for project
