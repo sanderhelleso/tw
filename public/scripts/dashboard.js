@@ -3669,6 +3669,7 @@ function teams() {
 	projectRef.once("value", function(snapshot) {
 		snapshot.forEach((child) => {
 			// remove the new team option if its allready exist on the project
+			console.log(child.val().name);
 			document.getElementById(child.val().name).parentElement.remove();
 
 			// load teams
@@ -3788,6 +3789,7 @@ function displayAvailableTeamMembers() {
   		arrow.style.display = "none";
   		document.getElementById("selectedTopicCont").style.display = "none";
 		document.getElementById("newTeamMembers").style.opacity = "1";
+		document.getElementById("newTeamMembers").style.paddingBottom = "15vh";
 
 		document.getElementById("newTeamIntro").innerHTML = "Select members to join <br><span id='selectedTopic'>" + selectedTopic.capitalizeFirstLetter() + "</span>";
 		document.getElementById("selectedTopic").style.fontSize = "32.5px";
@@ -3878,6 +3880,7 @@ function createTeam() {
 	snackbar.innerHTML = selectedTopic.capitalizeFirstLetter() + " succesfully created!";
 	snackbar.className = "show";
 	setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
+	document.getElementById("newTeamMembers").style.paddingBottom = "0vh";
 }
 
 // members for project
