@@ -2858,7 +2858,69 @@ input[type=number]::-webkit-inner-spin-button {
 	margin-bottom: 5vh;
 }
 
+.card-img-overlay {
+	transition: all 0.5s;
+	border-bottom-left-radius: 6px;
+	border-bottom-right-radius: 6px;
+}
+
+.card-img-overlay:hover {
+	background-color: rgb(20, 20, 20, 0.7);
+}
+
+.card-img-overlay:hover .enterCard {
+	opacity: 1;
+	display: block;
+}
+
+.enterCard {
+	display: none;
+	color: #8c9eff;
+	font-weight: 100;
+	padding: 4%;
+	border: 1px solid #8c9eff;
+	border-radius: 6px;
+	width: 60%;
+	margin: 0 auto;
+	margin-top: 15%;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
 /******************************* END PROJECTS MENU *******************************/
+
+/*********************************** TEAM ****************************************/
+#backToProject .feather {
+	margin: 1%;
+	stroke: #8c9eff;
+	transition: all 0.3s;
+}
+
+#backToProject .feather:hover {
+	opacity: 0.5;
+	cursor: pointer;
+}
+#teamMain {
+	display: none;
+}
+
+#teamName {
+	font-weight: 300;
+	font-size: 30px;
+}
+
+#teamTabs {
+	padding-bottom: 2.5vh;
+}
+
+#teamTabs li {
+	margin-right: 2%;
+}
+
+#teamTabs li a {
+	color: #9e9e9e;
+}
+
+/********************************* END TEAM **************************************/
 
 /* Animations to fade the snackbar in and out */
 @-webkit-keyframes fadein {

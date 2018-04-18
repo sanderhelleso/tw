@@ -3684,16 +3684,47 @@ function teams() {
 			img.classList.add("card-img-top");
 
 			var body = document.createElement("div");
+			body.id = "team-" + child.val().name;
+
 			body.classList.add("card-body") + body.classList.add(child.val().name + "-body");
+			var overlay = document.createElement("div");
+			overlay.classList.add("card-img-overlay");
+			var open = document.createElement("h5");
+			open.classList.add("enterCard") + open.classList.add("text-center") + open.classList.add("animated") + open.classList.add("pulse");
+			open.innerHTML = "Enter";
+			overlay.appendChild(open);
+			overlay.addEventListener("click", enterTeam);
 
 			var teamName = document.createElement("h5");
 			teamName.innerHTML = child.val().name.capitalizeFirstLetter();
 
 			body.appendChild(teamName);
 			cont.appendChild(img);
+			cont.appendChild(overlay);
 			cont.appendChild(body);
 			mainCont.appendChild(cont);
 			document.getElementById("teamsCont").appendChild(mainCont);
+		});
+	});
+}
+
+// enter selected team
+function enterTeam() {
+	// hide current content
+	document.getElementById("projectMain").style.display = "none";
+
+	// show team container
+	document.getElementById("teamMain").style.display = "block";
+
+	// get team data
+	var teamName = this.parentElement.childNodes[2].id.split("-")[1];
+	document.getElementById("teamName").innerHTML = teamName.capitalizeFirstLetter();
+
+	// get team members
+	var membersRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/members");
+	membersRef.once("value", function(snapshot) {
+		snapshot.forEach((child) => {
+			console.log(child.val());
 		});
 	});
 }
