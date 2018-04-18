@@ -2889,10 +2889,52 @@ input[type=number]::-webkit-inner-spin-button {
 /******************************* END PROJECTS MENU *******************************/
 
 /*********************************** TEAM ****************************************/
+
+.teamMemberImg {
+	border-radius: 50%;
+	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19);
+	padding: 0;
+	margin-top: 2%;
+	margin-right: 2%;
+	max-height: 37.5px;
+	max-width: 37.5px;
+	float: right;
+}
+
+#addTeamMember {
+	border-radius: 50%;
+	margin-top: 0.7%;
+	margin-right: 0;
+	height: 40px;
+	width: 40px;
+	float: right;
+	border: 0.5px solid #9e9e9e;
+}
+
+#teamMainToolbar {
+	padding-right: 0;
+	margin-right: 0;
+}
+
+#addTeamMember .feather {
+	stroke: #8c9eff;
+	height: 18px;
+	width: 18px;
+	margin-top: 11px;
+}
+
+#teamMembers {
+	padding-right: 0;
+}
+
 #backToProject .feather {
-	margin: 1%;
+	margin: 8%;
 	stroke: #8c9eff;
 	transition: all 0.3s;
+}
+
+#backToProjectCont {
+	padding: 0;
 }
 
 #backToProject .feather:hover {

@@ -3723,8 +3723,25 @@ function enterTeam() {
 	// get team members
 	var membersRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/members");
 	membersRef.once("value", function(snapshot) {
+		membersCount = snapshot.val().length;
 		snapshot.forEach((child) => {
-			console.log(child.val());
+			// create avatar img
+			var teamMemberImg = document.createElement("img");
+			teamMemberImg.classList.add("teamMemberImg") + teamMemberImg.classList.add("col-lg-1");
+
+			// set img src to be avatar url
+			accRef = firebase.database().ref("accounts/" + child.val());
+			accRef.once("value", function(snapshot) {
+				if (snapshot.val().Avatar_url != undefined) {
+					teamMemberImg.src = snapshot.val().Avatar_url;
+				}
+
+				else {
+					teamMemberImg.src = "/img/avatar.png";
+				}
+
+				document.getElementById("teamMembers").appendChild(teamMemberImg);
+			});
 		});
 	});
 }
