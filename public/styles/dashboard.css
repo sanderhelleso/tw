@@ -2896,7 +2896,7 @@ input[type=number]::-webkit-inner-spin-button {
 	padding: 0;
 	margin-top: 2%;
 	margin-right: 2%;
-	max-height: 37.5px;
+	height: 37.5px;
 	max-width: 37.5px;
 	float: right;
 }
@@ -2955,6 +2955,7 @@ input[type=number]::-webkit-inner-spin-button {
 
 #teamTabs {
 	padding-bottom: 2.5vh;
+	margin-bottom: 5vh;
 }
 
 #teamTabs li {
@@ -2966,12 +2967,41 @@ input[type=number]::-webkit-inner-spin-button {
 }
 
 #startConversation {
-	border: 1px solid #9e9e9e;
 	padding: 0;
 }
 
 #startConversation input {
 	border-radius: 0;
+	border: none;
+	border: 1px solid #e0e0e0;
+	font-size: 12px;
+	height: 47.5px;
+}
+
+#startConversation #postConversationCont {
+	border: 1px solid #e0e0e0;
+	border-top: none;
+	height: 47.5px;
+	background-color: #fafafa;
+	padding: 10px;
+}
+
+#startConversation #postConversationCont #postConversationBtn {
+	background-color: #8c9eff;
+	color: white;
+	padding: 6px;
+	padding-left: 16px;
+	padding-right: 16px;
+	font-size: 14px;
+	border-radius: 2px;
+	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19);
+	font-weight: 400;
+}
+
+#amountNotifiedConversation {
+	font-size: 10px;
+	margin-right: 5px;
+	color: #9e9e9e;
 }
 
 /********************************* END TEAM **************************************/

@@ -3712,9 +3712,11 @@ function teams() {
 function enterTeam() {
 	// hide current content
 	document.getElementById("projectMain").style.display = "none";
+	document.getElementById("teamMembers").innerHTML = "";
 
 	// show team container
 	document.getElementById("teamMain").style.display = "block";
+	document.getElementById("conversationsTrigger").click();
 
 	// get team data
 	var teamName = this.parentElement.childNodes[2].id.split("-")[1];
@@ -3743,7 +3745,25 @@ function enterTeam() {
 				document.getElementById("teamMembers").appendChild(teamMemberImg);
 			});
 		});
+
+		// set placeholder to mimic selected team
+		document.getElementById("postConversationInput").placeholder = "Start a conversation in " + teamName.capitalizeFirstLetter() + "...";
+
+		// display amount of peoples notified if posting a new conversation
+		document.getElementById("amountNotifiedConversation").innerHTML = membersCount + " people will be notified";
 	});
+
+	// add event listener to return to project
+	document.getElementById("backToProject").addEventListener("click", backToProject);
+}
+
+function backToProject() {
+
+	// hide team container
+	document.getElementById("teamMain").style.display = "none";
+
+	// show project container
+	document.getElementById("projectMain").style.display = "block";
 }
 
 // create a new team

@@ -81,7 +81,7 @@
 	  		<div id="dashboardContainer" class="row">
 
 	  			<!-- PROJECT START -->
-				<div id="projectMain" class="col-lg-12 animated justify-content-center">
+				<div id="projectMain" class="col-lg-12 animated fadeIn justify-content-center">
 					<ul id="profileTabsProject" class="nav nav-tabs">
 					  <li class="active"><a id="overviewTrigger" data-toggle="tab" href="#project1">Overview</a></li>
 					  <li><a id="gotoProjects" data-toggle="tab" href="#tasks">Tasks & Milestones</a></li>
@@ -236,7 +236,7 @@
 	  			<!-- END PROJECT -->
 				
 				<!-- TEAMS START -->
-	  			<div id="teamMain" class="col-lg-12 animated justify-content-center">
+	  			<div id="teamMain" class="col-lg-12 animated fadeIn justify-content-center">
 	  				<div id="teamMainToolbar" class="row col-lg-12">
 	  					<div id="backToProjectCont" class="col-lg-1">	  				
 	  						<span id="backToProject" class="text-left"><i data-feather="arrow-left-circle"></i></span>
@@ -255,7 +255,11 @@
 					  	<div class="row col-lg-12">
 					  		<div class="col-lg-7 offset-lg-1">
 					  			<div id="startConversation" class="col-lg-12">
-					  				<input class="form-control" type="text" placeholder="Start a conversation in Engineering...">
+					  				<input id="postConversationInput" class="form-control" type="text" placeholder="Start a conversation in Engineering...">
+					  				<div id="postConversationCont" class="text-right">
+					  					<span id="amountNotifiedConversation">10 people will be notified</span>
+					  					<a id="postConversationBtn">Post</a>
+					  				</div>
 					  			</div>
 					  			<div class="col-lg-12">
 					  			</div>
