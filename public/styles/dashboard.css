@@ -3189,11 +3189,17 @@ input[type=number]::-webkit-inner-spin-button {
 .likeCommentCont .feather {
 	float: right;
 	transition: all 0.3s;
+	opacity: 0.5;
 }
 
 .likeCommentCont .feather:hover {
 	cursor: pointer;
-	opacity: 0.5; 
+	opacity: 1; 
+}
+
+.commentLikes {
+	color: #8c9eff;
+	font-size: 14px;
 }
 
 /********************************* END TEAM **************************************/

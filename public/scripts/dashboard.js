@@ -3758,6 +3758,7 @@ function enterTeam() {
 	document.getElementById("backToProject").addEventListener("click", backToProject);
 }
 
+// load conversations for the selected team
 function loadConversations() {
 	console.log(123);
 
@@ -3841,6 +3842,7 @@ function loadConversations() {
 			// create body / comments
 			var comments = document.createElement("div");
 			comments.classList.add("conversationBody") + comments.classList.add("col-lg-12");
+			var commentLikesID = child.key;
 			var conversationCommentRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/conversations/" + child.key + "/comments");
 			conversationCommentRef.once("value", function(snapshot) {
 				// create comments
@@ -3849,6 +3851,7 @@ function loadConversations() {
 
 					// comment data cont
 					var commentContentCont = document.createElement("div");
+					commentContentCont.id = "comment-" + child.key;
 					commentContentCont.classList.add("conversationCommentCont") + commentContentCont.classList.add("col-lg-9");
 
 					// comment data
@@ -3891,6 +3894,24 @@ function loadConversations() {
 					var likeCont = document.createElement("div");
 					likeCont.classList.add("col-lg-1") + likeCont.classList.add("likeCommentCont");
 					likeCont.innerHTML = document.getElementById("masterLike").innerHTML;
+					likeCont.childNodes[1].addEventListener("click", likeComment);
+
+
+					// get amount of likes
+					var likesCount = 0;
+					var likesRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/conversations/" + commentLikesID + "/comments/" + child.key + "/likes");
+					likesRef.once("value", function(snapshot) {
+						snapshot.forEach((child) => {
+							likesCount++;
+							likeCont.childNodes[0].innerHTML = likesCount;
+
+							// user only able to like a comment once
+							if (child.val() === uidKey) {
+								likeCont.childNodes[1].style.opacity = "1";
+								likeCont.childNodes[1].removeEventListener("click", likeComment);
+							}
+						});
+					});
 
 					// create row with comment and display in DOM
 					var row = document.createElement("div");
@@ -3974,6 +3995,7 @@ function loadConversations() {
 	document.getElementById("postConversationBtn").addEventListener("click", postConversation);
 }
 
+// post conversation in team
 function postConversation() {
 
 	// get timestamp
@@ -4192,8 +4214,9 @@ function postConversationComment() {
 	if (commentContent.value.length === 0) {
 		return;
 	}
-	console.log(conversationID);
-	var conversationRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/conversations/" + conversationID + "/comments/" + new Date().getTime());
+
+	var commentID = new Date().getTime();
+	var conversationRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/conversations/" + conversationID + "/comments/" + commentID);
 		conversationRef.update({
 		datetime: dateTime,
 		author: uidKey,
@@ -4204,6 +4227,7 @@ function postConversationComment() {
 
 	// comment data cont
 	var commentContentCont = document.createElement("div");
+	commentCont.Id = "comment-" + commentID;
 	commentContentCont.classList.add("conversationCommentCont") + commentContentCont.classList.add("col-lg-9");
 
 	// comment data
@@ -4246,6 +4270,7 @@ function postConversationComment() {
 	var likeCont = document.createElement("div");
 	likeCont.classList.add("col-lg-1") + likeCont.classList.add("likeCommentCont");
 	likeCont.innerHTML = document.getElementById("masterLike").innerHTML;
+	likeCont.childNodes[1].addEventListener("click", likeComment);
 
 	// create row with comment and display in DOM
 	var row = document.createElement("div");
@@ -4260,6 +4285,33 @@ function postConversationComment() {
 	row.appendChild(likeCont);
 
 	conversation.appendChild(row);
+}
+
+// like a specific comment
+function likeComment() {
+	// remove event
+	this.removeEventListener("click", likeComment);
+
+	// styling
+	var likes = this.parentElement.childNodes[0];
+	this.style.opacity = "1";
+
+	// set like
+	if (likes.innerHTML === "") {
+		likes.innerHTML = 1;
+	}
+
+	else {
+		likes.innerHTML += 1;
+	}
+
+	// store like
+	var conversationID = this.parentElement.parentElement.parentElement.parentElement.id.split("-")[1];
+	var commentID = this.parentElement.parentElement.childNodes[1].id.split("-")[1];
+	var commentRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/conversations/" + conversationID + "/comments/" + commentID + "/likes/");
+		commentRef.update({
+		liked_by: uidKey
+	});
 }
 
 function backToProject() {
