@@ -3709,6 +3709,7 @@ function teams() {
 }
 
 // enter selected team
+var teamName;
 function enterTeam() {
 	// hide current content
 	document.getElementById("projectMain").style.display = "none";
@@ -3718,12 +3719,12 @@ function enterTeam() {
 	document.getElementById("teamMain").style.display = "block";
 	document.getElementById("conversationsTrigger").click();
 
-	// load conversations data
-	loadConversations();
-
 	// get team data
-	var teamName = this.parentElement.childNodes[2].id.split("-")[1];
+	teamName = this.parentElement.childNodes[2].id.split("-")[1];
 	document.getElementById("teamName").innerHTML = teamName.capitalizeFirstLetter();
+
+	// load conversations
+	loadConversations();
 
 	// get team members
 	var membersRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/members");
@@ -3749,9 +3750,6 @@ function enterTeam() {
 			});
 		});
 
-		// set placeholder to mimic selected team
-		document.getElementById("postConversationInput").placeholder = "Start a conversation in " + teamName.capitalizeFirstLetter() + "...";
-
 		// display amount of peoples notified if posting a new conversation
 		document.getElementById("amountNotifiedConversation").innerHTML = (membersCount - 1) + " people will be notified";
 	});
@@ -3763,12 +3761,159 @@ function enterTeam() {
 function loadConversations() {
 	console.log(123);
 
+	// load conversations
+	var conversationRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/conversations/");
+	conversationRef.once("value", function(snapshot) {
+		// create elements
+		snapshot.forEach((child) => {
+			console.log(child.val());
+
+			// create container
+			var cont = document.createElement("div");
+			cont.classList.add("conversation") + cont.classList.add("col-lg-12");
+
+			// header
+			var contHeader = document.createElement("div");
+			contHeader.classList.add("conversationHeader") + contHeader.classList.add("col-lg-12");
+
+			// img cont
+			var imgCont = document.createElement("div");
+			imgCont.classList.add("col-lg-1");
+
+			// poster avatar
+			var posterImg = document.createElement("img");
+			posterImg.classList.add("conversationPosterImg");
+
+			// set img src to be avatar url
+			var posterRef = firebase.database().ref("accounts/" + child.val().author);
+			posterRef.once("value", function(snapshot) {
+				if (snapshot.val().Avatar_url != undefined) {
+					posterImg.src = snapshot.val().Avatar_url;
+				}
+
+				else {
+					posterImg.src = "/img/avatar.png";
+				}
+
+				imgCont.appendChild(posterImg);
+			});
+
+			// create poster header and info cont
+			var infoCont = document.createElement("div");
+			infoCont.classList.add("conversationPosterInfoCont") + infoCont.classList.add("col-lg-9");
+
+			// create heading
+			var heading = document.createElement("h1");
+			heading.classList.add("conversationHeading");
+			heading.innerHTML = "SQUAWK";
+
+			// poster name and date
+			var span = document.createElement("span");
+			var posterName = document.createElement("h5");
+			posterName.classList.add("conversationPosterName");
+			posterName.innerHTML = "SQUAWK SQUAWK";
+			var posterDate = document.createElement("span");
+			posterDate.classList.add("conversationDate");
+			posterDate.innerHTML = "Todat 15.49pm";
+
+			// create conversation content
+			var conversationContent = document.createElement("p");
+			conversationContent.classList.add("conversationContent");
+			conversationContent.innerHTML = child.val().content;
+
+			// create divider
+			var divider = document.createElement("div");
+			divider.classList.add("dropdown-divider") + divider.classList.add("conversationDivider");
+
+			// append to header
+			infoCont.appendChild(heading);
+			span.appendChild(posterName);
+			span.appendChild(posterDate);
+			infoCont.appendChild(span);
+			contHeader.appendChild(imgCont);
+			contHeader.appendChild(infoCont);
+
+
+			cont.appendChild(contHeader);
+			cont.appendChild(conversationContent);
+			cont.appendChild(divider);
+
+			// create body / comments
+			var comments = document.createElement("div");
+			comments.classList.add("conversationBody") + comments.classList.add("col-lg-12");
+			cont.appendChild(comments);
+
+
+			// create footer
+			var footer = document.createElement("div");
+			footer.classList.add("conversationFooter") + footer.classList.add("col-lg-12");
+
+			// footer img
+			var footerImgCont = document.createElement("div");
+			footerImgCont.classList.add("col-lg-1");
+
+			// create img
+			var footerImg = document.createElement("img");
+			footerImg.classList.add("conversationFooterImg");
+			var postCommentUserRef = firebase.database().ref("accounts/" + uidKey);
+			postCommentUserRef.once("value", function(snapshot) {
+				if (snapshot.val().Avatar_url != undefined) {
+					footerImg.src = snapshot.val().Avatar_url;
+				}
+
+				else {
+					footerImg.src = "/img/avatar.png";
+				}
+
+				footerImgCont.appendChild(footerImg);
+			});
+
+			// create input cont
+			var inputCont = document.createElement("div");
+			inputCont.classList.add("col-lg-10");
+
+			// create input field
+			var input = document.createElement("input");
+			input.classList.add("form-control") + input.classList.add("replyToConversation");
+			input.placeholder = "Write a comment...";
+			input.setAttribute("type", "text");
+
+			// append to footer
+			inputCont.appendChild(input);
+			footer.appendChild(footerImgCont);
+			footer.appendChild(inputCont);
+			cont.appendChild(footer);
+
+			// append to DOM
+			document.getElementById("conversationsCont").appendChild(cont);
+
+		});
+	});
+
+
 	// init post conversation event
 	document.getElementById("postConversationBtn").addEventListener("click", postConversation);
 }
 
 function postConversation() {
 	console.log(123);
+
+	// get value
+	var conversationContent = document.getElementById("postConversationInput");
+
+	// do check
+	if (conversationContent.value.length === 0) {
+		return;
+	}
+
+	// post data and create in DOM
+	else {
+		var conversationRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/conversations/" + new Date().getTime());
+		conversationRef.update({
+			author: uidKey,
+			content: conversationContent.value
+		});
+	}
 }
 
 function backToProject() {

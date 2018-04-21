@@ -2966,6 +2966,12 @@ input[type=number]::-webkit-inner-spin-button {
 	color: #9e9e9e;
 }
 
+#teamConversations {
+	max-height: 60vh;
+	overflow: hidden;
+	overflow-y: scroll;
+}
+
 #startConversation {
 	padding: 0;
 }
@@ -2976,6 +2982,11 @@ input[type=number]::-webkit-inner-spin-button {
 	border: 1px solid #e0e0e0;
 	font-size: 12px;
 	height: 47.5px;
+	float: left;
+}
+
+#startConversation #postConversationInput {
+	border-left: none;
 }
 
 #startConversation #postConversationCont {
@@ -2984,6 +2995,9 @@ input[type=number]::-webkit-inner-spin-button {
 	height: 47.5px;
 	background-color: #fafafa;
 	padding: 10px;
+	float: right;
+	width: 100%;
+	margin-bottom: 2.5vh;
 }
 
 #startConversation #postConversationCont #postConversationBtn {
@@ -3031,7 +3045,7 @@ input[type=number]::-webkit-inner-spin-button {
 	float: left;
 }
 
-#conversationPosterInfoCont {
+.conversationPosterInfoCont {
 	margin-left: 35px;
 	margin-top: 20px;
 }
