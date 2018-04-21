@@ -3771,7 +3771,7 @@ function loadConversations() {
 			// create container
 			var cont = document.createElement("div");
 			cont.id = "conversation-" + child.key;
-			cont.classList.add("conversation") + cont.classList.add("col-lg-12");
+			cont.classList.add("conversation") + cont.classList.add("col-lg-12") + cont.classList.add("animated") + cont.classList.add("fadeIn");
 
 			// header
 			var contHeader = document.createElement("div");
@@ -4003,6 +4003,7 @@ function postConversation() {
 	// get value
 	var conversationTitle = document.getElementById("postConversationTitle")
 	var conversationContent = document.getElementById("postConversationInput");
+	var contID;
 
 	// do check
 	if (conversationTitle.value.length === 0) {
@@ -4015,7 +4016,8 @@ function postConversation() {
 
 	// post data and create in DOM
 	else {
-		var conversationRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/conversations/" + new Date().getTime());
+		contID = new Date().getTime();
+		var conversationRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/conversations/" + contID);
 		conversationRef.update({
 			datetime: dateTime,
 			author: uidKey,
@@ -4026,8 +4028,8 @@ function postConversation() {
 
 	// create container
 	var cont = document.createElement("div");
-	cont.id = "conversation-" + dateTime;
-	cont.classList.add("conversation") + cont.classList.add("col-lg-12");
+	cont.id = "conversation-" + contID;
+	cont.classList.add("conversation") + cont.classList.add("col-lg-12") + cont.classList.add("animated") + cont.classList.add("fadeIn");
 
 	// header
 	var contHeader = document.createElement("div");
@@ -4190,15 +4192,74 @@ function postConversationComment() {
 	if (commentContent.value.length === 0) {
 		return;
 	}
-
-	/*var conversationRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/conversations/" + conversationID + "/comments/" + new Date().getTime());
+	console.log(conversationID);
+	var conversationRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/conversations/" + conversationID + "/comments/" + new Date().getTime());
 		conversationRef.update({
 		datetime: dateTime,
 		author: uidKey,
 		content: commentContent.value
-	});*/
+	});
 
-	console.log(document.getElementById("conversation-" + conversationID).childNodes);
+	var conversation = document.getElementById("conversation-" + conversationID).childNodes[3];
+
+	// comment data cont
+	var commentContentCont = document.createElement("div");
+	commentContentCont.classList.add("conversationCommentCont") + commentContentCont.classList.add("col-lg-9");
+
+	// comment data
+	var commentSpan = document.createElement("span");
+	var commentName = document.createElement("h5");
+	commentName.classList.add("conversationCommentName");
+
+	// comment img container
+	var commentImgCont = document.createElement("div");
+	commentImgCont.classList.add("col-lg-1");
+
+	// comment img
+	var commentImg = document.createElement("img");
+	commentImg.classList.add("conversationCommentImg");
+	var commentUserRef = firebase.database().ref("accounts/" + uidKey);
+	commentUserRef.once("value", function(snapshot) {
+		if (snapshot.val().Avatar_url != undefined) {
+			commentImg.src = snapshot.val().Avatar_url;
+		}
+
+		else {
+			commentImg.src = "/img/avatar.png";
+		}
+
+		commentName.innerHTML = snapshot.val().First_Name.capitalizeFirstLetter() + " " + snapshot.val().Last_Name.capitalizeFirstLetter();
+		commentImgCont.appendChild(commentImg);
+	});
+
+	// comment date
+	var commentDate = document.createElement("span");
+	commentDate.classList.add("conversationCommentDate");
+	commentDate.innerHTML = dateTime;
+
+	// comment content
+	var comment = document.createElement("p");
+	comment.classList.add("commentContent");
+	comment.innerHTML = commentContent.value;
+
+	// like
+	var likeCont = document.createElement("div");
+	likeCont.classList.add("col-lg-1") + likeCont.classList.add("likeCommentCont");
+	likeCont.innerHTML = document.getElementById("masterLike").innerHTML;
+
+	// create row with comment and display in DOM
+	var row = document.createElement("div");
+	row.classList.add("col-lg-12") + row.classList.add("row") + row.classList.add("commentRow") + row.classList.add("animated") + row.classList.add("fadeIn");
+
+	row.appendChild(commentImgCont);
+	commentSpan.appendChild(commentName);
+	commentSpan.appendChild(commentDate);
+	commentContentCont.appendChild(commentSpan);
+	commentContentCont.appendChild(comment);
+	row.appendChild(commentContentCont);
+	row.appendChild(likeCont);
+
+	conversation.appendChild(row);
 }
 
 function backToProject() {
