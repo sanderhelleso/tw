@@ -2979,14 +2979,14 @@ input[type=number]::-webkit-inner-spin-button {
 #startConversation input {
 	border-radius: 0;
 	border: none;
-	border: 1px solid #e0e0e0;
+	border: 0.5px solid #e0e0e0;
 	font-size: 12px;
 	height: 47.5px;
 	float: left;
 }
 
-#startConversation #postConversationInput {
-	border-left: none;
+#startConversation input:focus {
+	border: 0.5px solid #8c9eff;
 }
 
 #startConversation #postConversationCont {
@@ -3070,11 +3070,11 @@ input[type=number]::-webkit-inner-spin-button {
 }
 
 .conversationDivider {
-	width: 90%;
+	width: 95%;
 	margin-top: 15px;
 	margin-bottom: 15px;
-	margin-left: 20px;
-	margin-right: 20px;
+	margin-left: 2.5%;
+	margin-right: 2.5%;
 }
 
 .conversationContent {
@@ -3112,7 +3112,6 @@ input[type=number]::-webkit-inner-spin-button {
 }
 
 .conversationFooter {
-	margin-top: 10px;
 	background-color: #fafafa;
 	border-top: 1px solid #eeeeee;
 }
@@ -3142,6 +3141,59 @@ input[type=number]::-webkit-inner-spin-button {
 .conversation {
 	margin-bottom: 2.5vh;
 	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19);
+}
+
+.postConversationCommentBtn {
+	background-color: #8c9eff;
+	color: white;
+	padding: 5px;
+	padding-left: 16px;
+	padding-right: 16px;
+	font-size: 14px;
+	border-radius: 2px;
+	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19);
+	font-weight: 400;
+	transition: all 0.3s;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	margin-left: 25px;
+}
+
+.postConversationCommentBtnCont {
+	margin-top: 22.5px;
+	margin-bottom: 20px;
+	margin-left: 15px;
+	color: white;
+}
+
+.postConversationCommentBtn:hover {
+	cursor: pointer;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.commentRow {
+	margin-left: 1px;
+	margin-bottom: 15px;
+}
+
+#masterLike {
+	display: none;
+}
+
+.likeCommentCont .feather {
+	width: 18px;
+	height: 18px;
+	stroke: #8c9eff;
+}
+
+.likeCommentCont .feather {
+	float: right;
+	transition: all 0.3s;
+}
+
+.likeCommentCont .feather:hover {
+	cursor: pointer;
+	opacity: 0.5; 
 }
 
 /********************************* END TEAM **************************************/

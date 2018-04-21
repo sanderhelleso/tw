@@ -3770,6 +3770,7 @@ function loadConversations() {
 
 			// create container
 			var cont = document.createElement("div");
+			cont.id = "conversation-" + child.key;
 			cont.classList.add("conversation") + cont.classList.add("col-lg-12");
 
 			// header
@@ -3805,21 +3806,20 @@ function loadConversations() {
 			// create heading
 			var heading = document.createElement("h1");
 			heading.classList.add("conversationHeading");
-			heading.innerHTML = "SQUAWK";
+			heading.innerHTML = child.val().title.capitalizeFirstLetter();
 
 			// poster name and date
 			var span = document.createElement("span");
 			var posterName = document.createElement("h5");
 			posterName.classList.add("conversationPosterName");
-			posterName.innerHTML = "SQUAWK SQUAWK";
 			var posterDate = document.createElement("span");
 			posterDate.classList.add("conversationDate");
-			posterDate.innerHTML = "Todat 15.49pm";
+			posterDate.innerHTML = child.val().datetime;
 
 			// create conversation content
 			var conversationContent = document.createElement("p");
 			conversationContent.classList.add("conversationContent");
-			conversationContent.innerHTML = child.val().content;
+			conversationContent.innerHTML = child.val().content.capitalizeFirstLetter();
 
 			// create divider
 			var divider = document.createElement("div");
@@ -3841,8 +3841,75 @@ function loadConversations() {
 			// create body / comments
 			var comments = document.createElement("div");
 			comments.classList.add("conversationBody") + comments.classList.add("col-lg-12");
-			cont.appendChild(comments);
+			var conversationCommentRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/conversations/" + child.key + "/comments");
+			conversationCommentRef.once("value", function(snapshot) {
+				// create comments
+				snapshot.forEach((child) => {
+					console.log(child.val());
 
+					// comment data cont
+					var commentContentCont = document.createElement("div");
+					commentContentCont.classList.add("conversationCommentCont") + commentContentCont.classList.add("col-lg-9");
+
+					// comment data
+					var commentSpan = document.createElement("span");
+					var commentName = document.createElement("h5");
+					commentName.classList.add("conversationCommentName");
+
+					// comment img container
+					var commentImgCont = document.createElement("div");
+					commentImgCont.classList.add("col-lg-1");
+
+					// comment img
+					var commentImg = document.createElement("img");
+					commentImg.classList.add("conversationCommentImg");
+					var commentUserRef = firebase.database().ref("accounts/" + child.val().author);
+					commentUserRef.once("value", function(snapshot) {
+						if (snapshot.val().Avatar_url != undefined) {
+							commentImg.src = snapshot.val().Avatar_url;
+						}
+
+						else {
+							commentImg.src = "/img/avatar.png";
+						}
+
+						commentName.innerHTML = snapshot.val().First_Name.capitalizeFirstLetter() + " " + snapshot.val().Last_Name.capitalizeFirstLetter();
+						commentImgCont.appendChild(commentImg);
+					});
+
+					// comment date
+					var commentDate = document.createElement("span");
+					commentDate.classList.add("conversationCommentDate");
+					commentDate.innerHTML = child.val().datetime;
+
+					// comment content
+					var comment = document.createElement("p");
+					comment.classList.add("commentContent");
+					comment.innerHTML = child.val().content;
+
+					// like
+					var likeCont = document.createElement("div");
+					likeCont.classList.add("col-lg-1") + likeCont.classList.add("likeCommentCont");
+					likeCont.innerHTML = document.getElementById("masterLike").innerHTML;
+
+					// create row with comment and display in DOM
+					var row = document.createElement("div");
+					row.classList.add("col-lg-12") + row.classList.add("row") + row.classList.add("commentRow");
+
+					row.appendChild(commentImgCont);
+					commentSpan.appendChild(commentName);
+					commentSpan.appendChild(commentDate);
+					commentContentCont.appendChild(commentSpan);
+					commentContentCont.appendChild(comment);
+					row.appendChild(commentContentCont);
+					row.appendChild(likeCont);
+
+					comments.appendChild(row);
+				});
+			});
+
+			// append comments
+			cont.appendChild(comments);
 
 			// create footer
 			var footer = document.createElement("div");
@@ -3865,12 +3932,13 @@ function loadConversations() {
 					footerImg.src = "/img/avatar.png";
 				}
 
+				posterName.innerHTML = snapshot.val().First_Name.capitalizeFirstLetter() + " " + snapshot.val().Last_Name.capitalizeFirstLetter();
 				footerImgCont.appendChild(footerImg);
 			});
 
 			// create input cont
 			var inputCont = document.createElement("div");
-			inputCont.classList.add("col-lg-10");
+			inputCont.classList.add("col-lg-8");
 
 			// create input field
 			var input = document.createElement("input");
@@ -3878,10 +3946,22 @@ function loadConversations() {
 			input.placeholder = "Write a comment...";
 			input.setAttribute("type", "text");
 
+			// post button
+			var btnCont = document.createElement("div");
+			btnCont.classList.add("col-lg-1") + btnCont.classList.add("postConversationCommentBtnCont");
+			var btn = document.createElement("a");
+			btn.classList.add("postConversationCommentBtn");
+			btn.innerHTML = "Post";
+
+			// add post event
+			btn.addEventListener("click", postConversationComment);
+			btnCont.appendChild(btn);
+
 			// append to footer
 			inputCont.appendChild(input);
 			footer.appendChild(footerImgCont);
 			footer.appendChild(inputCont);
+			footer.appendChild(btnCont);
 			cont.appendChild(footer);
 
 			// append to DOM
@@ -3890,30 +3970,235 @@ function loadConversations() {
 		});
 	});
 
-
 	// init post conversation event
 	document.getElementById("postConversationBtn").addEventListener("click", postConversation);
 }
 
 function postConversation() {
-	console.log(123);
+
+	// get timestamp
+	var now = new Date();
+	var year = now.getFullYear(); 
+	var month = now.getMonth()+1; 
+	var day = now.getDate();
+	var hour = now.getHours();
+	var minute = now.getMinutes();
+
+	// add zeros if needed
+	if (month.toString().length == 1) {
+		var month = '0' + month;
+	}
+	if (day.toString().length == 1) {
+		var day = '0' + day;
+	}   
+	if (hour.toString().length == 1) {
+		var hour = '0' + hour;
+	}
+	if (minute.toString().length == 1) {
+		var minute = '0' + minute;
+	}
+
+	var dateTime = day + '.' + month + ' ' + year + ' ' + hour + ':' + minute; 
 
 	// get value
+	var conversationTitle = document.getElementById("postConversationTitle")
 	var conversationContent = document.getElementById("postConversationInput");
 
 	// do check
-	if (conversationContent.value.length === 0) {
+	if (conversationTitle.value.length === 0) {
 		return;
 	}
+
+	if (conversationContent.value.length === 0) {
+		return;
+	} 
 
 	// post data and create in DOM
 	else {
 		var conversationRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/conversations/" + new Date().getTime());
 		conversationRef.update({
+			datetime: dateTime,
 			author: uidKey,
+			title: conversationTitle.value,
 			content: conversationContent.value
 		});
 	}
+
+	// create container
+	var cont = document.createElement("div");
+	cont.id = "conversation-" + dateTime;
+	cont.classList.add("conversation") + cont.classList.add("col-lg-12");
+
+	// header
+	var contHeader = document.createElement("div");
+	contHeader.classList.add("conversationHeader") + contHeader.classList.add("col-lg-12");
+
+	// img cont
+	var imgCont = document.createElement("div");
+	imgCont.classList.add("col-lg-1");
+
+	// poster avatar
+	var posterImg = document.createElement("img");
+	posterImg.classList.add("conversationPosterImg");
+
+	// set img src to be avatar url
+	var posterRef = firebase.database().ref("accounts/" + uidKey);
+	posterRef.once("value", function(snapshot) {
+		if (snapshot.val().Avatar_url != undefined) {
+			posterImg.src = snapshot.val().Avatar_url;
+		}
+
+		else {
+			posterImg.src = "/img/avatar.png";
+		}
+
+		imgCont.appendChild(posterImg);
+	});
+
+	// create poster header and info cont
+	var infoCont = document.createElement("div");
+	infoCont.classList.add("conversationPosterInfoCont") + infoCont.classList.add("col-lg-9");
+
+	// create heading
+	var heading = document.createElement("h1");
+	heading.classList.add("conversationHeading");
+	heading.innerHTML = conversationTitle.value.capitalizeFirstLetter();
+
+	// poster name and date
+	var span = document.createElement("span");
+	var posterName = document.createElement("h5");
+	posterName.classList.add("conversationPosterName");
+	var posterDate = document.createElement("span");
+	posterDate.classList.add("conversationDate");
+	posterDate.innerHTML = dateTime;
+
+	// create conversation content
+	var conversationContentP = document.createElement("p");
+	conversationContentP.classList.add("conversationContent");
+	conversationContentP.innerHTML = conversationContent.value.capitalizeFirstLetter();
+
+	// create divider
+	var divider = document.createElement("div");
+	divider.classList.add("dropdown-divider") + divider.classList.add("conversationDivider");
+
+	// append to header
+	infoCont.appendChild(heading);
+	span.appendChild(posterName);
+	span.appendChild(posterDate);
+	infoCont.appendChild(span);
+	contHeader.appendChild(imgCont);
+	contHeader.appendChild(infoCont);
+
+
+	cont.appendChild(contHeader);
+	cont.appendChild(conversationContentP);
+	cont.appendChild(divider);
+
+	// create body / comments
+	var comments = document.createElement("div");
+	comments.classList.add("conversationBody") + comments.classList.add("col-lg-12");
+	cont.appendChild(comments);
+
+	// create footer
+	var footer = document.createElement("div");
+	footer.classList.add("conversationFooter") + footer.classList.add("col-lg-12");
+
+	// footer img
+	var footerImgCont = document.createElement("div");
+	footerImgCont.classList.add("col-lg-1");
+
+	// create img
+	var footerImg = document.createElement("img");
+	footerImg.classList.add("conversationFooterImg");
+	var postCommentUserRef = firebase.database().ref("accounts/" + uidKey);
+	postCommentUserRef.once("value", function(snapshot) {
+		if (snapshot.val().Avatar_url != undefined) {
+			footerImg.src = snapshot.val().Avatar_url;
+		}
+
+		else {
+			footerImg.src = "/img/avatar.png";
+		}
+
+		posterName.innerHTML = snapshot.val().First_Name.capitalizeFirstLetter() + " " + snapshot.val().Last_Name.capitalizeFirstLetter();
+		footerImgCont.appendChild(footerImg);
+	});
+
+	// create input cont
+	var inputCont = document.createElement("div");
+	inputCont.classList.add("col-lg-8");
+
+	// create input field
+	var input = document.createElement("input");
+	input.classList.add("form-control") + input.classList.add("replyToConversation");
+	input.placeholder = "Write a comment...";
+	input.setAttribute("type", "text");
+
+	// post button
+	var btnCont = document.createElement("div");
+	btnCont.classList.add("col-lg-1") + btnCont.classList.add("postConversationCommentBtnCont");
+	var btn = document.createElement("a");
+	btn.classList.add("postConversationCommentBtn");
+	btn.innerHTML = "Post";
+
+	// add post event
+	btn.addEventListener("click", postConversationComment);
+	btnCont.appendChild(btn);
+
+	// append to footer
+	inputCont.appendChild(input);
+	footer.appendChild(footerImgCont);
+	footer.appendChild(inputCont);
+	footer.appendChild(btnCont);
+	cont.appendChild(footer);
+
+	// append to DOM
+	document.getElementById("conversationsCont").appendChild(cont);
+}
+
+// post conversation comment
+function postConversationComment() {
+	// get id
+	var conversationID = this.parentElement.parentElement.parentElement.id.split("-")[1];
+
+	// get timestamp
+	var now = new Date();
+	var year = now.getFullYear(); 
+	var month = now.getMonth()+1; 
+	var day = now.getDate();
+	var hour = now.getHours();
+	var minute = now.getMinutes();
+
+	// add zeros if needed
+	if (month.toString().length == 1) {
+		var month = '0' + month;
+	}
+	if (day.toString().length == 1) {
+		var day = '0' + day;
+	}   
+	if (hour.toString().length == 1) {
+		var hour = '0' + hour;
+	}
+	if (minute.toString().length == 1) {
+		var minute = '0' + minute;
+	}
+
+	var dateTime = day + '.' + month + ' ' + year + ' ' + hour + ':' + minute; 
+
+	// get value and do check
+	var commentContent = this.parentElement.parentElement.childNodes[1].childNodes[0];
+	if (commentContent.value.length === 0) {
+		return;
+	}
+
+	/*var conversationRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/conversations/" + conversationID + "/comments/" + new Date().getTime());
+		conversationRef.update({
+		datetime: dateTime,
+		author: uidKey,
+		content: commentContent.value
+	});*/
+
+	console.log(document.getElementById("conversation-" + conversationID).childNodes);
 }
 
 function backToProject() {
