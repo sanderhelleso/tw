@@ -3718,6 +3718,9 @@ function enterTeam() {
 	document.getElementById("teamMain").style.display = "block";
 	document.getElementById("conversationsTrigger").click();
 
+	// load conversations data
+	loadConversations();
+
 	// get team data
 	var teamName = this.parentElement.childNodes[2].id.split("-")[1];
 	document.getElementById("teamName").innerHTML = teamName.capitalizeFirstLetter();
@@ -3755,6 +3758,17 @@ function enterTeam() {
 
 	// add event listener to return to project
 	document.getElementById("backToProject").addEventListener("click", backToProject);
+}
+
+function loadConversations() {
+	console.log(123);
+
+	// init post conversation event
+	document.getElementById("postConversationBtn").addEventListener("click", postConversation);
+}
+
+function postConversation() {
+	console.log(123);
 }
 
 function backToProject() {

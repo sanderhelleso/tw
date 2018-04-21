@@ -2996,6 +2996,12 @@ input[type=number]::-webkit-inner-spin-button {
 	border-radius: 2px;
 	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19);
 	font-weight: 400;
+	transition: all 0.3s;
+}
+
+#startConversation #postConversationCont #postConversationBtn:hover {
+	cursor: pointer;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 #amountNotifiedConversation {
@@ -3018,14 +3024,16 @@ input[type=number]::-webkit-inner-spin-button {
 	border-radius: 50%;
 	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19);
 	padding: 0;
-	margin-top: 2%;
+	margin: 20px;
+	margin-bottom: 0;
 	height: 45px;
 	max-width: 45px;
 	float: left;
 }
 
 #conversationPosterInfoCont {
-	margin-left: 15px;
+	margin-left: 35px;
+	margin-top: 20px;
 }
 
 .conversationHeading {
@@ -3034,29 +3042,92 @@ input[type=number]::-webkit-inner-spin-button {
 	margin-bottom: 4px;
 }
 
-.conversationPosterName {
+.conversationPosterName, .conversationCommentName {
 	font-size: 14px;
 	color: #212121:;
 	float: left;
 	margin-right: 7.5px;
 }
 
-.conversationDate {
+.conversationDate, .conversationCommentDate {
 	color: #9e9e9e;
 	font-size: 12px;
 	float: left;
 }
 
 .conversationDivider {
-	width: 100%;
-	margin-top: 20px;
+	width: 90%;
+	margin-top: 15px;
+	margin-bottom: 15px;
+	margin-left: 20px;
+	margin-right: 20px;
 }
 
 .conversationContent {
 	width: 100%;
 	float: left;
-	margin-top: 20px;
+	margin-top: 10px;
+	margin: 20px;
 	margin-bottom: 0;
+	font-size: 14px;
+}
+
+.conversationCommentImg {
+	border-radius: 50%;
+	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19);
+	padding: 0;
+	margin-left: 20px;
+	margin-bottom: 0;
+	height: 35px;
+	max-width: 35px;
+	float: left;
+}
+
+.conversationCommentCont {
+	margin-left: 25px;
+}
+
+.commentContent {
+	width: 100%;
+	float: left;
+	font-size: 14px;
+}
+
+.conversationCommentName {
+	margin-bottom: 0;
+}
+
+.conversationFooter {
+	margin-top: 10px;
+	background-color: #fafafa;
+	border-top: 1px solid #eeeeee;
+}
+
+.conversationFooterImg {
+	border-radius: 50%;
+	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19);
+	padding: 0;
+	margin-top: 20px;
+	margin-left: 20px;
+	height: 25px;
+	max-width: 25px;
+	float: left;
+}
+
+.replyToConversation {
+	font-size: 12px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	margin-left: 15px;
+}
+
+.replyToConversation:focus {
+	border: 1px solid #8c9eff;
+}
+
+.conversation {
+	margin-bottom: 2.5vh;
+	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19);
 }
 
 /********************************* END TEAM **************************************/
