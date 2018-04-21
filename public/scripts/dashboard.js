@@ -3750,7 +3750,7 @@ function enterTeam() {
 		document.getElementById("postConversationInput").placeholder = "Start a conversation in " + teamName.capitalizeFirstLetter() + "...";
 
 		// display amount of peoples notified if posting a new conversation
-		document.getElementById("amountNotifiedConversation").innerHTML = membersCount + " people will be notified";
+		document.getElementById("amountNotifiedConversation").innerHTML = (membersCount - 1) + " people will be notified";
 	});
 
 	// add event listener to return to project

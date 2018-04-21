@@ -247,6 +247,7 @@
 	  				<h3 id="teamName" class="text-center"></h3>
 					<ul id="teamTabs" class="nav nav-tabs justify-content-center">
 					  	<li class="active"><a id="conversationsTrigger" data-toggle="tab" href="#teamConversations">Conversations</a></li>
+					  	<li class="active"><a id="missonsTrigger" data-toggle="tab" href="#teamMissons">Missions</a></li>
 						<li class="active"><a id="calenderTrigger" data-toggle="tab" href="#teamCalender">Calender</a></li>
 					</ul>
 
@@ -257,11 +258,27 @@
 					  			<div id="startConversation" class="col-lg-12">
 					  				<input id="postConversationInput" class="form-control" type="text" placeholder="Start a conversation in Engineering...">
 					  				<div id="postConversationCont" class="text-right">
-					  					<span id="amountNotifiedConversation">10 people will be notified</span>
+					  					<span id="amountNotifiedConversation"></span>
 					  					<a id="postConversationBtn">Post</a>
 					  				</div>
 					  			</div>
-					  			<div class="col-lg-12">
+					  			<div id="conversationsCont" class="col-lg-12">
+					  				<div class="conversation col-lg-12">
+					  					<div class="conversationHeader col-lg-12">
+					  						<div class="col-lg-1">
+					  							<img src="/img/avatar.png" class="conversationPosterImg">
+					  						</div>
+					  						<div id="conversationPosterInfoCont" class="col-lg-9">
+					  							<h1 class="conversationHeading">Mission to Mars</h1>
+					  							<span><h5 class="conversationPosterName">Sander Hellesø</h5><span class="conversationDate">Today 15.58pm</span></span>
+					  						</div>
+					  						<p class="conversationContent">Any ideas?</p>
+					  						<div class="dropdown-divider conversationDivider"></div>
+					  					</div>
+					  					<div class="conversationBody col-lg-12">
+					  						
+					  					</div>
+					  				</div>
 					  			</div>
 					  		</div>
 					  		<div class="col-lg-3 offset-lg-1">
