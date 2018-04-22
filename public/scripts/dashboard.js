@@ -3762,6 +3762,8 @@ function enterTeam() {
 function loadConversations() {
 	// clear
 	document.getElementById("conversationsCont").innerHTML = "";
+	document.getElementById("conversationLinks").innerHTML = "";
+	document.getElementById("teamMembers").scrollIntoView(true);
 
 	// load conversations
 	var conversationRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/conversations/");

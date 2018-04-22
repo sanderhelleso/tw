@@ -3214,6 +3214,9 @@ input[type=number]::-webkit-inner-spin-button {
 	position: fixed;
 	right: 7.5%;
 	width: 90%;
+	max-height: 52vh;
+	overflow: hidden;
+	overflow-y: scroll;
 }
 
 #conversationsContainer {
