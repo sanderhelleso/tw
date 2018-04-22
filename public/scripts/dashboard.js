@@ -4487,6 +4487,21 @@ function createNewMission() {
 				mission_admin: uidKey
 			});
 		}
+		// close modal
+		$('#newMissionModal').modal('hide');
+		// reset values
+		missionName.value = "";
+		missionDescription.value = "";
+		for (var i = 0; i < radio.length; i++) {
+			if (radio[i].checked === true) {
+				radio[i].checked = false;
+			}
+		}
+
+		// display message
+		snackbar.innerHTML = "Mission succesfully created!";
+		snackbar.className = "show";
+		setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
 	}
 }
 
