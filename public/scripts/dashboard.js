@@ -3773,7 +3773,6 @@ function loadConversations() {
 			// create links
 			var link = document.createElement("a");
 			link.id = "conversationLink-" + child.key;
-			link.href = "#conversation-" + child.key;
 			link.addEventListener("click", gotoConversation);
 			link.classList.add("list-group-item") + link.classList.add("d-flex") + link.classList.add("justify-content-between") + link.classList.add("align-items-center") + link.classList.add("conversationLink");
 			// link badge
@@ -4341,9 +4340,15 @@ function likeComment() {
 function gotoConversation() {
 	var selectedLink = this;
 	var e = document.getElementById("conversation-" + this.id.split("-")[1]);
-   	if (!!e && e.scrollIntoView(true)) {
-      e.scrollIntoView();
-   }
+	e.classList.remove("fadeIn");
+	e.classList.remove("fadeIn");
+	e.style.removeProperty("margin-top");
+	e.scrollIntoView(true);
+	e.style.marginTop = "1px";
+	e.classList.add("fadeIn");
+
+	// focus comment field
+	e.childNodes[4].childNodes[1].childNodes[0].focus();
 
    var links = document.getElementsByClassName("conversationLink");
    for (var i = 0; i < links.length; i++) {
