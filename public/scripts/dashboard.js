@@ -4435,18 +4435,58 @@ function createNewMission() {
 	}
 
 	// get checked radio button
+	var privacy;
 	document.getElementById("missionOptionError").innerHTML = "Please select a privacy option for the mission!";
 	var radio = document.getElementsByClassName("form-check-input");
 	for (var i = 0; i < radio.length; i++) {
 		if (radio[i].checked === true) {
-			console.log(radio[i].value);
+			privacy = radio[i].value;
 			checked = true;
 			document.getElementById("missionOptionError").innerHTML = "";
 		}
 	}
 
+	console.log(checked);
 	if (checked === false) {
 		return;
+	}
+
+	// create team
+	else {
+		// private
+		if (privacy === "private") {
+			var teamRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/missions/private/" + new Date().getTime());
+			teamRef.update({
+				mission_name: missionName.value,
+				mission_description: missionDescription.value,
+				privacy: privacy,
+				mission_admin: uidKey
+			});
+		}
+		// public
+		else {
+			var timestamp = new Date().getTime();
+			var teamRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/missions/public/" + timestamp);
+			teamRef.update({
+				mission_name: missionName.value,
+				mission_description: missionDescription.value,
+				privacy: public,
+				shared_with: privacy,
+				main_team: teamName,
+				mission_admin: uidKey
+			});
+
+			// sharedw with ref
+			var teamRef = firebase.database().ref("projects/" + projectId + "/teams/" + privacy + "/missions/public/" + timestamp);
+			teamRef.update({
+				mission_name: missionName.value,
+				mission_description: missionDescription.value,
+				privacy: public,
+				shared_with: teamName,
+				main_team: teamName,
+				mission_admin: uidKey
+			});
+		}
 	}
 }
 
