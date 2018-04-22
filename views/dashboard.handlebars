@@ -875,15 +875,15 @@
                	<button id="exitLoginModal" type="button" class="close text-right" data-dismiss="modal" aria-label="Close"><i data-feather="x"></i>
                 </button>
                 <h2 class="text-center">New Mission</h2>
-                <div id="newMissionCont" class="row col-lg-10 offset-lg-1">
+                <div class="row col-lg-10 offset-lg-1 newMissionCont">
                 	<p class="text-left newMissionLabel">Mission name</p>
 	    			<input type="text" class="form-control newMissionInput col col-lg-12" id="newMissionName" name="newMissionName" placeholder="Find a working space shuttle..." autocomplete="off">
-	    			<p id="missionNameError"></p>
+	    			<p id="missionNameError" class="newMissionError"></p>
                 </div>
-                <div class="row col-lg-10 offset-lg-1">
+                <div class="row col-lg-10 offset-lg-1 newMissionCont">
                 	<p class="newMissionLabel">Description</p>
 	    			<textarea class="form-control newMissionInput col col-lg-12" id="newMissionDesc" name="newMissionDesc" rows="3" autocomplete="off" placeholder="Try to browse ebay..." resize="false"></textarea>
-	    			<p id="missionDescError"></p>
+	    			<p id="missionDescError" class="newMissionError"></p>
 				</div>
 				<div class="row col-lg-10 offset-lg-1">
 					<p class="newMissionLabel col-lg-12">Privacy</p>
@@ -900,6 +900,7 @@
 					</div>
 					<span class="formLabel">Only selected members within the team will be able to access the mission</span>
 				</div>
+				<p id="missionOptionError" class="newMissionError col-lg-10 offset-lg-1"></p>
    				<div id="newMissionFooter" class="modal-footer">
 		        	<button type="button" id="cancelTeam" class="btn" data-dismiss="modal">CANCEL</button>
 					<button type="button" id="createMission" class="btn">CREATE MISSION</button>

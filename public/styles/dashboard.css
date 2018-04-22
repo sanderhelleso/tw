@@ -3314,7 +3314,12 @@ input[type=number]::-webkit-inner-spin-button {
 .newMissionInput {
 	resize: none;
 	font-size: 14px;
-	margin-bottom: 2.5vh;
+}
+
+.newMissionError {
+	font-size: 12px;
+	color: #e53935;
+	margin-bottom: 0;
 }
 
 .newMissionInput:focus {
@@ -3379,6 +3384,10 @@ input[type=number]::-webkit-inner-spin-button {
 #createMission:hover {
 	cursor: pointer;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.newMissionCont {
+	margin-bottom: 2.5vh;
 }
 
 /********************************* END TEAM **************************************/

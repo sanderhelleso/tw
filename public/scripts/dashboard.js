@@ -4400,6 +4400,7 @@ function newMission() {
 
 // select team to share mission with
 var missionSharedWith;
+var checked = false;
 function selectTeamOption() {
 	// set innerHTML
 	document.getElementById("dropdownTeams").innerHTML = this.innerHTML + " (Public to the team)";
@@ -4413,12 +4414,39 @@ function createNewMission() {
 	var missionName = document.getElementById("newMissionName");
 	var missionDescription = document.getElementById("newMissionDesc");
 
+	// run checks
+	if (missionName.value.length === 0) {
+		document.getElementById("missionNameError").innerHTML = "Please enter a mission name!";
+		return;
+	}
+
+	else {
+		document.getElementById("missionNameError").innerHTML = "";
+
+	}
+
+	if (missionDescription.value.length === 0) {
+		document.getElementById("missionDescError").innerHTML = "Please enter a description for the mission!";
+		return;
+	}
+
+	else {
+		document.getElementById("missionDescError").innerHTML = "";
+	}
+
 	// get checked radio button
+	document.getElementById("missionOptionError").innerHTML = "Please select a privacy option for the mission!";
 	var radio = document.getElementsByClassName("form-check-input");
 	for (var i = 0; i < radio.length; i++) {
 		if (radio[i].checked === true) {
 			console.log(radio[i].value);
+			checked = true;
+			document.getElementById("missionOptionError").innerHTML = "";
 		}
+	}
+
+	if (checked === false) {
+		return;
 	}
 }
 
