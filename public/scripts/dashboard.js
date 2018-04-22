@@ -4363,10 +4363,13 @@ function loadMissions() {
 	document.getElementById("newMission").addEventListener("click", newMission);
 }
 
-// create new mission
+// open new mission modal and form
 function newMission() {
 	// open modal
 	$('#newMissionModal').modal('show');
+
+	// clear and reset
+	document.getElementById("shareWithTeam").innerHTML = "";
 
 	// fill privacy options with current teams in project
 	var count = 0;
@@ -4376,8 +4379,9 @@ function newMission() {
 			// dont include current team
 			if (child.val().name != teamName) {
 				count++;
-				// display first team as standard
+				// display first team as standard and value
 				if (count === 1) {
+					document.getElementById("public").value = child.val().name.toLowerCase();
 					document.getElementById("dropdownTeams").innerHTML = child.val().name.capitalizeFirstLetter() + " (Public to the team)";
 				}
 				// create list element
@@ -4389,14 +4393,36 @@ function newMission() {
 			}
 		});
 	});
+
+	// init create mission event
+	document.getElementById("createMission").addEventListener("click", createNewMission);
 }
 
 // select team to share mission with
+var missionSharedWith;
 function selectTeamOption() {
 	// set innerHTML
 	document.getElementById("dropdownTeams").innerHTML = this.innerHTML + " (Public to the team)";
+	missionSharedWith = this.innerHTML.toLowerCase();
+	document.getElementById("public").value = missionSharedWith;
 }
 
+// create new mission
+function createNewMission() {
+	// get values
+	var missionName = document.getElementById("newMissionName");
+	var missionDescription = document.getElementById("newMissionDesc");
+
+	// get checked radio button
+	var radio = document.getElementsByClassName("form-check-input");
+	for (var i = 0; i < radio.length; i++) {
+		if (radio[i].checked === true) {
+			console.log(radio[i].value);
+		}
+	}
+}
+
+// return to project overview
 function backToProject() {
 
 	// hide team container
