@@ -3726,6 +3726,9 @@ function enterTeam() {
 	// load conversations
 	loadConversations();
 
+	// load missions
+	loadMissions();
+
 	// get team members
 	var membersRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/members");
 	membersRef.once("value", function(snapshot) {
@@ -4352,6 +4355,18 @@ function gotoConversation() {
    }
 
    selectedLink.classList.add("selectedLink");
+}
+
+// load missions for selected team
+function loadMissions() {
+	// init new mission event
+	document.getElementById("newMission").addEventListener("click", newMission);
+}
+
+// create new mission
+function newMission() {
+	// open modal
+	$('#newMissionModal').modal('show');
 }
 
 function backToProject() {
