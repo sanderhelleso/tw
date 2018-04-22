@@ -1938,7 +1938,9 @@ li .active {
 
 .gotoProjectBtn {
 	margin-top: 20px;
-	background-color: #8c9eff;
+	background: #4776E6;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to right, #8E54E9, #4776E6);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to right, #8E54E9, #4776E6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 	color: white;
 	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19);
 	transition: all 0.3s;
@@ -3260,11 +3262,13 @@ input[type=number]::-webkit-inner-spin-button {
 }
 
 #newMission {
-	margin-left: 10%;
-	margin-top: 10%;
+	margin-left: 15%;
+	margin-top: 15%;
 	padding: 4%;
 	border-radius: 50%;
-	background-color: #8c9eff;
+	background: #4776E6;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to top, #8E54E9, #4776E6);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to top, #8E54E9, #4776E6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 	height: 50px;
 	width: 50px;
 	text-align: center;
@@ -3283,6 +3287,16 @@ input[type=number]::-webkit-inner-spin-button {
 	width: 20px;
 	margin: 0 auto;
 	margin-top: 25%;
+}
+
+#noMissions {
+	margin-top: 20vh;
+	color: #9e9e9e;
+	margin-left: 10%;
+}
+
+#noMissions img {
+	opacity: 0.3;
 }
 
 /********************************* END TEAM **************************************/
