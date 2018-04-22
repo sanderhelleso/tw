@@ -4367,6 +4367,34 @@ function loadMissions() {
 function newMission() {
 	// open modal
 	$('#newMissionModal').modal('show');
+
+	// fill privacy options with current teams in project
+	var count = 0;
+	var projectRef = firebase.database().ref("projects/" + projectId + "/teams/");
+	projectRef.once("value", function(snapshot) {
+		snapshot.forEach((child) => {
+			// dont include current team
+			if (child.val().name != teamName) {
+				count++;
+				// display first team as standard
+				if (count === 1) {
+					document.getElementById("dropdownTeams").innerHTML = child.val().name.capitalizeFirstLetter() + " (Public to the team)";
+				}
+				// create list element
+				var teamOption = document.createElement("p");
+				teamOption.classList.add("dropdown-item") + teamOption.classList.add("teamOption");
+				teamOption.innerHTML = child.val().name.capitalizeFirstLetter();
+				teamOption.addEventListener("click", selectTeamOption);
+				document.getElementById("shareWithTeam").appendChild(teamOption);
+			}
+		});
+	});
+}
+
+// select team to share mission with
+function selectTeamOption() {
+	// set innerHTML
+	document.getElementById("dropdownTeams").innerHTML = this.innerHTML + " (Public to the team)";
 }
 
 function backToProject() {
