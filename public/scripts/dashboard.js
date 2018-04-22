@@ -3760,7 +3760,8 @@ function enterTeam() {
 
 // load conversations for the selected team
 function loadConversations() {
-	console.log(123);
+	// clear
+	document.getElementById("conversationsCont").innerHTML = "";
 
 	// load conversations
 	var conversationRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/conversations/");
@@ -3768,6 +3769,16 @@ function loadConversations() {
 		// create elements
 		snapshot.forEach((child) => {
 			console.log(child.val());
+
+			// create links
+			var link = document.createElement("a");
+			link.id = "conversationLink-" + child.key;
+			link.href = "#conversation-" + child.key;
+			link.addEventListener("click", gotoConversation);
+			link.classList.add("list-group-item") + link.classList.add("d-flex") + link.classList.add("justify-content-between") + link.classList.add("align-items-center") + link.classList.add("conversationLink");
+			// link badge
+			var linkBadge = document.createElement("span");
+			linkBadge.classList.add("badge") + linkBadge.classList.add("linkBadge");
 
 			// create container
 			var cont = document.createElement("div");
@@ -3808,6 +3819,7 @@ function loadConversations() {
 			var heading = document.createElement("h1");
 			heading.classList.add("conversationHeading");
 			heading.innerHTML = child.val().title.capitalizeFirstLetter();
+			link.innerHTML = child.val().title.capitalizeFirstLetter();
 
 			// poster name and date
 			var span = document.createElement("span");
@@ -3840,6 +3852,7 @@ function loadConversations() {
 			cont.appendChild(divider);
 
 			// create body / comments
+			var commentsCount = 0;
 			var comments = document.createElement("div");
 			comments.classList.add("conversationBody") + comments.classList.add("col-lg-12");
 			var commentLikesID = child.key;
@@ -3848,7 +3861,7 @@ function loadConversations() {
 				// create comments
 				snapshot.forEach((child) => {
 					console.log(child.val());
-
+					commentsCount++;
 					// comment data cont
 					var commentContentCont = document.createElement("div");
 					commentContentCont.id = "comment-" + child.key;
@@ -3927,6 +3940,11 @@ function loadConversations() {
 
 					comments.appendChild(row);
 				});
+
+				// set comment count for badge
+				linkBadge.innerHTML = document.getElementById("masterComment").innerHTML;
+				linkBadge.childNodes[1].innerHTML = commentsCount;
+				link.appendChild(linkBadge);
 			});
 
 			// append comments
@@ -3986,9 +4004,13 @@ function loadConversations() {
 			cont.appendChild(footer);
 
 			// append to DOM
+			document.getElementById("conversationLinks").appendChild(link);
 			document.getElementById("conversationsCont").appendChild(cont);
 
 		});
+
+		// init scrollspy
+		$('#conversationsContainer').scrollspy({ target: '#conversationsSidebar' })
 	});
 
 	// init post conversation event
@@ -4216,6 +4238,7 @@ function postConversationComment() {
 	}
 
 	var commentID = new Date().getTime();
+	console.log(commentID);
 	var conversationRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/conversations/" + conversationID + "/comments/" + commentID);
 		conversationRef.update({
 		datetime: dateTime,
@@ -4227,7 +4250,7 @@ function postConversationComment() {
 
 	// comment data cont
 	var commentContentCont = document.createElement("div");
-	commentCont.Id = "comment-" + commentID;
+	commentContentCont.Id = "comment-" + commentID;
 	commentContentCont.classList.add("conversationCommentCont") + commentContentCont.classList.add("col-lg-9");
 
 	// comment data
@@ -4312,6 +4335,22 @@ function likeComment() {
 		commentRef.update({
 		liked_by: uidKey
 	});
+}
+
+// go to selected conversation
+function gotoConversation() {
+	var selectedLink = this;
+	var e = document.getElementById("conversation-" + this.id.split("-")[1]);
+   	if (!!e && e.scrollIntoView(true)) {
+      e.scrollIntoView();
+   }
+
+   var links = document.getElementsByClassName("conversationLink");
+   for (var i = 0; i < links.length; i++) {
+   		links[i].classList.remove("selectedLink");
+   }
+
+   selectedLink.classList.add("selectedLink");
 }
 
 function backToProject() {
