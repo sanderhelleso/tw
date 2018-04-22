@@ -870,11 +870,43 @@
 
 	<!-- NEW MISSION MODAL -->
 	<div id="newMissionModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="static">
-		<div class="modal-dialog modal-lg newTeamModal">
+		<div class="modal-dialog modal-md newTeamModal">
 		   	<div id="newMissionModalCont" class="modal-content newMissionModalContent">
                	<button id="exitLoginModal" type="button" class="close text-right" data-dismiss="modal" aria-label="Close"><i data-feather="x"></i>
                 </button>
-                
+                <h2 class="text-center">New Mission</h2>
+                <div id="newMissionCont" class="row col-lg-10 offset-lg-1">
+                	<p class="text-left newMissionLabel">Mission name</p>
+	    			<input type="text" class="form-control newMissionInput col col-lg-12" id="newMissionName" name="newMissionName" placeholder="Find a working space shuttle..." autocomplete="off">
+	    			<p id="missionNameError"></p>
+                </div>
+                <div class="row col-lg-10 offset-lg-1">
+                	<p class="newMissionLabel">Description</p>
+	    			<textarea class="form-control newMissionInput col col-lg-12" id="newMissionDesc" name="newMissionDesc" rows="3" autocomplete="off" placeholder="Try to browse ebay..." resize="false"></textarea>
+	    			<p id="missionDescError"></p>
+				</div>
+				<div class="row col-lg-10 offset-lg-1">
+					<p class="newMissionLabel col-lg-12">Privacy</p>
+					<div class="form-check form-check-inline col-lg-12">
+					<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+					<label class="form-check-label" for="inlineRadio1"><i data-feather="share-2"></i> Share with <a class=" dropdown-toggle" id="dropdownTeams" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Marketing</a>
+					  <div class="dropdown-menu" aria-labelledby="dropdownTeams">
+					    <a class="dropdown-item" href="#">Action</a>
+					    <a class="dropdown-item" href="#">Another action</a>
+					    <a class="dropdown-item" href="#">Something else here</a>
+					  </div></label>
+					</div>
+					<span class="formLabel">People with access to the shared team can join this mission</span>
+					<div class="form-check form-check-inline">
+					<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+					<label class="form-check-label" for="inlineRadio2"><i data-feather="lock"></i> Private</label>
+					</div>
+					<span class="formLabel">Only selected members within the team will be able to access the mission</span>
+				</div>
+   				<div id="newMissionFooter" class="modal-footer">
+		        	<button type="button" id="cancelTeam" class="btn" data-dismiss="modal">CANCEL</button>
+					<button type="button" id="createTeam" class="btn disabled">CREATE TEAM</button>
+				</div>
 			</div>
 		</div>
 	</div>

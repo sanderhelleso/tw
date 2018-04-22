@@ -3299,6 +3299,56 @@ input[type=number]::-webkit-inner-spin-button {
 	opacity: 0.3;
 }
 
+#newMissionModalCont h2 {
+	font-weight: 400;
+	font-size: 30px;
+	margin-bottom: 5vh;
+}
+
+.newMissionLabel {
+	padding-left: 0;
+	margin-bottom: 2.5px;
+	color: #9e9e9e;
+}
+
+.newMissionInput {
+	resize: none;
+	font-size: 14px;
+	margin-bottom: 2.5vh;
+}
+
+.newMissionInput:focus {
+	border: 1px solid #8c9eff;
+}
+
+.form-check-label {
+	font-size: 14px;
+}
+
+.form-check-label .feather {
+	stroke: #9e9e9e;
+	widows: 16px;
+	height: 16px;
+}
+
+.formLabel {
+	width: 100%;
+	font-size: 11px;
+	color: #9e9e9e;
+	margin-bottom: 1.5vh;
+}
+
+#dropdownTeams {
+	background-color: none;
+	color: #8c9eff;
+	border-style: none;
+	border: none;
+}
+
+#dropdownTeams:hover {
+	cursor: pointer;
+}
+
 /********************************* END TEAM **************************************/
 
 /* Animations to fade the snackbar in and out */
