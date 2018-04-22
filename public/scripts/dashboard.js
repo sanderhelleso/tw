@@ -3717,7 +3717,7 @@ function enterTeam() {
 
 	// show team container
 	document.getElementById("teamMain").style.display = "block";
-	document.getElementById("conversationsTrigger").click();
+	document.getElementById("missionsTrigger").click();
 
 	// get team data
 	teamName = this.parentElement.childNodes[2].id.split("-")[1];
@@ -3770,8 +3770,6 @@ function loadConversations() {
 	conversationRef.once("value", function(snapshot) {
 		// create elements
 		snapshot.forEach((child) => {
-			console.log(child.val());
-
 			// create links
 			var link = document.createElement("a");
 			link.id = "conversationLink-" + child.key;
@@ -3861,7 +3859,6 @@ function loadConversations() {
 			conversationCommentRef.once("value", function(snapshot) {
 				// create comments
 				snapshot.forEach((child) => {
-					console.log(child.val());
 					commentsCount++;
 					// comment data cont
 					var commentContentCont = document.createElement("div");
@@ -4348,9 +4345,6 @@ function gotoConversation() {
 	e.scrollIntoView(true);
 	e.style.marginTop = "1px";
 	e.classList.add("fadeIn");
-
-	// focus comment field
-	e.childNodes[4].childNodes[1].childNodes[0].focus();
 
    var links = document.getElementsByClassName("conversationLink");
    for (var i = 0; i < links.length; i++) {
