@@ -1923,11 +1923,12 @@ li .active {
 	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19);
 	transition: all 0.3s;
 	margin-bottom: 5px;
+	border: none;
 }
 
 .gotoProjectBtn:hover {
 	background-color: #536dfe;
-	color: white;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 #cancelProject {
@@ -3268,7 +3269,7 @@ input[type=number]::-webkit-inner-spin-button {
 }
 
 #noMissions {
-	margin-top: 20vh;
+	margin-top: 17.5vh;
 	color: #9e9e9e;
 	margin-left: 10%;
 }
@@ -3357,6 +3358,7 @@ input[type=number]::-webkit-inner-spin-button {
 	font-size: 14px;
 	transition: all 0.3s;
 	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19);
+	border: none;
 }
 
 #createMission:hover {
@@ -3366,6 +3368,64 @@ input[type=number]::-webkit-inner-spin-button {
 
 .newMissionCont {
 	margin-bottom: 2.5vh;
+}
+
+#missionsCont {
+	margin-left: 2%;
+	margin-top: 2.5vh;
+	padding-left: 0;
+	padding-top: 2vh;
+}
+
+#publicMissionsCont, #privateMissionsCont {
+	padding-left: 0;
+	padding-right: 0;
+	max-height: 40vh;
+	overflow: hidden;
+	overflow-y: scroll;
+}
+
+#missionsCont h5 {
+	font-weight: 400;
+	color: #8c9eff;
+	font-size: 18px;
+}
+
+.publicMission, .privateMission {
+	min-height: 35px;
+	padding-left: 0;
+	padding-right: 0;
+	margin-bottom: 2vh;
+	border: 0.5px solid #eeeeee;
+	font-size: 14px;
+	transition: all 0.3s;
+}
+
+.publicMission:hover, .privateMission:hover {
+	cursor: pointer;
+}
+
+.missionSidebar {
+	background: #4776E6;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to right, #8E54E9, #4776E6);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to right, #8E54E9, #4776E6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	margin-right: 2%;
+}
+
+.missionSidebarPrivate {
+	background: #CB356B;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to right, #BD3F32, #CB356B);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to right, #BD3F32, #CB356B); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	margin-right: 2%;
+}
+
+.publicMissionName, .privateMissionName {
+	padding: 2%;
+	padding-left: 0;
+}
+
+.publicMissionName p, .privateMissionName p {
+	margin-bottom: 0;
 }
 
 /********************************* END TEAM **************************************/

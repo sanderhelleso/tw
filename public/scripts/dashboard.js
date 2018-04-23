@@ -4361,6 +4361,109 @@ function gotoConversation() {
 function loadMissions() {
 	// init new mission event
 	document.getElementById("newMission").addEventListener("click", newMission);
+
+	// load public missions / styles
+	if (document.getElementById("missionsCont") != undefined) {
+		document.getElementById("missionsCont").remove();
+	}
+	document.getElementById("newMission").classList.remove("bounce");
+	document.getElementById("noMissions").style.display = "none";
+
+	// crate main containers
+	var container = document.createElement("div");
+	container.id = "missionsCont";
+	container.classList.add("row") + container.classList.add("col-lg-12");
+
+	// public container
+	var public = document.createElement("div");
+	public.id = "publicMissionsCont";
+	public.classList.add("col-lg-6");
+	var publicHeading = document.createElement("h5");
+	publicHeading.innerHTML = "Public";
+	public.appendChild(publicHeading);
+
+	// private container
+	var private = document.createElement("div");
+	private.id = "privateMissionsCont";
+	private.classList.add("col-lg-6");
+	var privateHeading = document.createElement("h5");
+	privateHeading.innerHTML = "Private";
+	private.appendChild(privateHeading);
+
+	// append to DOM
+	container.appendChild(public);
+	container.appendChild(private);
+	document.getElementById("missionsContainer").appendChild(container);
+
+	// public ref
+	var publicMissionsRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/missions/public");
+	publicMissionsRef.once("value", function(snapshot) {
+		// create public missons
+		snapshot.forEach((child) => {
+			console.log(child.val());
+
+			// create cont
+			var cont = document.createElement("div");
+			cont.classList.add("col-lg-12") + cont.classList.add("publicMission") + cont.classList.add("row");
+
+			// sidebar
+			var sideBar = document.createElement("div");
+			sideBar.classList.add("col-lg-1") + sideBar.classList.add("missionSidebar");
+			cont.appendChild(sideBar); 
+
+			// name
+			var nameCont = document.createElement("div");
+			nameCont.classList.add("col-lg-6") + nameCont.classList.add("publicMissionName");
+			var name = document.createElement("p");
+			name.innerHTML = child.val().mission_name.capitalizeFirstLetter();
+			nameCont.appendChild(name);
+			cont.appendChild(nameCont);
+
+
+			public.appendChild(cont);
+		});
+
+		if (snapshot.val() != undefined || snapshot.val() != null) {
+			document.getElementById("noMissions").style.display = "none";
+		}
+
+		else {
+			document.getElementById("noMissions").style.display = "block";
+			container.remove();
+			setTimeout(function() {
+				document.getElementById("newMission").classList.add("bounce");
+			}, 1000);
+		}
+	});
+
+	// private ref
+	var privateMissionsRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/missions/private");
+	privateMissionsRef.once("value", function(snapshot) {
+		// create public missons
+		snapshot.forEach((child) => {
+			console.log(child.val());
+
+			// create cont
+			var cont = document.createElement("div");
+			cont.classList.add("col-lg-12") + cont.classList.add("privateMission") + cont.classList.add("row");
+
+			// sidebar
+			var sideBar = document.createElement("div");
+			sideBar.classList.add("col-lg-1") + sideBar.classList.add("missionSidebarPrivate");
+			cont.appendChild(sideBar); 
+
+			// name
+			var nameCont = document.createElement("div");
+			nameCont.classList.add("col-lg-6") + nameCont.classList.add("privateMissionName");
+			var name = document.createElement("p");
+			name.innerHTML = child.val().mission_name.capitalizeFirstLetter();
+			nameCont.appendChild(name);
+			cont.appendChild(nameCont);
+
+
+			private.appendChild(cont);
+		});
+	});
 }
 
 // open new mission modal and form
