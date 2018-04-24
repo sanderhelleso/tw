@@ -3713,6 +3713,8 @@ var teamName;
 function enterTeam() {
 	// hide current content
 	document.getElementById("projectMain").style.display = "none";
+	document.getElementById("missionName").style.display = "none";
+	document.getElementById("teamName").style.display = "block";
 	document.getElementById("teamMembers").innerHTML = "";
 
 	// show team container
@@ -4404,6 +4406,7 @@ function loadMissions() {
 
 			// create cont
 			var cont = document.createElement("div");
+			cont.id = "mission-public-" + child.key;
 			cont.classList.add("col-lg-12") + cont.classList.add("publicMission") + cont.classList.add("row");
 			cont.addEventListener("click", enterMission);
 
@@ -4446,7 +4449,9 @@ function loadMissions() {
 
 			// create cont
 			var cont = document.createElement("div");
+			cont.id = "mission-private-" + child.key;
 			cont.classList.add("col-lg-12") + cont.classList.add("privateMission") + cont.classList.add("row");
+			cont.addEventListener("click", enterMission);
 
 			// sidebar
 			var sideBar = document.createElement("div");
@@ -4469,7 +4474,20 @@ function loadMissions() {
 
 // enter selected mission
 function enterMission() {
-	console.log(123);
+	console.log(this.id);
+
+	// get selected mission
+	var category = this.id.split("-")[1];
+	var missionID = this.id.split("-")[2];
+	var missionRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/missions/" + category + "/" + missionID);
+	missionRef.once("value", function(snapshot) {
+		console.log(snapshot.val());
+		// DOM manipultaton - show / hide components
+		document.getElementById("teamName").style.display = "none";
+		document.getElementById("missionName").style.display = "block";
+		document.getElementById("missionName").innerHTML = snapshot.val().mission_name.capitalizeFirstLetter();
+	});
+
 }
 
 // open new mission modal and form
