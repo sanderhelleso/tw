@@ -2935,19 +2935,24 @@ input[type=number]::-webkit-inner-spin-button {
 	display: none;
 }
 
-#teamTabs {
-	padding-bottom: 2.5vh;
+#missionTabs {
+	display: none;
 }
 
-#teamTabs li {
+#teamTabs, #missionTabs {
+	padding-bottom: 2.5vh;
+	width: 100%;
+}
+
+#teamTabs li, #missionTabs li {
 	margin-right: 2%;
 }
 
-#teamTabs li a {
+#teamTabs li a, #missionTabs li a {
 	color: #9e9e9e;
 }
 
-#teamTabs li .show {
+#teamTabs li .show, #missionTabs li .show {
 	color: #8c9eff;
 }
 

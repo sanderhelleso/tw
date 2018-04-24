@@ -3710,11 +3710,14 @@ function teams() {
 
 // enter selected team
 var teamName;
+var backToTeamBool = false;
 function enterTeam() {
 	// hide current content
 	document.getElementById("projectMain").style.display = "none";
 	document.getElementById("missionName").style.display = "none";
+	document.getElementById("teamTabs").style.display = "inline-flex";
 	document.getElementById("teamName").style.display = "block";
+	document.getElementById("missionTabs").style.display = "none";
 	document.getElementById("teamMembers").innerHTML = "";
 
 	// show team container
@@ -3722,7 +3725,16 @@ function enterTeam() {
 	document.getElementById("missionsTrigger").click();
 
 	// get team data
-	teamName = this.parentElement.childNodes[2].id.split("-")[1];
+	if (backToTeamBool === true) {
+		teamName = teamName;
+		backToTeamBool = false;
+	}
+
+	else {
+		teamName = this.parentElement.childNodes[2].id.split("-")[1];
+		backToTeamBool = false;
+	}
+
 	document.getElementById("teamName").innerHTML = teamName.capitalizeFirstLetter();
 
 	// load conversations
@@ -3760,6 +3772,7 @@ function enterTeam() {
 	});
 
 	// add event listener to return to project
+	document.getElementById("backToProject").removeEventListener("click", backToTeam);
 	document.getElementById("backToProject").addEventListener("click", backToProject);
 }
 
@@ -4476,6 +4489,10 @@ function loadMissions() {
 function enterMission() {
 	console.log(this.id);
 
+	// add event listener to return to team
+	document.getElementById("backToProject").removeEventListener("click", backToProject);
+	document.getElementById("backToProject").addEventListener("click", backToTeam);
+
 	// get selected mission
 	var category = this.id.split("-")[1];
 	var missionID = this.id.split("-")[2];
@@ -4485,6 +4502,8 @@ function enterMission() {
 		// DOM manipultaton - show / hide components
 		document.getElementById("teamName").style.display = "none";
 		document.getElementById("missionName").style.display = "block";
+		document.getElementById("teamTabs").style.display = "none";
+		document.getElementById("missionTabs").style.display = "inline-flex";
 		document.getElementById("missionName").innerHTML = snapshot.val().mission_name.capitalizeFirstLetter();
 	});
 
@@ -4640,6 +4659,11 @@ function backToProject() {
 
 	// show project container
 	document.getElementById("projectMain").style.display = "block";
+}
+
+function backToTeam() {
+	backToTeamBool = true;
+	enterTeam();
 }
 
 // create a new team
