@@ -3715,7 +3715,9 @@ function enterTeam() {
 	// hide current content
 	document.getElementById("projectMain").style.display = "none";
 	document.getElementById("missionName").style.display = "none";
+	document.getElementById("missionTabsContainer").style.display = "none";
 	document.getElementById("teamTabs").style.display = "inline-flex";
+	document.getElementById("teamTabsContainer").style.display = "block";
 	document.getElementById("teamName").style.display = "block";
 	document.getElementById("missionTabs").style.display = "none";
 	document.getElementById("teamMembers").innerHTML = "";
@@ -4503,7 +4505,10 @@ function enterMission() {
 		document.getElementById("teamName").style.display = "none";
 		document.getElementById("missionName").style.display = "block";
 		document.getElementById("teamTabs").style.display = "none";
+		document.getElementById("teamTabsContainer").style.display = "none";
 		document.getElementById("missionTabs").style.display = "inline-flex";
+		document.getElementById("missionTabsContainer").style.display = "block";
+		document.getElementById("missionTasksTrigger").click();
 		document.getElementById("missionName").innerHTML = snapshot.val().mission_name.capitalizeFirstLetter();
 	});
 

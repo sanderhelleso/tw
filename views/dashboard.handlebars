@@ -252,7 +252,7 @@
 						<li class="active"><a id="calenderTrigger" data-toggle="tab" href="#teamCalender">Calender</a></li>
 					</ul>
 
-					<div class="tab-content">
+					<div id="teamTabsContainer" class="tab-content">
 					  <div id="teamConversations" class="tab-pane fade in">
 					  	<div class="row col-lg-12">
 					  		<div id="conversationsContainer" class="col-lg-7 offset-lg-1">
@@ -274,13 +274,7 @@
 								</div>
 					  		</div>
 					  	</div>
-					</div>
-
-					<ul id="missionTabs" class="nav nav-tabs justify-content-center">
-					  	<li class="active"><a id="" data-toggle="tab" href="#">qweqweqw</a></li>
-					  	<li class="active"><a id="" data-toggle="tab" href="#">qweqwe</a></li>
-						<li class="active"><a id="" data-toggle="tab" href="#">qweqweqwe</a></li>
-					</ul>
+					  </div>
 
 					  <div id="teamMissons" class="tab-pane fade in active">
 					  	<div id="missionsContainer" class="row col-lg-12">
@@ -297,6 +291,32 @@
 					  <div id="teamCalender" class="tab-pane fade in">
 					    <h5>Calender</h5>
 					  </div>
+					</div>
+
+					<ul id="missionTabs" class="nav nav-tabs justify-content-center">
+						<li class="active"><a id="missionTasksTrigger" data-toggle="tab" href="#missionTasks">Tasks</a></li>
+						<li class="active"><a id="missionConversationsTrigger" data-toggle="tab" href="#missioConversations">Conversations</a></li>
+						<li class="active"><a id="missionCalenderTrigger" data-toggle="tab" href="#missionCalender">Calender</a></li>
+						<li class="active"><a id="missionProgressTrigger" data-toggle="tab" href="#missionProgress">Progress</a></li>
+						<li class="active"><a id="missionFilesTrogger" data-toggle="tab" href="#missionFiles">Files</a></li>
+					</ul>
+
+					<div id="missionTabsContainer" class="tab-content">
+					  	<div id="missionTasks" class="tab-pane fade in">
+					  		<h5>Tasks</h5>
+					  	</div>
+					  	<div id="missioConversations" class="tab-pane fade in">
+					  		<h5>Conversations</h5>
+					  	</div>
+						<div id="missionCalender" class="tab-pane fade in">
+					  		<h5>Calender</h5>
+					  	</div>
+					  	<div id="missionProgress" class="tab-pane fade in active">
+					  		<h5>Progress</h5>
+					  	</div>
+					  	<div id="missionFiles" class="tab-pane fade in">
+					    	<h5>Files</h5>
+					  	</div>
 					</div>
 				</div>
 
