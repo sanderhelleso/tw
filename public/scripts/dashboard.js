@@ -4405,6 +4405,7 @@ function loadMissions() {
 			// create cont
 			var cont = document.createElement("div");
 			cont.classList.add("col-lg-12") + cont.classList.add("publicMission") + cont.classList.add("row");
+			cont.addEventListener("click", enterMission);
 
 			// sidebar
 			var sideBar = document.createElement("div");
@@ -4464,6 +4465,11 @@ function loadMissions() {
 			private.appendChild(cont);
 		});
 	});
+}
+
+// enter selected mission
+function enterMission() {
+	console.log(123);
 }
 
 // open new mission modal and form
