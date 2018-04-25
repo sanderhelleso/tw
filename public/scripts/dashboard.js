@@ -4488,6 +4488,9 @@ function loadMissions() {
 }
 
 // enter selected mission
+var category;
+var missionID;
+var missionSharedWith;
 function enterMission() {
 	console.log(this.id);
 
@@ -4496,8 +4499,8 @@ function enterMission() {
 	document.getElementById("backToProject").addEventListener("click", backToTeam);
 
 	// get selected mission
-	var category = this.id.split("-")[1];
-	var missionID = this.id.split("-")[2];
+	category = this.id.split("-")[1];
+	missionID = this.id.split("-")[2];
 	var missionRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/missions/" + category + "/" + missionID);
 	missionRef.once("value", function(snapshot) {
 		console.log(snapshot.val());
@@ -4513,6 +4516,7 @@ function enterMission() {
 		document.getElementById("missionNameTask").innerHTML = snapshot.val().mission_name.capitalizeFirstLetter();
 
 		// mission functions and modules
+		missionSharedWith = snapshot.val().shared_with;
 		missionTasks();
 	});
 }
@@ -4537,6 +4541,8 @@ function newTask() {
 }
 
 // get input and listen for enter key to set name
+var taskTimestamp;
+var taskName;
 function setTaskName() {
 	var input = this;
 	var parent = this.parentElement;
@@ -4555,11 +4561,62 @@ function setTaskName() {
 			input.remove();
 			parent.parentElement.addEventListener("click", openTask);
         	parent.appendChild(name);
+        	taskTimestamp = new Date().getTime();
+        	taskName = input.value.capitalizeFirstLetter();
         	newTask();
+        	saveTask();
         	return false;
 		}
     }
     return true;
+}
+
+// save task
+function saveTask() {
+	// get timestamp
+	var now = new Date(); 
+	var month = now.getMonth()+1; 
+	var day = now.getDate();
+	var hour = now.getHours();
+	var minute = now.getMinutes();
+
+	// add zeros if needed
+	if (month.toString().length == 1) {
+		var month = '0' + month;
+	}
+	if (day.toString().length == 1) {
+		var day = '0' + day;
+	}   
+	if (hour.toString().length == 1) {
+		var hour = '0' + hour;
+	}
+	if (minute.toString().length == 1) {
+		var minute = '0' + minute;
+	}
+
+	var dateTime = day + '.' + month + ' ' + hour + ':' + minute;
+
+	// main team mission ref
+	var missionRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/missions/" + category + "/" + missionID + "/tasks/" + taskTimestamp);
+	missionRef.update({
+		creator: uidKey,
+		status: "Incomplete",
+		task_name: taskName,
+		created: dateTime
+	});
+
+	// shared with team mission ref
+	var missionSharedWithRef = firebase.database().ref("projects/" + projectId + "/teams/" + missionSharedWith + "/missions/" + category + "/" + missionID + "/tasks/" + taskTimestamp);
+	missionSharedWithRef.update({
+		creator: uidKey,
+		status: "Incomplete",
+		task_name: taskName,
+		created: dateTime
+	});
+
+	snackbar.innerHTML = "Task added!";
+	snackbar.className = "show";
+	setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
 }
 
 // open a task in main window
