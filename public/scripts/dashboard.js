@@ -4510,6 +4510,7 @@ function enterMission() {
 		document.getElementById("missionTabsContainer").style.display = "block";
 		document.getElementById("missionTasksTrigger").click();
 		document.getElementById("missionName").innerHTML = snapshot.val().mission_name.capitalizeFirstLetter();
+		document.getElementById("missionNameTask").innerHTML = snapshot.val().mission_name.capitalizeFirstLetter();
 
 		// mission functions and modules
 		missionTasks();
@@ -4532,6 +4533,7 @@ function newTask() {
 	cont.childNodes[3].childNodes[1].addEventListener("keyup", setTaskName);
 	document.getElementById("tasksCont").appendChild(cont);
 	cont.childNodes[3].childNodes[1].focus();
+	clearMainTask();
 }
 
 // get input and listen for enter key to set name
@@ -4544,16 +4546,33 @@ function setTaskName() {
 	name.style.wordBreak = "break-all";
 	name.innerHTML = input.value.capitalizeFirstLetter();
 
+	// main task container
+	document.getElementById("taskNameMain").innerHTML = name.innerHTML;
+
 	// get enter key
 	if (event.which == 13 || event.keyCode == 13) {
 		if (input.value.length > 1) {
 			input.remove();
+			parent.parentElement.addEventListener("click", openTask);
         	parent.appendChild(name);
         	newTask();
         	return false;
 		}
     }
     return true;
+}
+
+// open a task in main window
+function openTask() {
+	clearMainTask();
+	var taskName = this.childNodes[3].childNodes[2].innerHTML;
+	console.log(this.childNodes[3].childNodes);
+	document.getElementById("taskNameMain").innerHTML = taskName;
+}
+
+// resets main task container
+function clearMainTask() {
+	document.getElementById("taskNameMain").innerHTML = "";
 }
 
 // open new mission modal and form

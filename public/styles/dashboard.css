@@ -3481,7 +3481,7 @@ input[type=number]::-webkit-inner-spin-button {
 	color: #8c9eff;
 }
 
-#tasksDivider {
+#tasksDivider, #taskDividerMain {
 	margin-top: 2vh;
 	margin-bottom: 2vh;
 }
@@ -3498,6 +3498,20 @@ input[type=number]::-webkit-inner-spin-button {
 .taskImg:hover {
 	cursor: pointer;
 	opacity: 0.7;
+}
+
+
+#mainTasksRow {
+	padding-right: 0;
+}
+
+#taskMenu {
+	margin-right: 0;
+	padding-right: 0;
+}
+
+#taskMenuMain {
+	padding-right: 0;
 }
 
 #tasksCont {
@@ -3526,6 +3540,25 @@ input[type=number]::-webkit-inner-spin-button {
 	cursor: pointer;
 }
 
+#checkTaskCompletedMain {
+	margin-top: 4px;
+	margin-right: 10px;
+	float: left;
+}
+
+#checkTaskCompletedMain .feather {
+	stroke: #e0e0e0;
+	height: 30px;
+	width: 30px;
+	transition: all 0.3s;
+}
+
+#checkTaskCompletedMain .feather:hover {
+	stroke: #66bb6a;
+	cursor: pointer;
+}
+
+
 .taskCont {
 	font-size: 14px;
 	border-radius: 4px;
@@ -3536,6 +3569,10 @@ input[type=number]::-webkit-inner-spin-button {
 	margin-left: 0%;
 	transition: all 0.3s;
 	margin-bottom: 1vh;
+}
+
+.taskCont:hover {
+	cursor: pointer;
 }
 
 .taskInput {
@@ -3551,6 +3588,107 @@ input[type=number]::-webkit-inner-spin-button {
 
 #masterTask {
 	display: none;
+}
+
+.taskImgMain {
+	max-height: 25px;
+	max-width: 25px;
+	border-radius: 50%;
+	float: left;
+	margin-right: 5px;
+	transition: all 0.3s;
+	border: 1px solid #e0e0e0;
+}
+
+.unassignedTask, .taskDueDate {
+	padding-right: 0;
+}
+
+.taskDueDate {
+	padding-left: 0;
+}
+
+.unassignedTask p {
+	font-size: 14px;
+	margin-bottom: 0;
+	color: #9e9e9e;
+}
+
+.taskDueDate p {
+	font-size: 14px;
+	margin-bottom: 0;
+	color: #9e9e9e;
+}
+
+.taskDueDateIcon {
+	float: left;
+	margin-right: 5px;
+}
+
+.taskDueDateIcon .feather {
+	stroke: #9e9e9e;
+	height: 25px;
+	width: 25px;
+	border-radius: 50%;
+	border: 1px solid #e0e0e0;
+	padding: 2.5px;
+}
+
+.closeTask {
+	float: right;
+	padding-right: 0;
+}
+
+.closeTask .feather {
+	stroke: #9e9e9e;
+}
+
+#closeTaskCont {
+	padding: 0;
+}
+
+#mainTaskCont {
+	border-top: 0.5px solid #eeeeee;
+	margin-top: 1.2vh;
+	min-height: 45vh;
+	overflow: hidden;
+	overflow-y: scroll;
+}
+
+#missionNameTask {
+	font-weight: 300;
+	margin-top: 2vh;
+	margin-bottom: 1.5vh;
+}
+
+#taskNameMain {
+	font-weight: 400;
+	word-break: break-all;
+}
+
+#taskMenu {
+	padding-top: 4%;
+	padding-right: 4%;
+	border-radius: 6px;
+	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19);
+}
+
+#taskLabel {
+	width: 100%;
+	margin-top: 2vh;
+	color: #9e9e9e;
+	margin-bottom: 1vh;
+	font-size: 14px;
+}
+
+#taskDescription {
+	padding: 0;
+	resize: none;
+	border: none;
+	font-size: 12px;
+	border-radius: 0;
+	border-bottom: 0.5px solid #eeeeee;
+	max-height: 50px;
 }
 
 /********************************* END TEAM **************************************/
