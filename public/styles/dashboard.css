@@ -3779,6 +3779,28 @@ input[type=number]::-webkit-inner-spin-button {
 	color: #8c9eff;
 }
 
+.taskActivityCreator {
+	font-weight: 500;
+}
+
+.taskActivityDate {
+	margin-left: 5px;
+	float: right;
+}
+
+#masterMapIcon, #masterTimeIcon {
+	display: none;
+}
+
+#missionTaskActivity .feather {
+	height: 14px;
+	width: 14px;
+	stroke: #8c9eff;
+}
+
+#assignTask:hover {
+	cursor: pointer;
+}
 
 /********************************* END TEAM **************************************/
 

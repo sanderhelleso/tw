@@ -323,11 +323,11 @@
 					  			</div>
 					  			<div id="taskMenuMain" class="col-lg-6">
 					  				<div id="taskMenu" class="row col-lg-12">
-					  					<div class="col-lg-5 unassignedTask">
+					  					<div id="assignTask" class="col-lg-5 unassignedTask">
 					  						<img class="taskImgMain" src="/img/unassigned.png">
 					  						<p>Unassinged</p>
 					  					</div>
-					  					<div class="col-lg-5 taskDueDate">
+					  					<div id="setTaskDate" class="col-lg-5 taskDueDate">
 					  						<span class="taskDueDateIcon"><i data-feather="calendar"></i></span>
 					  						<p>Due Date</p>
 					  					</div>
@@ -346,9 +346,9 @@
 												</ul>
 												<div class="tab-content animated fadeIn">
 					  								<div id="missionTaskActivity" class="tab-pane fade in">
-		  												<p>Went to store</p>
-		  												<p>Bought apple kiwi</p>
-		  												<p>Sipped</p>
+					  									<span id="masterMapIcon"><i data-feather="map-pin"></i></span>
+					  									<span id="masterTimeIcon"><i data-feather="clock"></i></span>
+		  												<p id="createdTaskInit"></p>
 		  											</div>
 		  											<div id="missionTaskComments" class="tab-pane fade in">
 		  												<p>Went to store</p>
