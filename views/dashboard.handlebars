@@ -339,6 +339,33 @@
 					  						<span id="checkTaskCompletedMain"><i data-feather="check-circle"></i></span><h3 id="taskNameMain"></h3>
 					  						<label id="taskLabel" for="taskDescription">Description</label>
   											<textarea class="form-control" rows="5" id="taskDescription"></textarea>
+  											<div id="recentTaskCommitCont" class="col-lg-12">
+  												<ul id="missionTaskTabs" class="nav nav-tabs justify-content-center animated fadeIn">
+													<li class="active"><a id="missionTasksActivityTrigger" data-toggle="tab" href="#missionTaskActivity">Activity</a></li>
+													<li class="active"><a id="missionTaskCommentsTrigger" data-toggle="tab" href="#missionTaskComments">Comments</a></li>
+												</ul>
+												<div class="tab-content animated fadeIn">
+					  								<div id="missionTaskActivity" class="tab-pane fade in">
+		  												<p>Went to store</p>
+		  												<p>Bought apple kiwi</p>
+		  												<p>Sipped</p>
+		  											</div>
+		  											<div id="missionTaskComments" class="tab-pane fade in">
+		  												<p>Went to store</p>
+		  											</div>
+		  										</div>
+		  									</div>
+  											<div id="missionTaskCommentMain" class="row col-lg-12">
+  												<div id="missionTaskImgCont" class="col-lg-2">
+  													<img id="missionTaskImg" src="/img/pbgit.png">
+  												</div>
+  												<div id="missionTaskCommentCont" class="col-lg-8">
+  													<input id="missionTaskComment" class="form-control" type="text" placeholder="Write a comment...">
+  												</div>
+  												<div id="postMissionTaskCommentCont" class="col-lg-2">
+  													<a id="postMissionTaskComment">POST</a>
+  												</div>
+  											</div>
 					  					</div>
 					  				</div>
 					  			</div>
