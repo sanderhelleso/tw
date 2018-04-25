@@ -4529,8 +4529,31 @@ function newTask() {
 	var cont = document.createElement("div");
 	cont.classList.add("row") + cont.classList.add("col-lg-12") + cont.classList.add("taskCont") + cont.classList.add("animated") + cont.classList.add("fadeIn");
 	cont.innerHTML = document.getElementById("masterTask").innerHTML;
-	console.log(cont.childNodes);
+	cont.childNodes[3].childNodes[1].addEventListener("keyup", setTaskName);
 	document.getElementById("tasksCont").appendChild(cont);
+	cont.childNodes[3].childNodes[1].focus();
+}
+
+// get input and listen for enter key to set name
+function setTaskName() {
+	var input = this;
+	var parent = this.parentElement;
+	var name = document.createElement("p");
+	name.classList.add("animated") + name.classList.add("fadeIn");
+	name.style.marginBottom = "0";
+	name.style.wordBreak = "break-all";
+	name.innerHTML = input.value.capitalizeFirstLetter();
+
+	// get enter key
+	if (event.which == 13 || event.keyCode == 13) {
+		if (input.value.length > 1) {
+			input.remove();
+        	parent.appendChild(name);
+        	newTask();
+        	return false;
+		}
+    }
+    return true;
 }
 
 // open new mission modal and form
