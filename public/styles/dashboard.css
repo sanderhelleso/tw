@@ -3800,6 +3800,86 @@ input[type=number]::-webkit-inner-spin-button {
 
 #assignTask:hover {
 	cursor: pointer;
+	color: #8c9eff;
+}
+
+#assignTaskCont {
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+#addTeamMember {
+	transition: all 0.3s;
+}
+
+#addTeamMember:hover {
+	cursor: pointer;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+#addTeamMembersCont {
+	margin-top: 10px;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.addTeamMemberAvatar {
+	float: left;
+	max-height: 25px;
+	max-width: 25px;
+	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19);
+	border-radius: 50%;
+	margin-right: 5px;
+}
+
+.addTeamMembersAvatarCont {
+	padding: 0;
+}
+
+#addTeamMembersCont .dropdown-item {
+	padding-bottom: 0;
+}
+
+#addTeamMembersCont .dropdown-item:hover {
+	cursor: pointer;
+}
+
+#addTeamMembersBtn {
+	font-size: 14px;
+	height: 30px;
+	width: 90%;
+	padding: 0;
+	padding-bottom: 5px;
+	margin: 0 auto;
+	font-size: 14px;
+	padding-top: 3px;
+	border-radius: 4px;
+	border: 0.5px solid #e0e0e0;
+	background-color: white;
+	color: #eeeeee;
+	transition: all 0.3s;
+	margin-top: 25px;
+	margin-bottom: 5px;
+}
+
+#addTeamMembersBtn:hover {
+	cursor: pointer;
+}
+
+.addTeamMembersBtnConfirm {
+	transition: all 0.3s;
+	background: #4776E6;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to right, #8E54E9, #4776E6);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to right, #8E54E9, #4776E6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	border: 0px solid white;
+	color: white;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.addTeamMembersBtnConfirm:hover {
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.selectedNewTeamMember {
+	color: #66bb6a;
 }
 
 /********************************* END TEAM **************************************/

@@ -242,7 +242,11 @@
 	  						<span id="backToProject" class="text-left"><i data-feather="arrow-left-circle"></i></span>
 	  					</div>
 	  					<div id="teamMembers" class="col-lg-5 offset-lg-5"></div>
-	  					<div id="addTeamMember" class="text-center"><i data-feather="plus"></i></div>
+	  					<div id="addTeamMember" class="text-center" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i data-feather="plus"></i></div>
+	  					<div id="addTeamMembersCont" class="dropdown-menu dropdown-menu-right animated fadeIn" aria-labelledby="dropdownTasks">
+	  						<div id="addTeamMembersContMain"></div>
+	  						<a id="addTeamMembersBtn" class="dropdown-item text-center animated">Add</a>
+					  	</div>
 	  				</div>
 	  				<h3 id="teamName" class="text-center animated fadeIn"></h3>
 	  				<h3 id="missionName" class="text-center animated fadeIn"></h3>
@@ -323,9 +327,12 @@
 					  			</div>
 					  			<div id="taskMenuMain" class="col-lg-6">
 					  				<div id="taskMenu" class="row col-lg-12">
-					  					<div id="assignTask" class="col-lg-5 unassignedTask">
+					  					<div id="assignTask" class="col-lg-5 unassignedTask" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					  						<img class="taskImgMain" src="/img/unassigned.png">
 					  						<p>Unassinged</p>
+					  					</div>
+					  					<div id="assignTaskCont" class="dropdown-menu" aria-labelledby="dropdownTasks">
+					  						<p>qweqw</p>
 					  					</div>
 					  					<div id="setTaskDate" class="col-lg-5 taskDueDate">
 					  						<span class="taskDueDateIcon"><i data-feather="calendar"></i></span>

@@ -3721,6 +3721,7 @@ function enterTeam() {
 	document.getElementById("teamName").style.display = "block";
 	document.getElementById("missionTabs").style.display = "none";
 	document.getElementById("teamMembers").innerHTML = "";
+	document.getElementById("addTeamMembersContMain").innerHTML = "";
 
 	// show team container
 	document.getElementById("teamMain").style.display = "block";
@@ -3744,6 +3745,9 @@ function enterTeam() {
 
 	// load missions
 	loadMissions();
+
+	// add new members to team
+	addTeamMembers();
 
 	// get team members
 	var membersRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/members");
@@ -3776,6 +3780,93 @@ function enterTeam() {
 	// add event listener to return to project
 	document.getElementById("backToProject").removeEventListener("click", backToTeam);
 	document.getElementById("backToProject").addEventListener("click", backToProject);
+}
+
+// add new team members to add to selected team
+function addTeamMembers() {
+	$('#addTeamMembersCont').bind('click', function (e) { e.stopPropagation() });
+	var membersRef = firebase.database().ref("projects/" + projectId + "/members");
+	membersRef.once("value", function(snapshot) {
+		snapshot.forEach((child) => {
+			var userRef = firebase.database().ref("accounts/" + child.val());
+			userRef.once("value", function(snapshot) {
+
+				var cont = document.createElement("div");
+				cont.id = "newTeamMember-" + child.val();
+				cont.classList.add("col-lg-12") + cont.classList.add("dropdown-item") + cont.classList.add("newTeamMemberOption");
+				cont.addEventListener("click", selectNewTeamMembers);
+
+				var avatarCont = document.createElement("div");
+				avatarCont.classList.add("col-lg-3") + avatarCont.classList.add("addTeamMembersAvatarCont");
+				var avatarImg = document.createElement("img");
+				avatarImg.classList.add("addTeamMemberAvatar");
+				avatarImg.src = snapshot.val().Avatar_url;
+				avatarCont.appendChild(avatarImg);
+
+				var nameCont = document.createElement("div");
+				nameCont.classList.add("col-lg-9");
+				var name = document.createElement("p");
+				name.innerHTML = snapshot.val().First_Name.capitalizeFirstLetter() + " " + snapshot.val().Last_Name.capitalizeFirstLetter();
+				nameCont.appendChild(name);
+
+				cont.appendChild(avatarCont);
+				cont.appendChild(nameCont);
+				document.getElementById("addTeamMembersContMain").appendChild(cont);
+
+				// only display members thats not allready in selected team
+				var teamMembersRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/members");
+				teamMembersRef.once("value", function(snapshot) {
+					snapshot.forEach((child) => {
+						if (document.getElementById("newTeamMember-" + child.val()) != null) {
+							document.getElementById("newTeamMember-" + child.val()).remove();
+						}
+					});
+				});
+			});
+		});
+	});
+}
+
+// select team members to join
+var newTeamMembers = [];
+function selectNewTeamMembers() {
+	// check if member is allready selected
+	document.getElementById("addTeamMembersBtn").style.border ="none";
+	document.getElementById("addTeamMembersBtn").classList.add("addTeamMembersBtnConfirm");
+	document.getElementById("addTeamMembersBtn").classList.add("fadeIn");
+	document.getElementById("addTeamMembersBtn").addEventListener("click", confirmNewTeamMembers);
+	if (newTeamMembers.length >= 1) {
+		for (var i = 0; i < newTeamMembers.length; i++) {
+			if (this.id.split("-")[1] === newTeamMembers[i]) {
+				newTeamMembers.splice(i, 1);
+				this.classList.remove("animated") + this.classList.remove("fadeIn");
+				this.childNodes[1].childNodes[0].classList.remove("selectedNewTeamMember");
+				console.log(newTeamMembers);
+				if (newTeamMembers.length === 0) {
+					document.getElementById("addTeamMembersBtn").style.border ="0.5px solid #eeeeee";
+					document.getElementById("addTeamMembersBtn").classList.remove("addTeamMembersBtnConfirm");
+					document.getElementById("addTeamMembersBtn").classList.remove("fadeIn");
+					document.getElementById("addTeamMembersBtn").removeEventListener("click", confirmNewTeamMembers);
+				}
+				return;
+			}
+
+		}
+	}
+
+	// add to array if not selected
+	newTeamMembers.push(this.id.split("-")[1]);
+	this.classList.add("animated") + this.classList.add("fadeIn");
+	this.childNodes[1].childNodes[0].classList.add("selectedNewTeamMember");
+}
+
+// add selected members and store in db
+function confirmNewTeamMembers() {
+	var membersRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/members");
+	membersRef.once("value", function(snapshot) {
+		membersCount = snapshot.val().length;
+		console.log(membersCount);
+	});
 }
 
 // load conversations for the selected team
@@ -4671,6 +4762,7 @@ function openTask() {
 
 // assign task to selected member
 function assignTask() {
+	$('#assignTaskCont').bind('click', function (e) { e.stopPropagation() });
 	console.log(123);
 }
 
