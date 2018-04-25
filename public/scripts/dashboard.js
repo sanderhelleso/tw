@@ -4510,8 +4510,27 @@ function enterMission() {
 		document.getElementById("missionTabsContainer").style.display = "block";
 		document.getElementById("missionTasksTrigger").click();
 		document.getElementById("missionName").innerHTML = snapshot.val().mission_name.capitalizeFirstLetter();
-	});
 
+		// mission functions and modules
+		missionTasks();
+	});
+}
+
+// init and prep tasks for selected mission
+function missionTasks() {
+	// init event for new mission
+	document.getElementById("addTask").addEventListener("click", newTask);
+
+}
+
+// set a new task
+function newTask() {
+	// create element
+	var cont = document.createElement("div");
+	cont.classList.add("row") + cont.classList.add("col-lg-12") + cont.classList.add("taskCont") + cont.classList.add("animated") + cont.classList.add("fadeIn");
+	cont.innerHTML = document.getElementById("masterTask").innerHTML;
+	console.log(cont.childNodes);
+	document.getElementById("tasksCont").appendChild(cont);
 }
 
 // open new mission modal and form

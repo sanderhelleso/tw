@@ -3500,8 +3500,11 @@ input[type=number]::-webkit-inner-spin-button {
 	opacity: 0.7;
 }
 
-#tasks {
+#tasksCont {
 	padding: 0;
+	max-height: 55vh;
+	overflow: hidden;
+	overflow-y: scroll;
 }
 
 .taskCont, .taskImgCont {
@@ -3525,14 +3528,29 @@ input[type=number]::-webkit-inner-spin-button {
 
 .taskCont {
 	font-size: 14px;
-	border-bottom: 0.5px solid #eeeeee;
+	border-radius: 4px;
+	border: 0.5px solid #eeeeee;
 	padding-left: 0;
-	padding-bottom: 2.5px;
+	padding: 5px;
+	padding-bottom: 0;
 	margin-left: 0%;
+	transition: all 0.3s;
+	margin-bottom: 1vh;
 }
 
-.taskCont:hover {
-	cursor: pointer;
+.taskInput {
+	border-radius: 0;
+	border: none;
+	font-size: 14px;
+	padding: 0;
+}
+
+.taskInput:focus {
+	border: none;
+}
+
+#masterTask {
+	display: none;
 }
 
 /********************************* END TEAM **************************************/
