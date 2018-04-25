@@ -4492,8 +4492,6 @@ var category;
 var missionID;
 var missionSharedWith;
 function enterMission() {
-	console.log(this.id);
-
 	// add event listener to return to team
 	document.getElementById("backToProject").removeEventListener("click", backToProject);
 	document.getElementById("backToProject").addEventListener("click", backToTeam);
@@ -4503,7 +4501,6 @@ function enterMission() {
 	missionID = this.id.split("-")[2];
 	var missionRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/missions/" + category + "/" + missionID);
 	missionRef.once("value", function(snapshot) {
-		console.log(snapshot.val());
 		// DOM manipultaton - show / hide components
 		document.getElementById("teamName").style.display = "none";
 		document.getElementById("missionName").style.display = "block";
@@ -4525,6 +4522,32 @@ function enterMission() {
 function missionTasks() {
 	// init event for new mission
 	document.getElementById("addTask").addEventListener("click", newTask);
+
+	// load tasks
+	var missionTasksRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/missions/" + category + "/" + missionID + "/tasks/");
+	missionTasksRef.once("value", function(snapshot) {
+		snapshot.forEach((child) => {
+			console.log(child.val());
+			// create elements
+			var cont = document.createElement("div");
+			cont.classList.add("row") + cont.classList.add("col-lg-12") + cont.classList.add("taskCont") + cont.classList.add("animated") + cont.classList.add("fadeIn");
+			cont.innerHTML = document.getElementById("masterTask").innerHTML;
+			cont.id = "mission-task-" + child.key;
+			cont.addEventListener("click", openTask);
+
+			// set name
+			var parentName = cont.childNodes[3].childNodes[1].parentElement;
+			cont.childNodes[3].childNodes[1].remove();
+			var name = document.createElement("p");
+			name.classList.add("animated") + name.classList.add("fadeIn");
+			name.style.marginBottom = "0";
+			name.style.wordBreak = "break-all";
+			name.innerHTML = child.val().task_name.capitalizeFirstLetter();
+			parentName.appendChild(name);
+			document.getElementById("tasksCont").appendChild(cont);
+		});
+	});
+
 
 }
 
