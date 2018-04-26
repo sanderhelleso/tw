@@ -4704,42 +4704,6 @@ function enterMission() {
 	});
 }
 
-// display members to set a task
-function unassignedTask() {
-	// clear and reset
-	document.getElementById("unassignedTaskCont").innerHTML = "";
-	// create avatars for members
-	var membersRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/missions/" + category + "/" + missionID + "/members");
-	membersRef.once("value", function(snapshot) {
-		snapshot.forEach((child) => {
-			var userRef = firebase.database().ref("accounts/" + child.key);
-			userRef.once("value", function(snapshot) {
-				var cont = document.createElement("div");
-				cont.id = "unassignedTaskMember-" + child.val();
-				cont.classList.add("col-lg-12") + cont.classList.add("dropdown-item") + cont.classList.add("newTeamMemberOption");
-				//cont.addEventListener("click", selectNewMissionMembers);
-
-				var avatarCont = document.createElement("div");
-				avatarCont.classList.add("col-lg-3") + avatarCont.classList.add("addTeamMembersAvatarCont");
-				var avatarImg = document.createElement("img");
-				avatarImg.classList.add("addTeamMemberAvatar");
-				avatarImg.src = snapshot.val().Avatar_url;
-				avatarCont.appendChild(avatarImg);
-
-				var nameCont = document.createElement("div");
-				nameCont.classList.add("col-lg-9");
-				var name = document.createElement("p");
-				name.innerHTML = snapshot.val().First_Name.capitalizeFirstLetter() + " " + snapshot.val().Last_Name.capitalizeFirstLetter();
-				nameCont.appendChild(name);
-
-				cont.appendChild(avatarCont);
-				cont.appendChild(nameCont);
-				document.getElementById("unassignedTaskCont").appendChild(cont);
-			});
-		});
-	});
-}
-
 // load members available to join the mission
 function addMissionMembers() {
 	document.getElementById("addTeamMembersBtn").removeEventListener("click", confirmNewTeamMembers);
@@ -4817,7 +4781,6 @@ function addMissionMembers() {
 					var membersRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/missions/" + category + "/" + missionID + "/members");
 					membersRef.once("value", function(snapshot) {
 						snapshot.forEach((child) => {
-							console.log(child.key);
 							if (cont.id.split("-")[1] != child.key) {
 								if (document.getElementById("newMissionMember-" + child.val()) != null) {
 									document.getElementById("newMissionMember-" + child.val()).remove();
@@ -4954,6 +4917,7 @@ function setNewMissionAvatars() {
 }
 
 // init and prep tasks for selected mission
+var currentTask;
 function missionTasks() {
 	// clear and reset
 	document.getElementById("tasksCont").innerHTML = "";
@@ -4990,8 +4954,6 @@ function missionTasks() {
 			cont.click();
 		});
 	});
-
-
 }
 
 // set a new task
@@ -5086,9 +5048,10 @@ function saveTask() {
 }
 
 // open a task in main window
+var taskID;
 function openTask() {
 	clearMainTask();
-	var taskID = this.id.split("-")[2];
+	taskID = this.id.split("-")[2];
 	
 	// set created time and info in activity
 	var missionTasksRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/missions/" + category + "/" + missionID + "/tasks/" + taskID);
@@ -5101,16 +5064,115 @@ function openTask() {
 			document.getElementById("createdTaskInit").innerHTML = "<span class='taskActivityCreator'>" + document.getElementById("masterMapIcon").innerHTML + " " + snapshot.val().First_Name.capitalizeFirstLetter() + " " + snapshot.val().Last_Name.capitalizeFirstLetter() + "</span> created task " + "<span class='taskActivityDate'>" + document.getElementById("masterTimeIcon").innerHTML + " " + createdDate + "</span>"; 
 		});
 		document.getElementById("missionTasksActivityTrigger").click();
+	});
 
-		// init events
-		document.getElementById("assignTask").addEventListener("click", assignTask);
+	// set member task is assigned to
+	var missionTasksAssignedRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/missions/" + category + "/" + missionID + "/tasks/" + taskID + "/assigned");
+	missionTasksAssignedRef.once("value", function(snapshot) {
+		// set img src to be avatar url
+		console.log(snapshot.val());
+		if (snapshot.val() != null) {
+			accRef = firebase.database().ref("accounts/" + snapshot.val().assigned_to);
+			accRef.once("value", function(snapshot) {
+				if (snapshot.val().Avatar_url != undefined) {
+					document.getElementById("assignedAvatar").src = snapshot.val().Avatar_url;
+				}
+
+				else {
+					document.getElementById("assignedAvatar").src = "/img/avatar.png";
+				}
+
+				document.getElementById("assignedName").innerHTML = snapshot.val().First_Name.capitalizeFirstLetter() + " " + snapshot.val().Last_Name.capitalizeFirstLetter();
+			});
+		}
+
+		else {
+			document.getElementById("assignedName").innerHTML = "Unassigned";
+			document.getElementById("assignedAvatar").src = "/img/unassigned.png";
+		}
 	});
 }
 
-// assign task to selected member
-function assignTask() {
+// display members to set a task
+function unassignedTask() {
+	// clear and reset
 	$('#assignTaskCont').bind('click', function (e) { e.stopPropagation() });
-	console.log(123);
+	document.getElementById("unassignedTaskCont").innerHTML = "";
+	// create avatars for members
+	var membersRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/missions/" + category + "/" + missionID + "/members");
+	membersRef.once("value", function(snapshot) {
+		snapshot.forEach((child) => {
+			var userRef = firebase.database().ref("accounts/" + child.key);
+			userRef.once("value", function(snapshot) {
+				var cont = document.createElement("div");
+				cont.id = "unassignedTaskMember-" + child.val();
+				cont.classList.add("col-lg-12") + cont.classList.add("dropdown-item") + cont.classList.add("newTeamMemberOption") + cont.classList.add("taskAssignToOption");
+				cont.addEventListener("click", selectTaskAssign);
+
+				var avatarCont = document.createElement("div");
+				avatarCont.classList.add("col-lg-3") + avatarCont.classList.add("addTeamMembersAvatarCont");
+				var avatarImg = document.createElement("img");
+				avatarImg.classList.add("addTeamMemberAvatar");
+				avatarImg.src = snapshot.val().Avatar_url;
+				avatarCont.appendChild(avatarImg);
+
+				var nameCont = document.createElement("div");
+				nameCont.classList.add("col-lg-9");
+				var name = document.createElement("p");
+				name.innerHTML = snapshot.val().First_Name.capitalizeFirstLetter() + " " + snapshot.val().Last_Name.capitalizeFirstLetter();
+				nameCont.appendChild(name);
+
+				cont.appendChild(avatarCont);
+				cont.appendChild(nameCont);
+				document.getElementById("unassignedTaskCont").appendChild(cont);
+			});
+		});
+	});
+}
+
+// select task assigner
+var selectedTaskAssign = [];
+function selectTaskAssign() {
+	selectedTaskAssign = [];
+	var options = document.getElementsByClassName("taskAssignToOption");
+	for (var i = 0; i < options.length; i++) {
+		options[i].classList.remove("animated") + options[i].classList.remove("fadeIn");
+		options[i].childNodes[1].childNodes[0].classList.remove("selectedNewTeamMember");
+	}
+
+	this.classList.add("animated") + this.classList.add("fadeIn");
+	this.childNodes[1].childNodes[0].classList.add("selectedNewTeamMember");
+	selectedTaskAssign.push(this.id.split("-")[1]);
+	console.log(selectedTaskAssign);
+	document.getElementById("assignTaskBtn").style.border ="none";
+	document.getElementById("assignTaskBtn").classList.add("addTaskAssignBtnConfirm");
+	document.getElementById("assignTaskBtn").classList.add("fadeIn");
+	document.getElementById("assignTaskBtn").addEventListener("click", confirmTaskAssign);
+}
+
+
+// assign task to selected member
+function confirmTaskAssign() {
+	// main ref
+	var taskRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/missions/" + category + "/" + missionID + "/tasks/" + taskID + "/assigned");
+	taskRef.update({
+		assigned_to: selectedTaskAssign[0]
+	});
+
+	// shared with ref
+	var taskSharedRef = firebase.database().ref("projects/" + projectId + "/teams/" + missionSharedWith + "/missions/" + category + "/" + missionID + "/tasks/" + taskID + "/assigned");
+	taskSharedRef.update({
+		assigned_to: selectedTaskAssign[0]
+	});
+
+	// reset after setting
+	document.getElementById("assignTaskBtn").style.border ="0.5px solid #eeeeee";
+	document.getElementById("assignTaskBtn").classList.remove("addTaskAssignBtnConfirm");
+	document.getElementById("assignTaskBtn").classList.remove("fadeIn");
+	document.getElementById("assignTaskBtn").removeEventListener("click", confirmTaskAssign);
+	selectedTaskAssign = [];
+	document.getElementById("mainTaskCont").click();
+
 }
 
 // resets main task container
