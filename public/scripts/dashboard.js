@@ -5052,6 +5052,7 @@ var taskID;
 function openTask() {
 	clearMainTask();
 	taskID = this.id.split("-")[2];
+	var taskImg = this.childNodes[5].childNodes[0];
 	
 	// set created time and info in activity
 	var missionTasksRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/missions/" + category + "/" + missionID + "/tasks/" + taskID);
@@ -5076,10 +5077,12 @@ function openTask() {
 			accRef.once("value", function(snapshot) {
 				if (snapshot.val().Avatar_url != undefined) {
 					document.getElementById("assignedAvatar").src = snapshot.val().Avatar_url;
+					taskImg.src = snapshot.val().Avatar_url;
 				}
 
 				else {
 					document.getElementById("assignedAvatar").src = "/img/avatar.png";
+					taskImg.src = "/img/avatar.png";
 				}
 
 				document.getElementById("assignedName").innerHTML = snapshot.val().First_Name.capitalizeFirstLetter() + " " + snapshot.val().Last_Name.capitalizeFirstLetter();
