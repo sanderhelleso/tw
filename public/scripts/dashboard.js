@@ -4965,6 +4965,12 @@ function newTask() {
 	cont.childNodes[3].childNodes[1].addEventListener("keyup", setTaskName);
 	document.getElementById("tasksCont").appendChild(cont);
 	cont.childNodes[3].childNodes[1].focus();
+	var taskCont = document.getElementsByClassName("taskCont");
+	for (var i = 0; i < taskCont.length; i++) {
+		taskCont[i].removeAttribute("style");
+	}
+	cont.style.border = "0.5px solid #8c9eff";
+	cont.style.boxShadow = "0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19)";
 	clearMainTask();
 }
 
@@ -4990,6 +4996,7 @@ function setTaskName() {
 			parent.parentElement.addEventListener("click", openTask);
         	parent.appendChild(name);
         	taskTimestamp = new Date().getTime();
+        	parent.parentElement.id = "mission-task-" + taskTimestamp;
         	taskName = input.value.capitalizeFirstLetter();
         	newTask();
         	saveTask();
@@ -5051,8 +5058,15 @@ function saveTask() {
 var taskID;
 function openTask() {
 	clearMainTask();
+	document.getElementById("taskMenu").style.display = "none";
 	taskID = this.id.split("-")[2];
 	var taskImg = this.childNodes[5].childNodes[0];
+	var taskCont = document.getElementsByClassName("taskCont");
+	for (var i = 0; i < taskCont.length; i++) {
+		taskCont[i].removeAttribute("style");
+	}
+	this.style.border = "0.5px solid #8c9eff";
+	this.style.boxShadow = "0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19)";
 	
 	// set created time and info in activity
 	var missionTasksRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/missions/" + category + "/" + missionID + "/tasks/" + taskID);
@@ -5088,6 +5102,7 @@ function openTask() {
 				document.getElementById("assignedName").innerHTML = snapshot.val().First_Name.capitalizeFirstLetter() + " " + snapshot.val().Last_Name.capitalizeFirstLetter();
 				document.getElementById("assignedName").style.color = "#8c9eff";
 				document.getElementById("assignedAvatar").classList.add("assignedAvatar");
+				document.getElementById("taskMenu").style.display = "inline-flex";
 			});
 		}
 
@@ -5096,6 +5111,7 @@ function openTask() {
 			document.getElementById("assignedName").style.color = "#9e9e9e";
 			document.getElementById("assignedAvatar").src = "/img/unassigned.png";
 			document.getElementById("assignedAvatar").classList.remove("assignedAvatar");
+			document.getElementById("taskMenu").style.display = "inline-flex";
 		}
 	});
 }
