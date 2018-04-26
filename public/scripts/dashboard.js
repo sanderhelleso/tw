@@ -4677,7 +4677,7 @@ function enterMission() {
 		membersRef.once("value", function(snapshot) {
 			snapshot.forEach((child) => {
 				var teamMemberImg = document.createElement("img");
-				teamMemberImg.id = teamName + "-" + missionID + "-" + snapshot.val().mission_admin;
+				teamMemberImg.id = teamName + "-" + missionID + "-" + child.key;
 				teamMemberImg.classList.add("teamMemberImg") + teamMemberImg.classList.add("col-lg-1") + teamMemberImg.classList.add("animated") + teamMemberImg.classList.add("fadeIn");
 
 				// set img src to be avatar url
@@ -4776,6 +4776,7 @@ function addMissionMembers() {
 					cont.appendChild(nameCont);
 					document.getElementById("addTeamMembersContMain").appendChild(cont);
 
+					// check if member allready is in mission
 					var membersRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/missions/" + category + "/" + missionID + "/members");
 					membersRef.once("value", function(snapshot) {
 						snapshot.forEach((child) => {
@@ -4861,39 +4862,65 @@ function confirmNewMissionMembers() {
 		document.getElementById("addTeamMembersBtn").classList.remove("fadeIn");
 		document.getElementById("addTeamMembersBtn").removeEventListener("click", confirmNewMissionMembers);
 	}
-	//setNewTeamAvatars();
+	setNewMissionAvatars();
 	snackbar.innerHTML = "Members succesfully added!";
 	snackbar.className = "show";
 	setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
 }
 
-/*function setNewTeamAvatars() {
+// update images with avatars after adding new members
+function setNewMissionAvatars() {
 	document.getElementById("teamMembers").innerHTML = "";
-	var membersRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/members");
-	membersRef.once("value", function(snapshot) {
-		snapshot.forEach((child) => {
-			var teamMemberImg = document.createElement("img");
-			teamMemberImg.id = teamName + "-member-" + child.val();
-			teamMemberImg.classList.add("teamMemberImg") + teamMemberImg.classList.add("col-lg-1") + teamMemberImg.classList.add("animated") + teamMemberImg.classList.add("fadeIn");
+	var missionRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/missions/" + category + "/" + missionID);
+	missionRef.once("value", function(snapshot) {
+		// create avatar img for mission admin
+		var teamMemberImg = document.createElement("img");
+		teamMemberImg.id = teamName + "-" + missionID + "-" + snapshot.val().mission_admin;
+		teamMemberImg.classList.add("teamMemberImg") + teamMemberImg.classList.add("col-lg-1") + teamMemberImg.classList.add("animated") + teamMemberImg.classList.add("fadeIn");
 
-			// set img src to be avatar url
-			accRef = firebase.database().ref("accounts/" + child.val());
-			accRef.once("value", function(snapshot) {
-				if (snapshot.val().Avatar_url != undefined) {
-					teamMemberImg.src = snapshot.val().Avatar_url;
-				}
+		// set img src to be avatar url
+		var accRef = firebase.database().ref("accounts/" + snapshot.val().mission_admin);
+		accRef.once("value", function(snapshot) {
+			if (snapshot.val().Avatar_url != undefined) {
+				teamMemberImg.src = snapshot.val().Avatar_url;
+			}
 
-				else {
-					teamMemberImg.src = "/img/avatar.png";
-				}
-				document.getElementById("teamMembers").appendChild(teamMemberImg);
+			else {
+				teamMemberImg.src = "/img/avatar.png";
+			}
+
+			document.getElementById("teamMembers").appendChild(teamMemberImg);
+		});
+		// create members avatars
+		var membersRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/missions/" + category + "/" + missionID + "/members");
+		membersRef.once("value", function(snapshot) {
+			snapshot.forEach((child) => {
+				var teamMemberImg = document.createElement("img");
+				teamMemberImg.id = teamName + "-" + missionID + "-" + child.key;
+				teamMemberImg.classList.add("teamMemberImg") + teamMemberImg.classList.add("col-lg-1") + teamMemberImg.classList.add("animated") + teamMemberImg.classList.add("fadeIn");
+
+				// set img src to be avatar url
+				accRef = firebase.database().ref("accounts/" + child.key);
+				accRef.once("value", function(snapshot) {
+					if (snapshot.val().Avatar_url != undefined) {
+						teamMemberImg.src = snapshot.val().Avatar_url;
+					}
+
+					else {
+						teamMemberImg.src = "/img/avatar.png";
+					}
+					document.getElementById("teamMembers").appendChild(teamMemberImg);
+				});
 			});
 		});
 	});
-}*/
+}
 
 // init and prep tasks for selected mission
 function missionTasks() {
+	// clear and reset
+	document.getElementById("tasksCont").innerHTML = "";
+
 	// init event for new mission
 	document.getElementById("addTask").addEventListener("click", newTask);
 
