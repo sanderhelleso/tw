@@ -4692,7 +4692,7 @@ function addMissionMembers() {
 				var cont = document.createElement("div");
 				cont.id = "newMissionMember-" + child.val();
 				cont.classList.add("col-lg-12") + cont.classList.add("dropdown-item") + cont.classList.add("newTeamMemberOption");
-				cont.addEventListener("click", selectNewTeamMembers);
+				cont.addEventListener("click", selectNewMissionMembers);
 
 				var avatarCont = document.createElement("div");
 				avatarCont.classList.add("col-lg-3") + avatarCont.classList.add("addTeamMembersAvatarCont");
@@ -4730,7 +4730,7 @@ function addMissionMembers() {
 					var cont = document.createElement("div");
 					cont.id = "newMissionMember-" + child.val();
 					cont.classList.add("col-lg-12") + cont.classList.add("dropdown-item") + cont.classList.add("newTeamMemberOption");
-					cont.addEventListener("click", selectNewTeamMembers);
+					cont.addEventListener("click", selectNewMissionMembers);
 					// check if allready appended to DOM, remove if true
 					if (document.getElementById("newMissionMember-" + child.val()) != null) {
 						document.getElementById("newMissionMember-" + child.val()).remove();
@@ -4761,9 +4761,100 @@ function addMissionMembers() {
 					});
 				});
 			});
-		});
+		});;
 	});
 }
+
+// get sekected mission members
+var newMissionMembers = [];
+function selectNewMissionMembers() {
+	// check if member is allready selected
+	document.getElementById("addTeamMembersBtn").style.border ="none";
+	document.getElementById("addTeamMembersBtn").classList.add("addTeamMembersBtnConfirm");
+	document.getElementById("addTeamMembersBtn").classList.add("fadeIn");
+	document.getElementById("addTeamMembersBtn").addEventListener("click", confirmNewMissionMembers);
+	if (newMissionMembers.length >= 1) {
+		for (var i = 0; i < newMissionMembers.length; i++) {
+			if (this.id.split("-")[1] === newMissionMembers[i]) {
+				newMissionMembers.splice(i, 1);
+				this.classList.remove("animated") + this.classList.remove("fadeIn");
+				this.childNodes[1].childNodes[0].classList.remove("selectedNewTeamMember");
+				if (newMissionMembers.length === 0) {
+					document.getElementById("addTeamMembersBtn").style.border ="0.5px solid #eeeeee";
+					document.getElementById("addTeamMembersBtn").classList.remove("addTeamMembersBtnConfirm");
+					document.getElementById("addTeamMembersBtn").classList.remove("fadeIn");
+					document.getElementById("addTeamMembersBtn").removeEventListener("click", confirmNewMissionMembers);
+				}
+				return;
+			}
+
+		}
+	}
+
+	// add to array if not selected
+	newMissionMembers.push(this.id.split("-")[1]);
+	this.classList.add("animated") + this.classList.add("fadeIn");
+	this.childNodes[1].childNodes[0].classList.add("selectedNewTeamMember");
+}
+
+// store and add new mission members
+function confirmNewMissionMembers() {
+	var count = 0;
+	var membersRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/missions/" + category + "/" + missionID + "/members");
+	for (var i = 0; i < newMissionMembers.length; i++) {
+		var member = newMissionMembers[i];
+		membersRef.update({
+			[member] : member
+		});
+		count++;
+	}
+
+	var membersSharedRef = firebase.database().ref("projects/" + projectId + "/teams/" + missionSharedWith + "/missions/" + category + "/" + missionID + "/members");
+	for (var i = 0; i < newMissionMembers.length; i++) {
+		var member = newMissionMembers[i];
+		document.getElementById("newMissionMember-" + member).remove();
+		membersSharedRef.update({
+			[member] : member
+		});
+	}
+
+	if (count === newMissionMembers.length) {
+		newmissionMembers = [];
+		document.getElementById("addTeamMembersBtn").style.border ="0.5px solid #eeeeee";
+		document.getElementById("addTeamMembersBtn").classList.remove("addTeamMembersBtnConfirm");
+		document.getElementById("addTeamMembersBtn").classList.remove("fadeIn");
+		document.getElementById("addTeamMembersBtn").removeEventListener("click", confirmNewMissionMembers);
+	}
+	//setNewTeamAvatars();
+	snackbar.innerHTML = "Members succesfully added!";
+	snackbar.className = "show";
+	setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
+}
+
+/*function setNewTeamAvatars() {
+	document.getElementById("teamMembers").innerHTML = "";
+	var membersRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/members");
+	membersRef.once("value", function(snapshot) {
+		snapshot.forEach((child) => {
+			var teamMemberImg = document.createElement("img");
+			teamMemberImg.id = teamName + "-member-" + child.val();
+			teamMemberImg.classList.add("teamMemberImg") + teamMemberImg.classList.add("col-lg-1") + teamMemberImg.classList.add("animated") + teamMemberImg.classList.add("fadeIn");
+
+			// set img src to be avatar url
+			accRef = firebase.database().ref("accounts/" + child.val());
+			accRef.once("value", function(snapshot) {
+				if (snapshot.val().Avatar_url != undefined) {
+					teamMemberImg.src = snapshot.val().Avatar_url;
+				}
+
+				else {
+					teamMemberImg.src = "/img/avatar.png";
+				}
+				document.getElementById("teamMembers").appendChild(teamMemberImg);
+			});
+		});
+	});
+}*/
 
 // init and prep tasks for selected mission
 function missionTasks() {
