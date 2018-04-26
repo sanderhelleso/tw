@@ -4925,6 +4925,7 @@ function missionTasks() {
 
 	// init event for new mission
 	document.getElementById("addTask").addEventListener("click", newTask);
+	document.getElementById("closeTaskCont").addEventListener("click", closeTask);
 
 	// load tasks
 	var missionTasksRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/missions/" + category + "/" + missionID + "/tasks/");
@@ -4955,6 +4956,11 @@ function missionTasks() {
 			cont.click();
 		});
 	});
+}
+
+// close taskContainer
+function closeTask() {
+	document.getElementById("taskMenu").style.display = "none";
 }
 
 // set a new task
