@@ -3834,15 +3834,15 @@ input[type=number]::-webkit-inner-spin-button {
 	padding: 0;
 }
 
-#addTeamMembersCont .dropdown-item {
+#addTeamMembersCont .dropdown-item, #assignTaskCont .dropdown-item {
 	padding-bottom: 0;
 }
 
-#addTeamMembersCont .dropdown-item:hover {
+#addTeamMembersCont .dropdown-item:hover, #assignTaskCont .dropdown-item:hover {
 	cursor: pointer;
 }
 
-#addTeamMembersBtn {
+#addTeamMembersBtn, #assignTaskBtn {
 	font-size: 14px;
 	height: 30px;
 	width: 90%;
@@ -3860,7 +3860,7 @@ input[type=number]::-webkit-inner-spin-button {
 	margin-bottom: 5px;
 }
 
-#addTeamMembersBtn:hover {
+#addTeamMembersBtn:hover, #assignTaskBtn:jover {
 	cursor: pointer;
 }
 

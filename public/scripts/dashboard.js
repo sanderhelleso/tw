@@ -4700,6 +4700,43 @@ function enterMission() {
 		missionSharedWith = snapshot.val().shared_with;
 		missionTasks();
 		addMissionMembers();
+		unassignedTask();
+	});
+}
+
+// display members to set a task
+function unassignedTask() {
+	// clear and reset
+	document.getElementById("unassignedTaskCont").innerHTML = "";
+	// create avatars for members
+	var membersRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/missions/" + category + "/" + missionID + "/members");
+	membersRef.once("value", function(snapshot) {
+		snapshot.forEach((child) => {
+			var userRef = firebase.database().ref("accounts/" + child.key);
+			userRef.once("value", function(snapshot) {
+				var cont = document.createElement("div");
+				cont.id = "unassignedTaskMember-" + child.val();
+				cont.classList.add("col-lg-12") + cont.classList.add("dropdown-item") + cont.classList.add("newTeamMemberOption");
+				//cont.addEventListener("click", selectNewMissionMembers);
+
+				var avatarCont = document.createElement("div");
+				avatarCont.classList.add("col-lg-3") + avatarCont.classList.add("addTeamMembersAvatarCont");
+				var avatarImg = document.createElement("img");
+				avatarImg.classList.add("addTeamMemberAvatar");
+				avatarImg.src = snapshot.val().Avatar_url;
+				avatarCont.appendChild(avatarImg);
+
+				var nameCont = document.createElement("div");
+				nameCont.classList.add("col-lg-9");
+				var name = document.createElement("p");
+				name.innerHTML = snapshot.val().First_Name.capitalizeFirstLetter() + " " + snapshot.val().Last_Name.capitalizeFirstLetter();
+				nameCont.appendChild(name);
+
+				cont.appendChild(avatarCont);
+				cont.appendChild(nameCont);
+				document.getElementById("unassignedTaskCont").appendChild(cont);
+			});
+		});
 	});
 }
 
