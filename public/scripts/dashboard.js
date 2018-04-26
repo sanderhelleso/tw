@@ -3784,6 +3784,7 @@ function enterTeam() {
 
 // add new team members to add to selected team
 function addTeamMembers() {
+	document.getElementById("addTeamMembersContMain").innerHTML = "";
 	$('#addTeamMembersCont').bind('click', function (e) { e.stopPropagation() });
 	var membersRef = firebase.database().ref("projects/" + projectId + "/members");
 	membersRef.once("value", function(snapshot) {
@@ -3864,8 +3865,17 @@ function selectNewTeamMembers() {
 function confirmNewTeamMembers() {
 	var membersRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/members");
 	membersRef.once("value", function(snapshot) {
-		membersCount = snapshot.val().length;
-		console.log(membersCount);
+		var membersCount = snapshot.val().length;
+		for (var i = 0; i < newTeamMembers.length; i++) {
+			var member = newTeamMembers[i];
+			var newMemberRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/members");
+			newMemberRef.update({
+				[membersCount] : member
+			});
+			membersCount++;
+		}
+		addTeamMembers();
+		newTeamMembers = [];
 	});
 }
 
