@@ -4921,6 +4921,7 @@ var currentTask;
 function missionTasks() {
 	// clear and reset
 	document.getElementById("tasksCont").innerHTML = "";
+	document.getElementById("taskMenu").style.display = "none";
 
 	// init event for new mission
 	document.getElementById("addTask").addEventListener("click", newTask);
@@ -4963,6 +4964,7 @@ function newTask() {
 	cont.classList.add("row") + cont.classList.add("col-lg-12") + cont.classList.add("taskCont") + cont.classList.add("animated") + cont.classList.add("fadeIn");
 	cont.innerHTML = document.getElementById("masterTask").innerHTML;
 	cont.childNodes[3].childNodes[1].addEventListener("keyup", setTaskName);
+	cont.childNodes[3].childNodes[1].addEventListener("click", focusTask);
 	document.getElementById("tasksCont").appendChild(cont);
 	cont.childNodes[3].childNodes[1].focus();
 	var taskCont = document.getElementsByClassName("taskCont");
@@ -4971,6 +4973,7 @@ function newTask() {
 	}
 	cont.style.border = "0.5px solid #8c9eff";
 	cont.style.boxShadow = "0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19)";
+	document.getElementById("taskMenu").style.display = "none";
 	clearMainTask();
 }
 
@@ -4979,6 +4982,7 @@ var taskTimestamp;
 var taskName;
 function setTaskName() {
 	var input = this;
+	input.addEventListener("click", focusTask);
 	var parent = this.parentElement;
 	var name = document.createElement("p");
 	name.classList.add("animated") + name.classList.add("fadeIn");
@@ -4988,6 +4992,12 @@ function setTaskName() {
 
 	// main task container
 	document.getElementById("taskNameMain").innerHTML = name.innerHTML;
+	var taskCont = document.getElementsByClassName("taskCont");
+	for (var i = 0; i < taskCont.length; i++) {
+		taskCont[i].removeAttribute("style");
+	}
+	parent.parentElement.style.border = "0.5px solid #8c9eff";
+	parent.parentElement.style.boxShadow = "0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19)";
 
 	// get enter key
 	if (event.which == 13 || event.keyCode == 13) {
@@ -4997,6 +5007,7 @@ function setTaskName() {
         	parent.appendChild(name);
         	taskTimestamp = new Date().getTime();
         	parent.parentElement.id = "mission-task-" + taskTimestamp;
+        	parent.parentElement.click();
         	taskName = input.value.capitalizeFirstLetter();
         	newTask();
         	saveTask();
@@ -5004,6 +5015,16 @@ function setTaskName() {
 		}
     }
     return true;
+}
+
+// focus task and show style
+function focusTask() {
+	var taskCont = document.getElementsByClassName("taskCont");
+	for (var i = 0; i < taskCont.length; i++) {
+		taskCont[i].removeAttribute("style");
+	}
+	this.parentElement.parentElement.style.border = "0.5px solid #8c9eff";
+	this.parentElement.parentElement.style.boxShadow = "0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19)";
 }
 
 // save task
