@@ -5083,12 +5083,16 @@ function openTask() {
 				}
 
 				document.getElementById("assignedName").innerHTML = snapshot.val().First_Name.capitalizeFirstLetter() + " " + snapshot.val().Last_Name.capitalizeFirstLetter();
+				document.getElementById("assignedName").style.color = "#8c9eff";
+				document.getElementById("assignedAvatar").classList.add("assignedAvatar");
 			});
 		}
 
 		else {
 			document.getElementById("assignedName").innerHTML = "Unassigned";
+			document.getElementById("assignedName").style.color = "#9e9e9e";
 			document.getElementById("assignedAvatar").src = "/img/unassigned.png";
+			document.getElementById("assignedAvatar").classList.remove("assignedAvatar");
 		}
 	});
 }
