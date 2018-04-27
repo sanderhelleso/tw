@@ -4951,7 +4951,7 @@ function missionTasks() {
 						}
 
 						else {
-							ont.childNodes[5].childNodes[0].src.src = "/img/avatar.png";
+							cont.childNodes[5].childNodes[0].src.src = "/img/avatar.png";
 						}
 					});
 				}
@@ -5255,6 +5255,39 @@ function confirmTaskAssign() {
 		snackbar.innerHTML = "Task succesfully assigned to " + snapshot.val().First_Name.capitalizeFirstLetter() + " " + snapshot.val().Last_Name.capitalizeFirstLetter() +  "!";
 		snackbar.className = "show";
 		setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
+
+		// get time stamp
+		var now = new Date(); 
+		var month = now.getMonth()+1; 
+		var day = now.getDate();
+		var hour = now.getHours();
+		var minute = now.getMinutes();
+
+		// add zeros if needed
+		if (month.toString().length == 1) {
+			var month = '0' + month;
+		}
+		if (day.toString().length == 1) {
+			var day = '0' + day;
+		}   
+		if (hour.toString().length == 1) {
+			var hour = '0' + hour;
+		}
+		if (minute.toString().length == 1) {
+			var minute = '0' + minute;
+		}
+
+		var dateTime = day + '.' + month + ' ' + hour + ':' + minute;
+
+		// activity ref
+		var taskActivityRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/missions/" + category + "/" + missionID + "/tasks/" + taskID + "/activity/" + now.getTime());
+		taskActivityRef.update({
+			commiter: uidKey,
+			activity: "assigned task",
+			target: selectedTaskAssign[0],
+			timestamp: dateTime
+		});
+		selectedTaskAssign = [];
 	});
 
 	// reset after setting
@@ -5262,7 +5295,6 @@ function confirmTaskAssign() {
 	document.getElementById("assignTaskBtn").classList.remove("addTaskAssignBtnConfirm");
 	document.getElementById("assignTaskBtn").classList.remove("fadeIn");
 	document.getElementById("assignTaskBtn").removeEventListener("click", confirmTaskAssign);
-	selectedTaskAssign = [];
 	var options = document.getElementsByClassName("taskAssignToOption");
 	for (var i = 0; i < options.length; i++) {
 		options[i].classList.remove("animated") + options[i].classList.remove("fadeIn");
