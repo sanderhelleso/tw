@@ -3799,6 +3799,12 @@ input[type=number]::-webkit-inner-spin-button {
 	display: none;
 }
 
+#missionTaskActivity {
+	max-height: 10vh;
+	overflow: hidden;
+	overflow-y: scroll;
+}
+
 #missionTaskActivity .feather {
 	height: 14px;
 	width: 14px;

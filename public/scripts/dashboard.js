@@ -5117,27 +5117,10 @@ function openTask() {
 	}
 	this.style.border = "0.5px solid #8c9eff";
 	this.style.boxShadow = "0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19)";
-	
-	// set created time and info in activity
-	var activityCont = document.getElementById("missionTaskActivity");
-	var missionTasksRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/missions/" + category + "/" + missionID + "/tasks/" + taskID);
-	missionTasksRef.once("value", function(snapshot) {
-		// set task data
-		createdDate = snapshot.val().created;
-		document.getElementById("taskNameMain").innerHTML = snapshot.val().task_name;
-		var userRef = firebase.database().ref("accounts/" + snapshot.val().creator);
-		userRef.once("value", function(snapshot) {
-			var activity = document.createElement("p");
-			activity.classList.add("taskActivity") + activity.classList.add("animated") + activity.classList.add("fadeIn");
-			activity.innerHTML = "<span class='taskActivityCreator'>" + document.getElementById("masterMapIcon").innerHTML + " " + snapshot.val().First_Name.capitalizeFirstLetter() + " " + snapshot.val().Last_Name.capitalizeFirstLetter() + "</span> created task " + "<span class='taskActivityDate'>" + document.getElementById("masterTimeIcon").innerHTML + " " + createdDate + "</span>"; 
-			// clear acitivtys before appending
-			activityCont.innerHTML = "";
-			activityCont.appendChild(activity);
-		});
-		document.getElementById("missionTasksActivityTrigger").click();
-	});
 
 	// activity ref
+	var activityCont = document.getElementById("missionTaskActivity");
+	activityCont.innerHTML = "";
 	var taskActivityRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/missions/" + category + "/" + missionID + "/tasks/" + taskID + "/activity");
 	taskActivityRef.once("value", function(snapshot) {
 		snapshot.forEach((child) => {
@@ -5148,8 +5131,24 @@ function openTask() {
 				// display activity
 				activity.classList.add("taskActivity") + activity.classList.add("animated") + activity.classList.add("fadeIn");
 				activity.innerHTML = "<span class='taskActivityCreator'>" + document.getElementById("masterMapIcon").innerHTML + " " + snapshot.val().First_Name.capitalizeFirstLetter() + " " + snapshot.val().Last_Name.capitalizeFirstLetter() + "</span> " + child.val().activity + "<span class='taskActivityDate'>" + document.getElementById("masterTimeIcon").innerHTML + " " + child.val().timestamp + "</span>"; 
-				activityCont.insertBefore(activity, activityCont.childNodes[1]);
+				activityCont.appendChild(activity);
 			});
+		});
+		// set created time and info in activity
+		var missionTasksRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/missions/" + category + "/" + missionID + "/tasks/" + taskID);
+		missionTasksRef.once("value", function(snapshot) {
+			// set task data
+			createdDate = snapshot.val().created;
+			document.getElementById("taskNameMain").innerHTML = snapshot.val().task_name;
+			var userRef = firebase.database().ref("accounts/" + snapshot.val().creator);
+			userRef.once("value", function(snapshot) {
+				var activity = document.createElement("p");
+				activity.classList.add("taskActivity") + activity.classList.add("animated") + activity.classList.add("fadeIn");
+				activity.innerHTML = "<span class='taskActivityCreator'>" + document.getElementById("masterMapIcon").innerHTML + " " + snapshot.val().First_Name.capitalizeFirstLetter() + " " + snapshot.val().Last_Name.capitalizeFirstLetter() + "</span> created task " + "<span class='taskActivityDate'>" + document.getElementById("masterTimeIcon").innerHTML + " " + createdDate + "</span>"; 
+				// clear acitivtys before appending
+				activityCont.appendChild(activity);
+			});
+			document.getElementById("missionTasksActivityTrigger").click();
 		});
 	});
 
