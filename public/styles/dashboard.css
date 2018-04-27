@@ -3924,6 +3924,18 @@ input[type=number]::-webkit-inner-spin-button {
 	opacity: 0.5;
 }
 
+#status-notStarted .feather {
+	stroke: #ef5350;
+}
+
+#status-inProgress .feather {
+	stroke: #fbc02d;
+}
+
+#status-completed .feather {
+	stroke: #66bb6a;
+}
+
 /********************************* END TEAM **************************************/
 
 /* Animations to fade the snackbar in and out */
