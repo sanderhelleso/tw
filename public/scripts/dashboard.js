@@ -4939,6 +4939,24 @@ function missionTasks() {
 			cont.id = "mission-task-" + child.key;
 			cont.addEventListener("click", openTask);
 
+			// set member task is assigned to
+			var missionTasksAssignedRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/missions/" + category + "/" + missionID + "/tasks/" + child.key + "/assigned");
+			missionTasksAssignedRef.once("value", function(snapshot) {
+				// set img src to be avatar url
+				if (snapshot.val() != null) {
+					accRef = firebase.database().ref("accounts/" + snapshot.val().assigned_to);
+					accRef.once("value", function(snapshot) {
+						if (snapshot.val().Avatar_url != undefined) {
+							cont.childNodes[5].childNodes[0].src = snapshot.val().Avatar_url;
+						}
+
+						else {
+							ont.childNodes[5].childNodes[0].src.src = "/img/avatar.png";
+						}
+					});
+				}
+			});
+
 			// set name
 			var parentName = cont.childNodes[3].childNodes[1].parentElement;
 			cont.childNodes[3].childNodes[1].remove();
@@ -4948,6 +4966,7 @@ function missionTasks() {
 			name.style.wordBreak = "break-all";
 			name.innerHTML = child.val().task_name.capitalizeFirstLetter();
 			parentName.appendChild(name);
+
 
 			// append to DOM
 			document.getElementById("tasksCont").appendChild(cont);
@@ -5083,11 +5102,12 @@ function saveTask() {
 
 // open a task in main window
 var taskID;
+var taskImg;
 function openTask() {
 	clearMainTask();
 	document.getElementById("taskMenu").style.display = "none";
 	taskID = this.id.split("-")[2];
-	var taskImg = this.childNodes[5].childNodes[0];
+	taskImg = this.childNodes[5].childNodes[0];
 	var taskCont = document.getElementsByClassName("taskCont");
 	for (var i = 0; i < taskCont.length; i++) {
 		taskCont[i].removeAttribute("style");
@@ -5215,14 +5235,40 @@ function confirmTaskAssign() {
 		assigned_to: selectedTaskAssign[0]
 	});
 
+	var accRef = firebase.database().ref("accounts/" + selectedTaskAssign[0]);
+	accRef.once("value", function(snapshot) {
+		if (snapshot.val().Avatar_url != undefined) {
+			document.getElementById("assignedAvatar").src = snapshot.val().Avatar_url;
+			taskImg.src = snapshot.val().Avatar_url;
+		}
+
+		else {
+			document.getElementById("assignedAvatar").src = "/img/avatar.png";
+			taskImg.src = "/img/avatar.png";
+		}
+
+		document.getElementById("assignedName").innerHTML = snapshot.val().First_Name.capitalizeFirstLetter() + " " + snapshot.val().Last_Name.capitalizeFirstLetter();
+		document.getElementById("assignedName").style.color = "#8c9eff";
+		document.getElementById("assignedAvatar").classList.add("assignedAvatar");
+
+		// display message
+		snackbar.innerHTML = "Task succesfully assigned to " + snapshot.val().First_Name.capitalizeFirstLetter() + " " + snapshot.val().Last_Name.capitalizeFirstLetter() +  "!";
+		snackbar.className = "show";
+		setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
+	});
+
 	// reset after setting
 	document.getElementById("assignTaskBtn").style.border ="0.5px solid #eeeeee";
 	document.getElementById("assignTaskBtn").classList.remove("addTaskAssignBtnConfirm");
 	document.getElementById("assignTaskBtn").classList.remove("fadeIn");
 	document.getElementById("assignTaskBtn").removeEventListener("click", confirmTaskAssign);
 	selectedTaskAssign = [];
+	var options = document.getElementsByClassName("taskAssignToOption");
+	for (var i = 0; i < options.length; i++) {
+		options[i].classList.remove("animated") + options[i].classList.remove("fadeIn");
+		options[i].childNodes[1].childNodes[0].classList.remove("selectedNewTeamMember");
+	}
 	document.getElementById("mainTaskCont").click();
-
 }
 
 // resets main task container

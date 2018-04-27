@@ -3512,6 +3512,13 @@ input[type=number]::-webkit-inner-spin-button {
 
 #taskMenuMain {
 	padding-right: 0;
+	max-height: 55vh;
+}
+
+#taskMenu {
+	max-height: 55vh;
+	overflow: hidden;
+	overflow-y: scroll;
 }
 
 #tasksCont {
@@ -3900,6 +3907,15 @@ input[type=number]::-webkit-inner-spin-button {
 	border: none;
 	margin-right: 10px;
 	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19);
+}
+
+#closeTaskCont {
+	transition: all 0.3s;
+}
+
+#closeTaskCont:hover {
+	cursor: pointer;
+	opacity: 0.5;
 }
 
 /********************************* END TEAM **************************************/
