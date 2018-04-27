@@ -3561,7 +3561,7 @@ input[type=number]::-webkit-inner-spin-button {
 }
 
 #checkTaskCompletedMain .feather:hover {
-	stroke: #66bb6a;
+	stroke: #8c9eff;
 	cursor: pointer;
 }
 
@@ -3934,6 +3934,15 @@ input[type=number]::-webkit-inner-spin-button {
 
 #status-completed .feather {
 	stroke: #66bb6a;
+}
+
+#taskStatusCont {
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	margin-top: 10px;
+}
+
+#taskStatusCont p:hover {
+	cursor: pointer;
 }
 
 /********************************* END TEAM **************************************/

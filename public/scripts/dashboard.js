@@ -4978,6 +4978,17 @@ function missionTasks() {
 			}
 		});
 	});
+
+	// init task status triggers
+	var triggers = document.getElementsByClassName("taskStatusTrigger");
+	for (var i = 0; i < triggers.length; i++) {
+		triggers[i].addEventListener("click", setTaskStatus);
+	} 
+}
+
+// set status for selected task
+function setTaskStatus() {
+	console.log(this.id.split("-")[1]);
 }
 
 // close taskContainer
