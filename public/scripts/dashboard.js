@@ -5077,7 +5077,6 @@ function openDueDate() {
 	// init events
 	document.getElementById("nextMonthDueDate").addEventListener("click", nextMonthDueDate);
 	document.getElementById("prevMonthDueDate").addEventListener("click", prevMonthDueDate);
-	document.getElementById("setDueDate").addEventListener("click", setDueDate);
 
 	// get stats
 	var getYear = new Date().getFullYear();
@@ -5283,14 +5282,84 @@ function prevMonthDueDate() {
 // set selected date as tasks due date
 var selectedDueDate;
 function setDueDate() {
+	// check for invalid dates
 	if (setDueDate != null || setDueDate != undefined) {
 		if (selectedDueDate.classList.contains("oldCalendarDayDueDate")) {
-			console.log("Kan ikke sette due date som var i fortiden");
+			document.getElementById("dueDateError").style.display = "block";			
 			return;
 		}
 
+		// get data and store
 		else {
-			console.log(this);
+			var date = selectedDueDate.id.split("dueDate-")[1];
+			var time = document.getElementById("sliderHour").value + ":" + document.getElementById("sliderMin").value;
+			
+			// due date refs
+			var dueDateRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/missions/" + category + "/" + missionID + "/tasks/" + taskID + "/due_date");
+			var dueDateSharedRef = firebase.database().ref("projects/" + projectId + "/teams/" + missionSharedWith + "/missions/" + category + "/" + missionID + "/tasks/" + taskID + "/due_date");
+
+			// store
+			dueDateRef.update({
+				date: date,
+				time: time,
+				commiter: uidKey
+			})
+			dueDateSharedRef.update({
+				date: date,
+				time: time,
+				commiter: uidKey
+			})
+
+			// reset and clear
+			document.getElementById("dueDateError").style.display = "none";			
+			document.getElementById("calendarDueDate").innerHTML = "";
+			document.getElementById("selectedDateInfo").innerHTML = "";
+			document.getElementById("selectedDate").innerHTML = "";
+			this.style.opacity = "0.3";
+
+			// close modal
+			$('#dueDateModal').modal('hide');
+
+			// display message
+			snackbar.innerHTML = "Task due date updated!";
+			snackbar.className = "show";
+			setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
+
+			// activity ref
+			var now = new Date(); 
+			var month = now.getMonth()+1; 
+			var day = now.getDate();
+			var hour = now.getHours();
+			var minute = now.getMinutes();
+
+			// add zeros if needed
+			if (month.toString().length == 1) {
+				var month = '0' + month;
+			}
+			if (day.toString().length == 1) {
+				var day = '0' + day;
+			}   
+			if (hour.toString().length == 1) {
+				var hour = '0' + hour;
+			}
+			if (minute.toString().length == 1) {
+				var minute = '0' + minute;
+			}
+
+			var dateTime = day + '.' + month + ' ' + hour + ':' + minute;
+			var taskActivityRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/missions/" + category + "/" + missionID + "/tasks/" + taskID + "/activity/" + now.getTime());
+			var taskActivitySharedRef = firebase.database().ref("projects/" + projectId + "/teams/" + missionSharedWith + "/missions/" + category + "/" + missionID + "/tasks/" + taskID + "/activity/" + now.getTime());
+
+			taskActivityRef.update({
+				commiter: uidKey,
+				activity: "updated task due date",
+				timestamp: dateTime
+			});
+			taskActivitySharedRef.update({
+				commiter: uidKey,
+				activity: "updated task due date",
+				timestamp: dateTime
+			});
 		}
 	}
 }
@@ -5393,6 +5462,7 @@ function setTaskStatus() {
 		document.getElementById("missionTaskActivity").insertBefore(newAcitivty, document.getElementById("missionTaskActivity").childNodes[0]);
 	});
 
+	// display message
 	snackbar.innerHTML = "Task status updated!";
 	snackbar.className = "show";
 	setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
@@ -6187,10 +6257,12 @@ function selectDate() {
 	}
 
 	if (this.classList.contains("calendarDayDueDate")) {
+		document.getElementById("setDueDate").addEventListener("click", setDueDate);
 		document.getElementById("setDueDate").style.opacity = "1";
 	}
 
 	else {
+		document.getElementById("setDueDate").removeEventListener("click", setDueDate);
 		document.getElementById("setDueDate").style.opacity = "0.3";
 	}
 
@@ -6200,7 +6272,6 @@ function selectDate() {
   		return isNaN(dayOfWeek) ? null : ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dayOfWeek];
 	}
 
-	console.log(123);
 	// display selected date
 	document.getElementById("today").innerHTML = getDayOfWeek(formatDate);
 	document.getElementById("todayDate").innerHTML = this.innerHTML;
@@ -6209,7 +6280,6 @@ function selectDate() {
 	document.getElementById("selectedDate").classList.add("fadeIn");
 	document.getElementById("selectedDateInfo").classList.add("fadeIn");
 	selectedDueDate = this;
-
 }
 
 
