@@ -5719,11 +5719,11 @@ function nextMonth() {
 
 	// get year and month
 	if (notCurrentYear === true) {
-		month = currentMonth + navigationCount;
+		month = currentMonth + (navigationCount - 1);
 		notCurrentYear = false;
 	}
 
-	else if (month === 11) {
+	if (month === 11) {
 		month = 0;
 		navigationCount = 0;
 		yearCount++;
@@ -5733,19 +5733,16 @@ function nextMonth() {
 		month++;
 	}
 
-	console.log(month);
-
 	year = currentYear + yearCount;
 
 	// reset and clear
 	document.getElementById("calendarMain").innerHTML = "";
 
 	// get amount of days in month
-	var getMonthDays = new Date(year, month, 0).getDate();
+	var getMonthDays = new Date(year, month + 1, 0).getDate();
 	var count = 0;
 
 	// displays current year and month
-	console.log(monthNames[month]);
 	document.getElementById("monthAndYear").innerHTML = monthNames[month] + " " + year;
 
 	for (var i = 1; i < getMonthDays + 1; i++) {
@@ -5768,8 +5765,30 @@ function nextMonth() {
 // display previous month
 function prevMonth() {
 	navigationCount--;
+
+	// get year and month
+	if (notCurrentYear === true) {
+		month = currentMonth - (navigationCount + 1);
+		notCurrentYear = false;
+	}
+
+	if (month === 0) {
+		month = 11;
+		navigationCount = 0;
+		yearCount--;
+	}
+
+	else {
+		month--;
+	}
+
+	year = currentYear + yearCount;
+
+	document.getElementById("monthAndYear").innerHTML = monthNames[month] + " " + year;
+
+	// reset and clear
 	document.getElementById("calendarMain").innerHTML = "";
-	var getMonthDays = new Date(currentYear - navigationCount, currentMonth - navigationCount, 0).getDate();
+	var getMonthDays = new Date(year, month + 1, 0).getDate();
 	var count = 0;
 	for (var i = 1; i < getMonthDays + 1; i++) {
 		count++;
