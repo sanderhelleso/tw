@@ -5646,9 +5646,22 @@ function createNewMission() {
 
 
 // create and open calender for selected team
+var currentMonth;
+var currentYear;
+var navigationCount = 0;
+const monthNames = ["January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+];
 function calendar() {
+	// init events
+	document.getElementById("nextMonth").addEventListener("click", nextMonth);
+	document.getElementById("prevMonth").addEventListener("click", prevMonth);
+
+
 	var getYear = new Date().getFullYear();
 	var getMonth = new Date().getMonth();
+	currentMonth = getMonth;
+	currentYear = getYear;
 	for (var i = 0; i < 12; i++) {
 		//console.log(new Date(getYear, i, 0).getDate());
 	}
@@ -5675,7 +5688,7 @@ function calendar() {
 	for (var i = 1; i < getMonthDays + 1; i++) {
 		count++;
 		var day = document.createElement("div");
-		day.classList.add("col-lg-1") + day.classList.add("text-center");
+		day.classList.add("col-lg-1") + day.classList.add("text-center") + day.classList.add("animated") + day.classList.add("fadeIn");
 
 		if (i < today) {
 			day.classList.add("oldCalendarDay");
@@ -5696,6 +5709,84 @@ function calendar() {
 	}
 }
 
+// display next month
+var month;
+var year;
+var notCurrentYear = true;
+var yearCount = 0;
+function nextMonth() {
+	navigationCount++;
+
+	// get year and month
+	if (notCurrentYear === true) {
+		month = currentMonth + navigationCount;
+		notCurrentYear = false;
+	}
+
+	else if (month === 11) {
+		month = 0;
+		navigationCount = 0;
+		yearCount++;
+	}
+
+	else {
+		month++;
+	}
+
+	console.log(month);
+
+	year = currentYear + yearCount;
+
+	// reset and clear
+	document.getElementById("calendarMain").innerHTML = "";
+
+	// get amount of days in month
+	var getMonthDays = new Date(year, month, 0).getDate();
+	var count = 0;
+
+	// displays current year and month
+	console.log(monthNames[month]);
+	document.getElementById("monthAndYear").innerHTML = monthNames[month] + " " + year;
+
+	for (var i = 1; i < getMonthDays + 1; i++) {
+		count++;
+		var day = document.createElement("div");
+		day.classList.add("col-lg-1") + day.classList.add("text-center") + day.classList.add("animated") + day.classList.add("fadeIn");
+		day.classList.add("calendarDay");
+		day.innerHTML = i;
+		document.getElementById("calendarMain").appendChild(day);
+
+		if (count === 7) {
+			var breakWeek = document.createElement("div");
+			breakWeek.classList.add("w-100");
+			document.getElementById("calendarMain").appendChild(breakWeek);
+			count = 0;
+		}
+	}
+}
+
+// display previous month
+function prevMonth() {
+	navigationCount--;
+	document.getElementById("calendarMain").innerHTML = "";
+	var getMonthDays = new Date(currentYear - navigationCount, currentMonth - navigationCount, 0).getDate();
+	var count = 0;
+	for (var i = 1; i < getMonthDays + 1; i++) {
+		count++;
+		var day = document.createElement("div");
+		day.classList.add("col-lg-1") + day.classList.add("text-center") + day.classList.add("animated") + day.classList.add("fadeIn");
+		day.classList.add("oldCalendarDay");
+		day.innerHTML = i;
+		document.getElementById("calendarMain").appendChild(day);
+
+		if (count === 7) {
+			var breakWeek = document.createElement("div");
+			breakWeek.classList.add("w-100");
+			document.getElementById("calendarMain").appendChild(breakWeek);
+			count = 0;
+		}
+	}
+}
 
 
 

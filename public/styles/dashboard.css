@@ -3987,19 +3987,19 @@ input[type=number]::-webkit-inner-spin-button {
 }
 
 #sideCalendar #today {
-	margin-top: 5vh;
+	margin-top: 2.5vh;
 	font-weight: 400;
 }
 
 #sideCalendar #todayDate {
-	margin-top: 12.5vh;
+	margin-top: 10vh;
 	font-size: 100px;
 	font-weight: 100;
-	margin-bottom: 12.5vh;
+	margin-bottom: 11vh;
 }
 
 #quote {
-	padding-top: 2.5vh;
+	padding-top: 3.5vh;
 	border-top: 0.5px solid white;
 	width: 90%;
 	margin: 0 auto;
@@ -4010,6 +4010,30 @@ input[type=number]::-webkit-inner-spin-button {
 #calendar .w-100 {
 	height: 0px;
 	display: none;
+}
+
+#calendarNav {
+	font-weight: 100;
+}
+
+#calendarNav span .feather {
+	height: 25px;
+	width: 25px;
+	margin-bottom: -7.5px;
+}
+
+#monthAndYear {
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
+#nextMonth, #prevMonth {
+	transition: all 0.3s;
+}
+
+#nextMonth:hover, #prevMonth:hover {
+	cursor: pointer;
+	opacity: 0.7;
 }
 
 /****************************** END CALENDAR **************************************/
