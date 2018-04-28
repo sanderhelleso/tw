@@ -4701,6 +4701,7 @@ function enterMission() {
 		missionTasks();
 		addMissionMembers();
 		unassignedTask();
+		calendar();
 	});
 }
 
@@ -4958,7 +4959,6 @@ function missionTasks() {
 			});
 
 			// set status
-			console.log(child.val().status);
 			var icon = document.getElementById("checkTaskCompletedMain").childNodes[0];
 			var taskIcon = cont.childNodes[1].childNodes[0].childNodes[0];
 
@@ -5060,6 +5060,59 @@ function setTaskStatus() {
 			status: "completed"
 		});
 	}
+
+	// get time stamp
+	var now = new Date(); 
+	var month = now.getMonth()+1; 
+	var day = now.getDate();
+	var hour = now.getHours();
+	var minute = now.getMinutes();
+
+	// add zeros if needed
+	if (month.toString().length == 1) {
+		var month = '0' + month;
+	}
+	if (day.toString().length == 1) {
+		var day = '0' + day;
+	}   
+	if (hour.toString().length == 1) {
+		var hour = '0' + hour;
+	}
+	if (minute.toString().length == 1) {
+		var minute = '0' + minute;
+	}
+
+	var dateTime = day + '.' + month + ' ' + hour + ':' + minute;
+
+	// activity ref
+	var taskActivityRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/missions/" + category + "/" + missionID + "/tasks/" + taskID + "/activity/" + now.getTime());
+	var taskActivitySharedRef = firebase.database().ref("projects/" + projectId + "/teams/" + missionSharedWith + "/missions/" + category + "/" + missionID + "/tasks/" + taskID + "/activity/" + now.getTime());
+
+	taskActivityRef.update({
+		commiter: uidKey,
+		activity: "updated task status",
+		target: status,
+		timestamp: dateTime
+	});
+	taskActivitySharedRef.update({
+		commiter: uidKey,
+		activity: "updated task status",
+		target: status,
+		timestamp: dateTime
+	});
+
+	var assignerRef = firebase.database().ref("accounts/" + uidKey);
+	assignerRef.once("value", function(snapshot) {
+		// display activity
+		var newAcitivty = document.createElement("p");
+		newAcitivty.classList.add("taskActivity") + newAcitivty.classList.add("animated") + newAcitivty.classList.add("fadeIn");
+		newAcitivty.innerHTML = "<span class='taskActivityCreator'>" + document.getElementById("masterMapIcon").innerHTML + " " + snapshot.val().First_Name.capitalizeFirstLetter() + " " + snapshot.val().Last_Name.capitalizeFirstLetter() + "</span> updated task status" + "<span class='taskActivityDate'>" + document.getElementById("masterTimeIcon").innerHTML + " " + dateTime + "</span>"; 
+		document.getElementById("missionTaskActivity").insertBefore(newAcitivty, document.getElementById("missionTaskActivity").childNodes[0]);
+	});
+
+	snackbar.innerHTML = "Task status updated!";
+	snackbar.className = "show";
+	setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
 }
 
 // close taskContainer
@@ -5180,6 +5233,7 @@ function saveTask() {
 		created: dateTime
 	});
 
+	// display message
 	snackbar.innerHTML = "Task added!";
 	snackbar.className = "show";
 	setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
@@ -5389,7 +5443,15 @@ function confirmTaskAssign() {
 
 		// activity ref
 		var taskActivityRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/missions/" + category + "/" + missionID + "/tasks/" + taskID + "/activity/" + now.getTime());
+		var taskActivitySharedRef = firebase.database().ref("projects/" + projectId + "/teams/" + missionSharedWith + "/missions/" + category + "/" + missionID + "/tasks/" + taskID + "/activity/" + now.getTime());
+
 		taskActivityRef.update({
+			commiter: uidKey,
+			activity: "assigned task",
+			target: selectedTaskAssign[0],
+			timestamp: dateTime
+		});
+		taskActivitySharedRef.update({
 			commiter: uidKey,
 			activity: "assigned task",
 			target: selectedTaskAssign[0],
@@ -5402,8 +5464,7 @@ function confirmTaskAssign() {
 			var newAcitivty = document.createElement("p");
 			newAcitivty.classList.add("taskActivity") + newAcitivty.classList.add("animated") + newAcitivty.classList.add("fadeIn");
 			newAcitivty.innerHTML = "<span class='taskActivityCreator'>" + document.getElementById("masterMapIcon").innerHTML + " " + snapshot.val().First_Name.capitalizeFirstLetter() + " " + snapshot.val().Last_Name.capitalizeFirstLetter() + "</span> assigned task" + "<span class='taskActivityDate'>" + document.getElementById("masterTimeIcon").innerHTML + " " + dateTime + "</span>"; 
-			console.log(document.getElementById("recentTaskCommitCont").childNodes);
-			document.getElementById("missionTaskActivity").insertBefore(newAcitivty, document.getElementById("missionTaskActivity").childNodes[1]);
+			document.getElementById("missionTaskActivity").insertBefore(newAcitivty, document.getElementById("missionTaskActivity").childNodes[0]);
 		});
 
 		// reset
@@ -5569,6 +5630,83 @@ function createNewMission() {
 		setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// create and open calender for selected team
+function calendar() {
+	var getYear = new Date().getFullYear();
+	var getMonth = new Date().getMonth();
+	for (var i = 0; i < 12; i++) {
+		//console.log(new Date(getYear, i, 0).getDate());
+	}
+
+	// week days
+	var date = new Date();
+	var weekday = new Array(7);
+	weekday[0] =  "Sunday";
+	weekday[1] = "Monday";
+	weekday[2] = "Tuesday";
+	weekday[3] = "Wednesday";
+	weekday[4] = "Thursday";
+	weekday[5] = "Friday";
+	weekday[6] = "Saturday";
+
+	var dayName = weekday[date.getDay()];
+	var today = new Date().getDate();
+	document.getElementById("today").innerHTML = dayName;
+	document.getElementById("todayDate").innerHTML = today;
+
+
+	var getMonthDays = new Date(getYear, getMonth, 0).getDate();
+	var count = 0;
+	for (var i = 1; i < getMonthDays + 1; i++) {
+		count++;
+		var day = document.createElement("div");
+		day.classList.add("col-lg-1") + day.classList.add("text-center");
+
+		if (i < today) {
+			day.classList.add("oldCalendarDay");
+		}
+
+		else if (i >= today) {
+			day.classList.add("calendarDay");
+		}
+		day.innerHTML = i;
+		document.getElementById("calendarMain").appendChild(day);
+
+		if (count === 7) {
+			var breakWeek = document.createElement("div");
+			breakWeek.classList.add("w-100");
+			document.getElementById("calendarMain").appendChild(breakWeek);
+			count = 0;
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 // return to project overview
 function backToProject() {

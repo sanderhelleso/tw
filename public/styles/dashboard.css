@@ -3945,6 +3945,75 @@ input[type=number]::-webkit-inner-spin-button {
 	cursor: pointer;
 }
 
+/********************************* CALENDAR **************************************/
+.calendarDay {
+	min-width: 100px;
+	min-height: 100px;
+	border: 0.1px solid #eeeeee;
+	color: white;
+	padding-top: 2%;
+	font-size: 20px;
+	background-color: #8c9eff;
+	margin: 0;
+}
+
+.oldCalendarDay {
+	min-width: 100px;
+	min-height: 100px;
+	border: 0.1px solid #eeeeee;
+	color: #eeeeee;
+	padding-top: 2%;
+	font-size: 20px;
+	background-color: #c5cae9;
+}
+
+#calendar {
+	margin-top: 5vh;
+	margin-left: 2vw;
+}
+
+#sideCalendar {
+	overflow: hidden;
+	min-height: 55vh;
+	height: 100%;
+	background: #4776E6;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to bottom, #8E54E9, #4776E6);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to bottom, #8E54E9, #4776E6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	color: white;
+	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19);
+	z-index: 1000;
+	margin-right: 2px;
+
+}
+
+#sideCalendar #today {
+	margin-top: 5vh;
+	font-weight: 400;
+}
+
+#sideCalendar #todayDate {
+	margin-top: 12.5vh;
+	font-size: 100px;
+	font-weight: 100;
+	margin-bottom: 12.5vh;
+}
+
+#quote {
+	padding-top: 2.5vh;
+	border-top: 0.5px solid white;
+	width: 90%;
+	margin: 0 auto;
+	font-weight: 100;
+	font-size: 14px;
+}
+
+#calendar .w-100 {
+	height: 0px;
+	display: none;
+}
+
+/****************************** END CALENDAR **************************************/
+
 /********************************* END TEAM **************************************/
 
 /* Animations to fade the snackbar in and out */
