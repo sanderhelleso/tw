@@ -1038,8 +1038,8 @@
                 <div id="calendarDueDate" class="row col-lg-10 offset-lg-1">
 				</div>
 				<div id="timePicker" class="row col-lg-10 offset-lg-1">
-					<h2 id="selectedDate" class="text-center"></h2>
-					<h2 id="selectedDateInfo" class="text-center"></h2>
+					<h2 id="selectedDate" class="text-center animated"></h2>
+					<h2 id="selectedDateInfo" class="text-center animated"></h2>
 					<div id="timePickerHourCont" class="col-lg-2 text-right">
 						<h1 id="timePickerHour">23</h1>
 					</div>
@@ -1051,16 +1051,16 @@
 					</div>
 					<div class="slidecontainer">
 						<p>Hours</p>
-					  	<input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+					  	<input type="range" min="0" max="24" value="12" class="slider" id="sliderHour">
 					</div>
 					<div class="slidecontainer">
 						<p>Minutes</p>
-					  	<input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+					  	<input type="range" min="0" max="59" value="30" class="slider" id="sliderMin">
 					</div>
 				</div>
 				<div id="dueDateFooter" class="modal-footer">
 		        	<button type="button" id="cancelTeam" class="btn" data-dismiss="modal">CANCEL</button>
-					<button type="button" id="createMission" class="btn">SET DUE DATE</button>
+					<button type="button" id="setDueDate" class="btn">SET DUE DATE</button>
 				</div>
             </div>
 		</div>

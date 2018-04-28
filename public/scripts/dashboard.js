@@ -5017,6 +5017,28 @@ function missionTasks() {
 function dueDate() {
 	// open modal
 	document.getElementById("setTaskDate").addEventListener("click", openDueDate);
+
+	// sliders
+	document.getElementById("sliderHour").addEventListener("input", getSliderHour);
+	document.getElementById("sliderMin").addEventListener("input", getSliderMin);
+}
+
+// get hour value
+function getSliderHour() {
+	var value = this.value;
+	if (value.length == 1) {
+		value = "0" + value;
+	}
+	document.getElementById("timePickerHour").innerHTML = value;
+}
+
+// get minute value
+function getSliderMin() {
+	var value = this.value;
+	if (value.length == 1) {
+		value = "0" + value;
+	}
+	document.getElementById("timePickerMin").innerHTML = value;
 }
 
 var todayModal;
@@ -5031,11 +5053,33 @@ function openDueDate() {
 	// clear and reset
 	document.getElementById("calendarDueDate").innerHTML = "";
 
+	// set slide values
+	var now = new Date();
+	var hour = now.getHours();
+	var minute = now.getMinutes();
+
+	// add zeros if needed
+	if (hour.toString().length == 1) {
+		var hour = '0' + hour;
+	}
+	if (minute.toString().length == 1) {
+		var minute = '0' + minute;
+	}
+
+	document.getElementById("sliderHour").value = hour;
+	document.getElementById("sliderMin").value = minute;
+	document.getElementById("timePickerHour").innerHTML = hour;
+	document.getElementById("timePickerMin").innerHTML = minute;
+
 	// open modal
 	$('#dueDateModal').modal('show');
+
 	// init events
 	document.getElementById("nextMonthDueDate").addEventListener("click", nextMonthDueDate);
 	document.getElementById("prevMonthDueDate").addEventListener("click", prevMonthDueDate);
+	document.getElementById("setDueDate").addEventListener("click", setDueDate);
+
+	// get stats
 	var getYear = new Date().getFullYear();
 	var getMonth = new Date().getMonth();
 	currentMonthModal = getMonth;
@@ -5236,6 +5280,20 @@ function prevMonthDueDate() {
 	}
 }
 
+// set selected date as tasks due date
+var selectedDueDate;
+function setDueDate() {
+	if (setDueDate != null || setDueDate != undefined) {
+		if (selectedDueDate.classList.contains("oldCalendarDayDueDate")) {
+			console.log("Kan ikke sette due date som var i fortiden");
+			return;
+		}
+
+		else {
+			console.log(this);
+		}
+	}
+}
 
 // set status for selected task
 function setTaskStatus() {
@@ -6118,6 +6176,7 @@ function selectDate() {
 	}
 
 	var year;
+	document.getElementById("setDueDate").style.opacity = "1";
 	if (this.classList.contains("oldCalendarDayDueDate") || this.classList.contains("calendarDayDueDate")) {
 		formatDate = formatDate.split("/")[3] + "/" + formatedMonth + "/" + formatedDay;
 		year = formatDate.split("/")[3];
@@ -6127,18 +6186,29 @@ function selectDate() {
 		formatDate = formatDate.split("/")[2] + "/" + formatedMonth + "/" + formatedDay;
 	}
 
+	if (this.classList.contains("calendarDayDueDate")) {
+		document.getElementById("setDueDate").style.opacity = "1";
+	}
+
+	else {
+		document.getElementById("setDueDate").style.opacity = "0.3";
+	}
+
 	// get selected dates name
 	function getDayOfWeek(date) {
   		var dayOfWeek = new Date(date).getDay();    
   		return isNaN(dayOfWeek) ? null : ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dayOfWeek];
 	}
 
+	console.log(123);
 	// display selected date
-	console.log(monthAndYearDueDate.innerHTML.split(" ")[0])
 	document.getElementById("today").innerHTML = getDayOfWeek(formatDate);
 	document.getElementById("todayDate").innerHTML = this.innerHTML;
 	document.getElementById("selectedDate").innerHTML = getDayOfWeek(formatDate);
 	document.getElementById("selectedDateInfo").innerHTML = this.innerHTML + " " + monthAndYearDueDate.innerHTML.split(" ")[0];
+	document.getElementById("selectedDate").classList.add("fadeIn");
+	document.getElementById("selectedDateInfo").classList.add("fadeIn");
+	selectedDueDate = this;
 
 }
 
