@@ -4,6 +4,7 @@
 	<title>Team Work App (Name comming)</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 	<link href="https://cdn.quilljs.com/1.2.6/quill.snow.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.min.css">
 	<link rel="stylesheet" type="text/css" href="styles/animate.css">
 	<link rel="stylesheet" type="text/css" href="styles/style.css">
 	<link rel="stylesheet" type="text/css" href="styles/dashboard.css">
@@ -15,6 +16,7 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 	<script src="https://js.pusher.com/4.2/pusher.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
 	<script type="text/javascript" src="scripts/dashboard.js"></script>
 </head>
 <body id="body" class="animated">
@@ -1024,6 +1026,19 @@
 		</div>
 	</div>
 	<!-- END NEW MISSION MODAL -->
+
+	<!-- DUE DATE MODAL -->
+	<div id="dueDateModal" class="modal fade dueDateModal modal-md" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-md">
+		   	<div id="dueDateModalCont" class="modal-content">
+                <button id="exitLoginModal" type="button" class="close text-right" data-dismiss="modal" aria-label="Close"><i data-feather="x"></i>
+                </button>
+                <div id="calendarDueDate" class="row col-lg-10 offset-lg-1">
+				</div>
+            </div>
+		</div>
+	</div>
+	<!-- End EMAIL MODAL -->
 
 	<!-- SNACKBAR -->
 	<div id="snackbar"></div>

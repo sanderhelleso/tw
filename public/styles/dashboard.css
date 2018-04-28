@@ -4073,6 +4073,62 @@ input[type=number]::-webkit-inner-spin-button {
 	opacity: 0.7;
 }
 
+#dueDateModalCont {
+	min-height: 55vh;
+}
+
+.calendarDayDueDate {
+	min-width: 50px;
+	min-height: 50px;
+	border: 0.1px solid #eeeeee;
+	color: white;
+	padding-top: 2%;
+	font-size: 14px;
+	background-color: #8c9eff;
+	margin: 0;
+	transition: all 0.3s;
+}
+
+.oldCalendarDayDueDate {
+	min-width: 50px;
+	min-height: 50px;
+	border: 0.1px solid #eeeeee;
+	color: #eeeeee;
+	padding-top: 2%;
+	font-size: 14px;
+	background-color: #c5cae9;
+	transition: all 0.1s
+}
+
+.calendarDayDueDate:hover, .oldCalendarDayDueDate:hover {
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	cursor: pointer;
+	background-color: #f06292;
+	border: 0.1px solid #f06292;
+	z-index: 100000;
+}
+
+.calendarActive {
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	cursor: pointer;
+	background-color: #ec407a;
+	border: 0.1px solid #ec407a;
+	z-index: 10000;
+	transition: all 0.2s;
+	transform: scale(1.1);
+}
+
+.calendarActive:hover {
+	background-color: #e91e63;
+	border: 0.1px solid #e91e63;
+}
+
+#calendarDueDate {
+	margin-top: 5vh;
+	margin-left: 4vw;
+}
+
+
 /****************************** END CALENDAR **************************************/
 
 /********************************* END TEAM **************************************/

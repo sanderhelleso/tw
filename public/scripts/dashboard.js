@@ -4701,6 +4701,7 @@ function enterMission() {
 		missionTasks();
 		addMissionMembers();
 		unassignedTask();
+		dueDate();
 		calendar();
 	});
 }
@@ -5011,6 +5012,84 @@ function missionTasks() {
 		triggers[i].addEventListener("click", setTaskStatus);
 	} 
 }
+
+// init events for due date
+function dueDate() {
+	// open modal
+	document.getElementById("setTaskDate").addEventListener("click", openDueDate);
+}
+
+var todayModal;
+var currentMonthModal;
+var currentYearModal;
+var currentDateModal;
+var navigationCountModal = 0;
+const monthNamesModal = ["January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+];
+function openDueDate() {
+	// clear and reset
+	document.getElementById("calendarDueDate").innerHTML = "";
+
+	// open modal
+	$('#dueDateModal').modal('show');
+	// init events
+	var getYear = new Date().getFullYear();
+	var getMonth = new Date().getMonth();
+	currentMonthModal = getMonth;
+	currentYearModal = getYear;
+	for (var i = 0; i < 12; i++) {
+		//console.log(new Date(getYear, i, 0).getDate());
+	}
+
+	// week days
+	var date = new Date();
+	var weekday = new Array(7);
+	weekday[0] =  "Sunday";
+	weekday[1] = "Monday";
+	weekday[2] = "Tuesday";
+	weekday[3] = "Wednesday";
+	weekday[4] = "Thursday";
+	weekday[5] = "Friday";
+	weekday[6] = "Saturday";
+
+	var dayName = weekday[date.getDay()];
+	todayModal = new Date().getDate();
+
+	// get current month days
+	var getMonthDays = new Date(getYear, getMonth, 0).getDate();
+	currentDateModal = getMonthDays;
+	var count = 0;
+
+	// create elements after amount of month days
+	for (var i = 1; i < getMonthDays + 1; i++) {
+		count++;
+		var day = document.createElement("div");
+		day.addEventListener("click", selectDate);
+		day.id = "dueDate-" + i + "-" + (currentMonth + 1) + "-" + currentYear;
+		day.classList.add("col-lg-1") + day.classList.add("text-center") + day.classList.add("animated") + day.classList.add("fadeIn");
+
+		// style days depending on prev / after today
+		if (i < today) {
+			day.classList.add("oldCalendarDayDueDate");
+		}
+
+		else if (i >= today) {
+			day.classList.add("calendarDayDueDate");
+		}
+
+		day.innerHTML = i;
+		document.getElementById("calendarDueDate").appendChild(day);
+
+		if (count === 7) {
+			var breakWeek = document.createElement("div");
+			breakWeek.classList.add("w-100");
+			document.getElementById("calendarDueDate").appendChild(breakWeek);
+			count = 0;
+		}
+	}
+}
+
 
 // set status for selected task
 function setTaskStatus() {
