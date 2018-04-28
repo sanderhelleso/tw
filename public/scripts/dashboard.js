@@ -5646,8 +5646,10 @@ function createNewMission() {
 
 
 // create and open calender for selected team
+var today;
 var currentMonth;
 var currentYear;
+var currentDate;
 var navigationCount = 0;
 const monthNames = ["January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December"
@@ -5678,18 +5680,25 @@ function calendar() {
 	weekday[6] = "Saturday";
 
 	var dayName = weekday[date.getDay()];
-	var today = new Date().getDate();
+	today = new Date().getDate();
 	document.getElementById("today").innerHTML = dayName;
 	document.getElementById("todayDate").innerHTML = today;
 
+	// displays current year and month
+	document.getElementById("monthAndYear").innerHTML = monthNames[currentMonth] + " " + currentYear;
 
+	// get current month days
 	var getMonthDays = new Date(getYear, getMonth, 0).getDate();
+	currentDate = getMonthDays;
 	var count = 0;
+
+	// create elements after amount of month days
 	for (var i = 1; i < getMonthDays + 1; i++) {
 		count++;
 		var day = document.createElement("div");
 		day.classList.add("col-lg-1") + day.classList.add("text-center") + day.classList.add("animated") + day.classList.add("fadeIn");
 
+		// style days depending on prev / after today
 		if (i < today) {
 			day.classList.add("oldCalendarDay");
 		}
@@ -5697,6 +5706,7 @@ function calendar() {
 		else if (i >= today) {
 			day.classList.add("calendarDay");
 		}
+		
 		day.innerHTML = i;
 		document.getElementById("calendarMain").appendChild(day);
 
@@ -5745,14 +5755,32 @@ function nextMonth() {
 	// displays current year and month
 	document.getElementById("monthAndYear").innerHTML = monthNames[month] + " " + year;
 
+	// create elements after amount of month days
 	for (var i = 1; i < getMonthDays + 1; i++) {
 		count++;
 		var day = document.createElement("div");
 		day.classList.add("col-lg-1") + day.classList.add("text-center") + day.classList.add("animated") + day.classList.add("fadeIn");
-		day.classList.add("calendarDay");
 		day.innerHTML = i;
+
+		// check if current month navigated to is current month
+		if (i < today && month === currentMonth && year === currentYear) {
+			day.classList.add("oldCalendarDay");
+			console.log(123);
+		}
+
+		else if (i >= today && month === currentMonth && year === currentYear) {
+			day.classList.add("calendarDay");
+		}
+
+		else {
+			day.classList.add("calendarDay");
+
+		}
+
+		// append to DOM
 		document.getElementById("calendarMain").appendChild(day);
 
+		// break line into rows for every week
 		if (count === 7) {
 			var breakWeek = document.createElement("div");
 			breakWeek.classList.add("w-100");
@@ -5790,14 +5818,31 @@ function prevMonth() {
 	document.getElementById("calendarMain").innerHTML = "";
 	var getMonthDays = new Date(year, month + 1, 0).getDate();
 	var count = 0;
+
+	// create elements after amount of month days
 	for (var i = 1; i < getMonthDays + 1; i++) {
 		count++;
 		var day = document.createElement("div");
 		day.classList.add("col-lg-1") + day.classList.add("text-center") + day.classList.add("animated") + day.classList.add("fadeIn");
-		day.classList.add("oldCalendarDay");
 		day.innerHTML = i;
+
+		// check if current month navigated to is current month
+		if (i < today && month === currentMonth && year === currentYear) {
+			day.classList.add("oldCalendarDay");
+		}
+
+		else if (i >= today && month === currentMonth && year === currentYear) {
+			day.classList.add("calendarDay");
+		}
+
+		else {
+			day.classList.add("oldCalendarDay");
+		}
+
+		// append to DOM
 		document.getElementById("calendarMain").appendChild(day);
 
+		// break line into rows for every week
 		if (count === 7) {
 			var breakWeek = document.createElement("div");
 			breakWeek.classList.add("w-100");
