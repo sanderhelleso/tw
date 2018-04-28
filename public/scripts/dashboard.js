@@ -4988,7 +4988,40 @@ function missionTasks() {
 
 // set status for selected task
 function setTaskStatus() {
-	console.log(this.id.split("-")[1]);
+	// elements and id
+	var icon = document.getElementById("checkTaskCompletedMain").childNodes[0];
+	var taskIcon = document.getElementById("mission-task-" + taskID).childNodes[1].childNodes[0].childNodes[0];
+	var status = this.id.split("-")[1];
+
+	// status ref
+	var statusRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/missions/" + category + "/" + missionID + "/tasks/" + taskID);
+
+	// not started
+	if (status === "notStarted") {
+		icon.style.stroke = "#ef5350";
+		taskIcon.style.stroke = "#ef5350";
+		statusRef.update({
+			status: "not started"
+		});
+	}
+
+	// in progress
+	if (status === "inProgress") {
+		icon.style.stroke = "#fbc02d";
+		taskIcon.style.stroke = "#fbc02d";
+		statusRef.update({
+			status: "in progress"
+		});
+	}
+
+	// completed
+	if (status === "completed") {
+		icon.style.stroke = "#66bb6a";
+		taskIcon.style.stroke = "#66bb6a";
+		statusRef.update({
+			status: "completed"
+		});
+	}
 }
 
 // close taskContainer
