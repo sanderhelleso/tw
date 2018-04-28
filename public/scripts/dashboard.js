@@ -4957,6 +4957,32 @@ function missionTasks() {
 				}
 			});
 
+			// set status
+			console.log(child.val().status);
+			var icon = document.getElementById("checkTaskCompletedMain").childNodes[0];
+			var taskIcon = cont.childNodes[1].childNodes[0].childNodes[0];
+
+			// check if status is set
+			if (child.val().status != null) {
+				// not started
+				if (child.val().status === "not started") {
+					icon.style.stroke = "#ef5350";
+					taskIcon.style.stroke = "#ef5350";
+				}
+
+				// in progress
+				if (child.val().status === "in progress") {
+					icon.style.stroke = "#fbc02d";
+					taskIcon.style.stroke = "#fbc02d";
+				}
+
+				// completed
+				if (child.val().status === "completed") {
+					icon.style.stroke = "#66bb6a";
+					taskIcon.style.stroke = "#66bb6a";
+				}
+			}
+
 			// set name
 			var parentName = cont.childNodes[3].childNodes[1].parentElement;
 			cont.childNodes[3].childNodes[1].remove();
@@ -4995,6 +5021,7 @@ function setTaskStatus() {
 
 	// status ref
 	var statusRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/missions/" + category + "/" + missionID + "/tasks/" + taskID);
+	var statusSharedRef = firebase.database().ref("projects/" + projectId + "/teams/" + missionSharedWith + "/missions/" + category + "/" + missionID + "/tasks/" + taskID);
 
 	// not started
 	if (status === "notStarted") {
@@ -5003,6 +5030,10 @@ function setTaskStatus() {
 		statusRef.update({
 			status: "not started"
 		});
+		statusSharedRef.update({
+			status: "not started"
+		});
+
 	}
 
 	// in progress
@@ -5012,6 +5043,10 @@ function setTaskStatus() {
 		statusRef.update({
 			status: "in progress"
 		});
+		statusSharedRef.update({
+			status: "in progress"
+		});
+
 	}
 
 	// completed
@@ -5019,6 +5054,9 @@ function setTaskStatus() {
 		icon.style.stroke = "#66bb6a";
 		taskIcon.style.stroke = "#66bb6a";
 		statusRef.update({
+			status: "completed"
+		});
+		statusSharedRef.update({
 			status: "completed"
 		});
 	}
@@ -5155,6 +5193,9 @@ function openTask() {
 	document.getElementById("taskMenu").style.display = "none";
 	taskID = this.id.split("-")[2];
 	taskImg = this.childNodes[5].childNodes[0];
+	var icon = document.getElementById("checkTaskCompletedMain").childNodes[0];
+	var statusColor = document.getElementById("mission-task-" + taskID).childNodes[1].childNodes[0].childNodes[0].style.stroke;
+	icon.style.stroke = statusColor;
 	var taskCont = document.getElementsByClassName("taskCont");
 	for (var i = 0; i < taskCont.length; i++) {
 		taskCont[i].removeAttribute("style");
