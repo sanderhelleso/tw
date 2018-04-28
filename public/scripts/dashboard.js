@@ -5034,6 +5034,8 @@ function openDueDate() {
 	// open modal
 	$('#dueDateModal').modal('show');
 	// init events
+	document.getElementById("nextMonthDueDate").addEventListener("click", nextMonthDueDate);
+	document.getElementById("prevMonthDueDate").addEventListener("click", prevMonthDueDate);
 	var getYear = new Date().getFullYear();
 	var getMonth = new Date().getMonth();
 	currentMonthModal = getMonth;
@@ -5054,6 +5056,7 @@ function openDueDate() {
 	weekday[6] = "Saturday";
 
 	var dayName = weekday[date.getDay()];
+	document.getElementById("monthAndYearDueDate").innerHTML = monthNamesModal[getMonth] + " " + getYear;
 	todayModal = new Date().getDate();
 
 	// get current month days
@@ -5081,6 +5084,149 @@ function openDueDate() {
 		day.innerHTML = i;
 		document.getElementById("calendarDueDate").appendChild(day);
 
+		if (count === 7) {
+			var breakWeek = document.createElement("div");
+			breakWeek.classList.add("w-100");
+			document.getElementById("calendarDueDate").appendChild(breakWeek);
+			count = 0;
+		}
+	}
+}
+
+// display next month
+var monthDueDate;
+var yearDueDate;
+var notCurrentYearDueDate = true;
+var yearCountDueDate = 0;
+function nextMonthDueDate() {
+	navigationCountModal++;
+
+	// get year and month
+	if (notCurrentYearDueDate === true) {
+		monthDueDate = currentMonthModal + (navigationCountModal - 1);
+		notCurrentYearDueDate = false;
+	}
+
+	if (monthDueDate === 11) {
+		monthDueDate = 0;
+		navigationCountModal = 0;
+		yearCountDueDate++;
+	}
+
+	else {
+		monthDueDate++;
+	}
+
+	yearDueDate = currentYearModal + yearCountDueDate;
+
+	// reset and clear
+	document.getElementById("calendarDueDate").innerHTML = "";
+
+	// get amount of days in month
+	var getMonthDays = new Date(yearDueDate, monthDueDate + 1, 0).getDate();
+	var count = 0;
+
+	// displays current year and month
+	document.getElementById("monthAndYearDueDate").innerHTML = monthNamesModal[monthDueDate] + " " + yearDueDate;
+
+	// create elements after amount of month days
+	for (var i = 1; i < getMonthDays + 1; i++) {
+		count++;
+		var day = document.createElement("div");
+		day.addEventListener("click", selectDate);
+		day.id = "dueDate-" + i + "-" + (currentMonth + 1) + "-" + currentYear;
+		day.classList.add("col-lg-1") + day.classList.add("text-center") + day.classList.add("animated") + day.classList.add("fadeIn");
+		day.innerHTML = i;
+
+		// check if current month navigated to is current month
+		if (i < todayModal && monthDueDate === currentMonthModal && yearDueDate === currentYearModal) {
+			day.classList.add("oldCalendarDayDueDate");
+		}
+
+		else if (i >= todayModal && monthDueDate === currentMonthModal && yearDueDate === currentYearModal) {
+			day.classList.add("calendarDayDueDate");
+		}
+
+		else if (monthDueDate < currentMonthModal && yearDueDate === currentYearModal) {
+			day.classList.add("oldCalendarDayDueDate");
+		}
+
+		else {
+			day.classList.add("calendarDayDueDate");
+		}
+
+		// append to DOM
+		document.getElementById("calendarDueDate").appendChild(day);
+
+		// break line into rows for every week
+		if (count === 7) {
+			var breakWeek = document.createElement("div");
+			breakWeek.classList.add("w-100");
+			document.getElementById("calendarDueDate").appendChild(breakWeek);
+			count = 0;
+		}
+	}
+}
+
+// display previous month
+function prevMonthDueDate() {
+	navigationCountModal--;
+
+	// get year and month
+	if (notCurrentYearDueDate === true) {
+		monthDueDate = currentMonthModal - (navigationCountModal + 1);
+		notCurrentYearDueDate = false;
+	}
+
+	if (monthDueDate === 0) {
+		monthDueDate = 11;
+		navigationCountModal = 0;
+		yearCountDueDate--;
+	}
+
+	else {
+		monthDueDate--;
+	}
+
+	yearDueDate = currentYearModal + yearCountDueDate;
+
+	document.getElementById("monthAndYearDueDate").innerHTML = monthNamesModal[monthDueDate] + " " + yearDueDate;
+
+	// reset and clear
+	document.getElementById("calendarDueDate").innerHTML = "";
+	var getMonthDays = new Date(yearDueDate, monthDueDate + 1, 0).getDate();
+	var count = 0;
+
+	// create elements after amount of month days
+	for (var i = 1; i < getMonthDays + 1; i++) {
+		count++;
+		var day = document.createElement("div");
+		day.addEventListener("click", selectDate);
+		day.id = "dueDate-" + i + "-" + (currentMonth + 1) + "-" + currentYear;
+		day.classList.add("col-lg-1") + day.classList.add("text-center") + day.classList.add("animated") + day.classList.add("fadeIn");
+		day.innerHTML = i;
+
+		// check if current month navigated to is current month
+		if (i < todayModal && monthDueDate === currentMonthModal && yearDueDate === currentYearModal) {
+			day.classList.add("oldCalendarDayDueDate");
+		}
+
+		else if (i >= todayModal && monthDueDate === currentMonthModal && yearDueDate === currentYearModal) {
+			day.classList.add("calendarDayDueDate");
+		}
+
+		else if (monthDueDate > currentMonthModal && yearDueDate === currentYearModal) {
+			day.classList.add("calendarDayDueDate");
+		}
+
+		else {
+			day.classList.add("oldCalendarDayDueDate");
+		}
+
+		// append to DOM
+		document.getElementById("calendarDueDate").appendChild(day);
+
+		// break line into rows for every week
 		if (count === 7) {
 			var breakWeek = document.createElement("div");
 			breakWeek.classList.add("w-100");
