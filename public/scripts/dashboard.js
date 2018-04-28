@@ -6097,10 +6097,18 @@ function selectDate() {
 	}
 	this.classList.add("calendarActive");
 	var str = this.id;
-    var formatDate = str.replace(/-/g, "/");
-    var formatedDay = formatDate.split("/")[0];
-    var formatedMonth = formatDate.split("/")[1];
+	if (this.classList.contains("oldCalendarDayDueDate") || this.classList.contains("calendarDayDueDate")) {
+		var formatDate = str.replace(/-/g, "/");
+    	var formatedDay = formatDate.split("/")[1];
+    	var formatedMonth = formatDate.split("/")[2];
+	}
 
+	else {
+		var formatDate = str.replace(/-/g, "/");
+    	var formatedDay = formatDate.split("/")[0];
+    	var formatedMonth = formatDate.split("/")[1];
+	}
+    
 	if (formatedMonth.length == 1) {
 		formatedMonth = '0' + formatedMonth;
 	}
@@ -6109,7 +6117,15 @@ function selectDate() {
 		formatedDay = '0' + formatedDay;
 	}
 
-	formatDate = formatDate.split("/")[2] + "/" + formatedMonth + "/" + formatedDay;
+	var year;
+	if (this.classList.contains("oldCalendarDayDueDate") || this.classList.contains("calendarDayDueDate")) {
+		formatDate = formatDate.split("/")[3] + "/" + formatedMonth + "/" + formatedDay;
+		year = formatDate.split("/")[3];
+	}
+
+	else {
+		formatDate = formatDate.split("/")[2] + "/" + formatedMonth + "/" + formatedDay;
+	}
 
 	// get selected dates name
 	function getDayOfWeek(date) {
@@ -6118,8 +6134,12 @@ function selectDate() {
 	}
 
 	// display selected date
+	console.log(monthAndYearDueDate.innerHTML.split(" ")[0])
 	document.getElementById("today").innerHTML = getDayOfWeek(formatDate);
 	document.getElementById("todayDate").innerHTML = this.innerHTML;
+	document.getElementById("selectedDate").innerHTML = getDayOfWeek(formatDate);
+	document.getElementById("selectedDateInfo").innerHTML = this.innerHTML + " " + monthAndYearDueDate.innerHTML.split(" ")[0];
+
 }
 
 

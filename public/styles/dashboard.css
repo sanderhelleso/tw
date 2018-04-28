@@ -4129,7 +4129,6 @@ input[type=number]::-webkit-inner-spin-button {
 }
 
 #dueDateModalHeading {
-	margin-top: 2.5vh;
 	color: #9e9e9e;
 	font-weight: 400;
 }
@@ -4168,9 +4167,28 @@ input[type=number]::-webkit-inner-spin-button {
 }
 
 #timePicker {
-	margin-left: 4vw;
 	margin-top: 5vh;
 	margin-bottom: 5vh;
+}
+
+#timePickerHourCont {
+	margin-left: 8.75vw;
+}
+
+#selectedDate {
+	width: 100%;
+	font-size: 22px;
+	font-weight: 100;
+	color: #9e9e9e;
+	margin-bottom: 0;
+}
+
+#selectedDateInfo {
+	width: 100%;
+	font-size: 27.5px;
+	font-weight: 400;
+	color: #ec407a;
+	margin-bottom: 0;
 }
 
 #timePicker div {
@@ -4184,13 +4202,14 @@ input[type=number]::-webkit-inner-spin-button {
 	margin-bottom: 2.5vh;
 }
 
+
 #timePickerSplit {
 	color: #bdbdbd;
 	margin-top: 10px;
 }
 
 #dueDateFooter {
-	margin-top: 5vh;
+	margin-top: 1vh;
 }
 
 .slidecontainer {
