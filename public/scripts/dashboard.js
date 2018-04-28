@@ -5696,6 +5696,8 @@ function calendar() {
 	for (var i = 1; i < getMonthDays + 1; i++) {
 		count++;
 		var day = document.createElement("div");
+		day.addEventListener("click", selectDate);
+		day.id = i + "-" + (currentMonth + 1) + "-" + currentYear;
 		day.classList.add("col-lg-1") + day.classList.add("text-center") + day.classList.add("animated") + day.classList.add("fadeIn");
 
 		// style days depending on prev / after today
@@ -5706,7 +5708,7 @@ function calendar() {
 		else if (i >= today) {
 			day.classList.add("calendarDay");
 		}
-		
+
 		day.innerHTML = i;
 		document.getElementById("calendarMain").appendChild(day);
 
@@ -5759,22 +5761,26 @@ function nextMonth() {
 	for (var i = 1; i < getMonthDays + 1; i++) {
 		count++;
 		var day = document.createElement("div");
+		day.addEventListener("click", selectDate);
+		day.id = i + "-" + (month + 1) + "-" + currentYear;
 		day.classList.add("col-lg-1") + day.classList.add("text-center") + day.classList.add("animated") + day.classList.add("fadeIn");
 		day.innerHTML = i;
 
 		// check if current month navigated to is current month
 		if (i < today && month === currentMonth && year === currentYear) {
 			day.classList.add("oldCalendarDay");
-			console.log(123);
 		}
 
 		else if (i >= today && month === currentMonth && year === currentYear) {
 			day.classList.add("calendarDay");
 		}
 
+		else if (month < currentMonth && year === currentYear) {
+			day.classList.add("oldCalendarDay");
+		}
+
 		else {
 			day.classList.add("calendarDay");
-
 		}
 
 		// append to DOM
@@ -5823,6 +5829,8 @@ function prevMonth() {
 	for (var i = 1; i < getMonthDays + 1; i++) {
 		count++;
 		var day = document.createElement("div");
+		day.addEventListener("click", selectDate);
+		day.id = i + "-" + (month + 1) + "-" + currentYear;
 		day.classList.add("col-lg-1") + day.classList.add("text-center") + day.classList.add("animated") + day.classList.add("fadeIn");
 		day.innerHTML = i;
 
@@ -5832,6 +5840,10 @@ function prevMonth() {
 		}
 
 		else if (i >= today && month === currentMonth && year === currentYear) {
+			day.classList.add("calendarDay");
+		}
+
+		else if (month > currentMonth && year === currentYear) {
 			day.classList.add("calendarDay");
 		}
 
@@ -5853,7 +5865,9 @@ function prevMonth() {
 }
 
 
-
+function selectDate() {
+	console.log(this.id);
+}
 
 
 

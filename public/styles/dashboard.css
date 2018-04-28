@@ -4015,17 +4015,27 @@ input[type=number]::-webkit-inner-spin-button {
 #calendarNav {
 	margin-top: 1.5vh;
 	font-weight: 100;
+	margin-left: 0;
+	margin-right: 0;
+	padding: 0;
+}
+
+#montAndYear {
+	float: right;
+}
+
+#calendarNav {
+	margin-left: -2.5px;
+}
+
+#calendarNav span {
+	padding: 0;
 }
 
 #calendarNav span .feather {
 	height: 25px;
 	width: 25px;
 	margin-bottom: -7.5px;
-}
-
-#monthAndYear {
-	margin-left: 5px;
-	margin-right: 5px;
 }
 
 #nextMonth, #prevMonth {
