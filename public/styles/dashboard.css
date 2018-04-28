@@ -3955,6 +3955,7 @@ input[type=number]::-webkit-inner-spin-button {
 	font-size: 20px;
 	background-color: #8c9eff;
 	margin: 0;
+	transition: all 0.3s;
 }
 
 .oldCalendarDay {
@@ -3965,6 +3966,31 @@ input[type=number]::-webkit-inner-spin-button {
 	padding-top: 2%;
 	font-size: 20px;
 	background-color: #c5cae9;
+	transition: all 0.1s
+}
+
+.calendarDay:hover, .oldCalendarDay:hover {
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	cursor: pointer;
+	background-color: #f06292;
+	border: 0.1px solid #f06292;
+	z-index: 100000;
+}
+
+.calendarActive {
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	cursor: pointer;
+	background-color: #ec407a;
+	border: 0.1px solid #ec407a;
+	z-index: 10000;
+	transition: all 0.2s;
+	transform: scale(1.1);
+}
+
+.calendarActive:hover {
+	background-color: #e91e63;
+	border: 0.1px solid #e91e63;
+
 }
 
 #calendar {

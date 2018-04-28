@@ -5864,9 +5864,37 @@ function prevMonth() {
 	}
 }
 
-
+// select date
 function selectDate() {
-	console.log(this.id);
+	// format date to get the day
+	if (document.getElementsByClassName("calendarActive")[0] != undefined) {
+		document.getElementsByClassName("calendarActive")[0].classList.remove("calendarActive");
+	}
+	this.classList.add("calendarActive");
+	var str = this.id;
+    var formatDate = str.replace(/-/g, "/");
+    var formatedDay = formatDate.split("/")[0];
+    var formatedMonth = formatDate.split("/")[1];
+
+	if (formatedMonth.length == 1) {
+		formatedMonth = '0' + formatedMonth;
+	}
+
+	if (formatedDay.length == 1) {
+		formatedDay = '0' + formatedDay;
+	}
+
+	formatDate = formatDate.split("/")[2] + "/" + formatedMonth + "/" + formatedDay;
+
+	// get selected dates name
+	function getDayOfWeek(date) {
+  		var dayOfWeek = new Date(date).getDay();    
+  		return isNaN(dayOfWeek) ? null : ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dayOfWeek];
+	}
+
+	// display selected date
+	document.getElementById("today").innerHTML = getDayOfWeek(formatDate);
+	document.getElementById("todayDate").innerHTML = this.innerHTML;
 }
 
 
