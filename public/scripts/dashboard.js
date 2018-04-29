@@ -5292,13 +5292,17 @@ function setDueDate() {
 		// get data and store
 		else {
 			var date = selectedDueDate.id.split("dueDate-")[1];
-			var time = document.getElementById("sliderHour").value + ":" + document.getElementById("sliderMin").value;
+			var hour = document.getElementById("sliderHour").value;
+			var min = document.getElementById("sliderMin").value;
+			if (hour.length == 1) {
+				hour = "0" + hour;
+			}
 
-			// display in DOM
-			document.getElementById("dueDate").innerHTML = date;
-			document.getElementById("dueDate").style.color = "#8c9eff";
-			document.getElementsByClassName("taskDueDateIcon")[0].style.border = "1px solid #8c9eff";
-			document.getElementsByClassName("taskDueDateIcon")[0].childNodes[0].style.stroke = "8c9eff";
+			if (min.length == 1) {
+				min = "0" + min;
+			}
+
+			var time = hour + ":" + min;
 			
 			// due date refs
 			var dueDateRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/missions/" + category + "/" + missionID + "/tasks/" + taskID + "/due_date");
@@ -5316,15 +5320,21 @@ function setDueDate() {
 				commiter: uidKey
 			})
 
+			// replace - with /
+			date = date.replace(/-/g, "<span class='dueDateSlash'>/</span>");
+	
+			// display in DOM
+			document.getElementById("dueDate").innerHTML = date + " <span id='dueDateTime'>" + time + "</span>";
+			document.getElementById("dueDate").style.color = "#8c9eff";
+			document.getElementsByClassName("taskDueDateIcon")[0].style.border = "1px solid #8c9eff";
+			document.getElementsByClassName("taskDueDateIcon")[0].childNodes[0].style.stroke = "8c9eff";
+
 			// reset and clear
 			document.getElementById("dueDateError").style.display = "none";			
 			document.getElementById("calendarDueDate").innerHTML = "";
 			document.getElementById("selectedDateInfo").innerHTML = "";
 			document.getElementById("selectedDate").innerHTML = "";
 			this.style.opacity = "0.3";
-
-			// close modal
-			$('#dueDateModal').modal('hide');
 
 			// display message
 			snackbar.innerHTML = "Task due date updated!";
@@ -5367,6 +5377,18 @@ function setDueDate() {
 				activity: "updated task due date",
 				timestamp: dateTime
 			});
+
+			var assignerRef = firebase.database().ref("accounts/" + uidKey);
+			assignerRef.once("value", function(snapshot) {
+				// display activity
+				var newAcitivty = document.createElement("p");
+				newAcitivty.classList.add("taskActivity") + newAcitivty.classList.add("animated") + newAcitivty.classList.add("fadeIn");
+				newAcitivty.innerHTML = "<span class='taskActivityCreator'>" + document.getElementById("masterMapIcon").innerHTML + " " + snapshot.val().First_Name.capitalizeFirstLetter() + " " + snapshot.val().Last_Name.capitalizeFirstLetter() + "</span> updated task due date" + "<span class='taskActivityDate'>" + document.getElementById("masterTimeIcon").innerHTML + " " + dateTime + "</span>"; 
+				document.getElementById("missionTaskActivity").insertBefore(newAcitivty, document.getElementById("missionTaskActivity").childNodes[0]);
+			});
+
+			// close modal
+			$('#dueDateModal').modal('hide');
 		}
 	}
 }
@@ -5616,6 +5638,32 @@ function openTask() {
 	}
 	this.style.border = "0.5px solid #8c9eff";
 	this.style.boxShadow = "0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19)";
+
+	// due date
+	var taskDueDateRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/missions/" + category + "/" + missionID + "/tasks/" + taskID + "/due_date");
+	taskDueDateRef.once("value", function(snapshot) {
+		if (snapshot.val() != null) {
+			// get data
+			var time = snapshot.val().time;
+			
+			// replace - with /
+			var date = snapshot.val().date;
+			date = date.replace(/-/g, "<span class='dueDateSlash'>/</span>");
+			
+			// display in DOM
+			document.getElementById("dueDate").innerHTML = date + " <span id='dueDateTime'>" + time + "</span>";
+			document.getElementById("dueDate").style.color = "#8c9eff";
+			document.getElementsByClassName("taskDueDateIcon")[0].style.border = "1px solid #8c9eff";
+			document.getElementsByClassName("taskDueDateIcon")[0].childNodes[0].style.stroke = "#8c9eff";
+		}
+
+		else {
+			document.getElementById("dueDate").innerHTML = "Due Date";
+			document.getElementById("dueDate").style.color = "#9e9e9e";
+			document.getElementsByClassName("taskDueDateIcon")[0].style.border = "1px solid #9e9e9e";
+			document.getElementsByClassName("taskDueDateIcon")[0].childNodes[0].style.stroke = "#9e9e9e";
+		}
+	});
 
 	// activity ref
 	var activityCont = document.getElementById("missionTaskActivity");
