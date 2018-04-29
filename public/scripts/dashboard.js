@@ -5108,11 +5108,11 @@ function openDueDate() {
 	var count = 0;
 
 	// create elements after amount of month days
-	for (var i = 1; i < getMonthDays + 1; i++) {
+	for (var i = 1; i < getMonthDays; i++) {
 		count++;
 		var day = document.createElement("div");
 		day.addEventListener("click", selectDate);
-		day.id = "dueDate-" + i + "-" + (currentMonth + 1) + "-" + currentYear;
+		day.id = "dueDate-" + i + "-" + (currentMonthModal + 1) + "-" + currentYearModal;
 		day.classList.add("col-lg-1") + day.classList.add("text-center") + day.classList.add("animated") + day.classList.add("fadeIn");
 
 		// style days depending on prev / after today
@@ -5132,6 +5132,11 @@ function openDueDate() {
 			breakWeek.classList.add("w-100");
 			document.getElementById("calendarDueDate").appendChild(breakWeek);
 			count = 0;
+		}
+
+		// check for task selected due date
+		if (document.getElementById("dueDate-" + taskDueDate) != undefined) {
+			document.getElementById("dueDate-" + taskDueDate).classList.add("calendarActive");
 		}
 	}
 }
@@ -5177,7 +5182,7 @@ function nextMonthDueDate() {
 		count++;
 		var day = document.createElement("div");
 		day.addEventListener("click", selectDate);
-		day.id = "dueDate-" + i + "-" + (currentMonth + 1) + "-" + currentYear;
+		day.id = "dueDate-" + i + "-" + (monthDueDate + 1) + "-" + yearDueDate;
 		day.classList.add("col-lg-1") + day.classList.add("text-center") + day.classList.add("animated") + day.classList.add("fadeIn");
 		day.innerHTML = i;
 
@@ -5207,6 +5212,11 @@ function nextMonthDueDate() {
 			breakWeek.classList.add("w-100");
 			document.getElementById("calendarDueDate").appendChild(breakWeek);
 			count = 0;
+		}
+
+		// check for task selected due date
+		if (document.getElementById("dueDate-" + taskDueDate) != undefined) {
+			document.getElementById("dueDate-" + taskDueDate).classList.add("calendarActive");
 		}
 	}
 }
@@ -5245,7 +5255,7 @@ function prevMonthDueDate() {
 		count++;
 		var day = document.createElement("div");
 		day.addEventListener("click", selectDate);
-		day.id = "dueDate-" + i + "-" + (currentMonth + 1) + "-" + currentYear;
+		day.id = "dueDate-" + i + "-" + (monthDueDate + 1) + "-" + yearDueDate;
 		day.classList.add("col-lg-1") + day.classList.add("text-center") + day.classList.add("animated") + day.classList.add("fadeIn");
 		day.innerHTML = i;
 
@@ -5275,6 +5285,11 @@ function prevMonthDueDate() {
 			breakWeek.classList.add("w-100");
 			document.getElementById("calendarDueDate").appendChild(breakWeek);
 			count = 0;
+		}
+
+		// check for task selected due date
+		if (document.getElementById("dueDate-" + taskDueDate) != undefined) {
+			document.getElementById("dueDate-" + taskDueDate).classList.add("calendarActive");
 		}
 	}
 }
@@ -5624,6 +5639,7 @@ function saveTask() {
 // open a task in main window
 var taskID;
 var taskImg;
+var taskDueDate;
 function openTask() {
 	clearMainTask();
 	document.getElementById("taskMenu").style.display = "none";
@@ -5645,7 +5661,7 @@ function openTask() {
 		if (snapshot.val() != null) {
 			// get data
 			var time = snapshot.val().time;
-			
+			taskDueDate = snapshot.val().date;
 			// replace - with /
 			var date = snapshot.val().date;
 			date = date.replace(/-/g, "<span class='dueDateSlash'>/</span>");
@@ -6101,7 +6117,7 @@ function calendar() {
 	var count = 0;
 
 	// create elements after amount of month days
-	for (var i = 1; i < getMonthDays + 1; i++) {
+	for (var i = 1; i < getMonthDays; i++) {
 		count++;
 		var day = document.createElement("div");
 		day.addEventListener("click", selectDate);
