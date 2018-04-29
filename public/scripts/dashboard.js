@@ -5042,10 +5042,12 @@ function getSliderMin() {
 }
 
 var todayModal;
+var constMonth;
 var currentMonthModal;
 var currentYearModal;
 var currentDateModal;
 var navigationCountModal = 0;
+var totalNavs = 0;
 const monthNamesModal = ["January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December"
 ];
@@ -5081,11 +5083,9 @@ function openDueDate() {
 	// get stats
 	var getYear = new Date().getFullYear();
 	var getMonth = new Date().getMonth();
+	constMonth = new Date().getMonth();
 	currentMonthModal = getMonth;
 	currentYearModal = getYear;
-	for (var i = 0; i < 12; i++) {
-		//console.log(new Date(getYear, i, 0).getDate());
-	}
 
 	// week days
 	var date = new Date();
@@ -6064,10 +6064,29 @@ function createNewMission() {
 
 
 
+// load mission data and insert into calendar
+function loadCalendarData() {
+	// load data into calendar
+	var taskRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/missions/" + category + "/" + missionID + "/tasks")
+	taskRef.once("value", function(snapshot) {
+		snapshot.forEach((child) => {
+			console.log(child.key);
+			var taskDueDateRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/missions/" + category + "/" + missionID + "/tasks/" + child.key + "/due_date");
+			taskDueDateRef.once("value", function(snapshot) {
+				if (snapshot.val() != null) {
+					var dateID = document.getElementById(snapshot.val().date);
+					if (dateID != undefined || dateID != null) {
+						var cont = document.createElement("div");
+						cont.classList.add("row") + cont.classList.add("col-lg-12");
+						cont.innerHTML = "Hello";
 
-
-
-
+						dateID.appendChild(cont);
+					}
+				}
+			});
+		});
+	});
+}
 
 // create and open calender for selected team
 var today;
@@ -6076,8 +6095,7 @@ var currentYear;
 var currentDate;
 var navigationCount = 0;
 const monthNames = ["January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December"
-];
+  "July", "August", "September", "October", "November", "December"];
 function calendar() {
 	// init events
 	document.getElementById("nextMonth").addEventListener("click", nextMonth);
@@ -6143,6 +6161,8 @@ function calendar() {
 			count = 0;
 		}
 	}
+
+	loadCalendarData();
 }
 
 // display next month
@@ -6218,6 +6238,8 @@ function nextMonth() {
 			count = 0;
 		}
 	}
+
+	loadCalendarData();
 }
 
 // display previous month
@@ -6286,6 +6308,8 @@ function prevMonth() {
 			count = 0;
 		}
 	}
+
+	loadCalendarData();
 }
 
 // select date
