@@ -5293,6 +5293,12 @@ function setDueDate() {
 		else {
 			var date = selectedDueDate.id.split("dueDate-")[1];
 			var time = document.getElementById("sliderHour").value + ":" + document.getElementById("sliderMin").value;
+
+			// display in DOM
+			document.getElementById("dueDate").innerHTML = date;
+			document.getElementById("dueDate").style.color = "#8c9eff";
+			document.getElementsByClassName("taskDueDateIcon")[0].style.border = "1px solid #8c9eff";
+			document.getElementsByClassName("taskDueDateIcon")[0].childNodes[0].style.stroke = "8c9eff";
 			
 			// due date refs
 			var dueDateRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/missions/" + category + "/" + missionID + "/tasks/" + taskID + "/due_date");
@@ -5346,6 +5352,7 @@ function setDueDate() {
 				var minute = '0' + minute;
 			}
 
+			// store in activity
 			var dateTime = day + '.' + month + ' ' + hour + ':' + minute;
 			var taskActivityRef = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/missions/" + category + "/" + missionID + "/tasks/" + taskID + "/activity/" + now.getTime());
 			var taskActivitySharedRef = firebase.database().ref("projects/" + projectId + "/teams/" + missionSharedWith + "/missions/" + category + "/" + missionID + "/tasks/" + taskID + "/activity/" + now.getTime());
