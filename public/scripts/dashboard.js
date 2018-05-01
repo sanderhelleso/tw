@@ -6077,10 +6077,11 @@ function loadCalendarData() {
 					var dateID = document.getElementById(snapshot.val().date);
 					if (dateID != undefined || dateID != null) {
 						var cont = document.createElement("div");
-						cont.classList.add("row") + cont.classList.add("col-lg-12");
+						cont.classList.add("row") + cont.classList.add("col-lg-12") + cont.classList.add("calendarEvent");
 						var calendarTask = document.createElement("p");
 						calendarTask.classList.add("calendarTask");
 						cont.appendChild(calendarTask);
+						cont.setAttribute("draggable", true)
 						dateID.appendChild(cont);
 
 						var task = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/missions/" + category + "/" + missionID + "/tasks/" + child.key);
@@ -6144,6 +6145,8 @@ function calendar() {
 	for (var i = 1; i < getMonthDays; i++) {
 		count++;
 		var day = document.createElement("div");
+		day.addEventListener("drop", drop);
+		day.addEventListener("dragover", allowDrop);
 		day.addEventListener("click", selectDate);
 		day.id = i + "-" + (currentMonth + 1) + "-" + currentYear;
 		day.classList.add("col-lg-1") + day.classList.add("text-center") + day.classList.add("animated") + day.classList.add("fadeIn");
@@ -6172,6 +6175,18 @@ function calendar() {
 	}
 
 	loadCalendarData();
+}
+
+function allowDrop(event) {
+
+}
+
+function drag(ev) {
+
+}
+
+function drop(e) {
+
 }
 
 // display next month

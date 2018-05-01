@@ -3976,7 +3976,7 @@ input[type=number]::-webkit-inner-spin-button {
 	background-color: #8c9eff;
 	margin: 0;
 	transition: all 0.3s;
-	padding-top: 5px;
+	padding: 0;
 }
 
 .oldCalendarDay {
@@ -3988,7 +3988,7 @@ input[type=number]::-webkit-inner-spin-button {
 	font-size: 20px;
 	background-color: #c5cae9;
 	transition: all 0.1s
-	padding-top: 5px;
+	padding: 0;
 }
 
 .calendarDay:hover, .oldCalendarDay:hover {
@@ -4007,7 +4007,7 @@ input[type=number]::-webkit-inner-spin-button {
 	z-index: 10000;
 	transition: all 0.2s;
 	transform: scale(1.1);
-	padding-top: 5px;
+	padding: 0;
 }
 
 .calendarActive:hover {
@@ -4321,13 +4321,25 @@ input[type=number]::-webkit-inner-spin-button {
 
 .dayNr {
 	margin-bottom: 0;
+	margin-left: 7.5px;
+	margin-top: 2px;
 	float: left;
 	font-weight: 100;
+}
+
+.calendarEvent {
+	padding: 0;
+	margin: 0;
+	background-color: #81c784;
+	margin-bottom: 2px;
+
 }
 
 .calendarTask {
 	font-size: 12px;
 	margin-bottom: 2px;
+	float: left;
+	padding-left: 5px;
 }
 
 /****************************** END CALENDAR **************************************/
