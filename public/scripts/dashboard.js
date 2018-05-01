@@ -6378,7 +6378,7 @@ function selectDate() {
 
 	// display selected date
 	document.getElementById("today").innerHTML = getDayOfWeek(formatDate);
-	document.getElementById("todayDate").innerHTML = this.innerHTML;
+	document.getElementById("todayDate").innerHTML = this.childNodes[0].innerHTML;
 	document.getElementById("selectedDate").innerHTML = getDayOfWeek(formatDate);
 	document.getElementById("selectedDateInfo").innerHTML = this.innerHTML + " " + monthAndYearDueDate.innerHTML.split(" ")[0];
 	document.getElementById("selectedDate").classList.add("fadeIn");
