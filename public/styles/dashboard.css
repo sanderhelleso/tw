@@ -113,7 +113,7 @@
 
 .dropdown-item {
 	padding-bottom: 10px;
-	padding-top: 19px;
+	padding-top: 10px;
 }
 
 .dropdown-item:hover {
@@ -3976,6 +3976,7 @@ input[type=number]::-webkit-inner-spin-button {
 	background-color: #8c9eff;
 	margin: 0;
 	transition: all 0.3s;
+	padding-top: 5px;
 }
 
 .oldCalendarDay {
@@ -3987,6 +3988,7 @@ input[type=number]::-webkit-inner-spin-button {
 	font-size: 20px;
 	background-color: #c5cae9;
 	transition: all 0.1s
+	padding-top: 5px;
 }
 
 .calendarDay:hover, .oldCalendarDay:hover {
@@ -4005,6 +4007,7 @@ input[type=number]::-webkit-inner-spin-button {
 	z-index: 10000;
 	transition: all 0.2s;
 	transform: scale(1.1);
+	padding-top: 5px;
 }
 
 .calendarActive:hover {
@@ -4314,6 +4317,12 @@ input[type=number]::-webkit-inner-spin-button {
 	font-size: 16px;
 	padding-left: 3px;
 	padding-right: 3px;
+}
+
+.dayNr {
+	margin-bottom: 0;
+	float: left;
+	font-weight: 100;
 }
 
 /****************************** END CALENDAR **************************************/

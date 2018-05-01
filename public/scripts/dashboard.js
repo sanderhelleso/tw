@@ -6151,7 +6151,10 @@ function calendar() {
 			day.classList.add("calendarDay");
 		}
 
-		day.innerHTML = i;
+		var dayNr = document.createElement("p");
+		dayNr.classList.add("dayNr");
+		dayNr.innerHTML = i;
+		day.appendChild(dayNr);
 		document.getElementById("calendarMain").appendChild(day);
 
 		if (count === 7) {
@@ -6208,7 +6211,10 @@ function nextMonth() {
 		day.addEventListener("click", selectDate);
 		day.id = i + "-" + (month + 1) + "-" + currentYear;
 		day.classList.add("col-lg-1") + day.classList.add("text-center") + day.classList.add("animated") + day.classList.add("fadeIn");
-		day.innerHTML = i;
+		var dayNr = document.createElement("p");
+		dayNr.classList.add("dayNr");
+		dayNr.innerHTML = i;
+		day.appendChild(dayNr);
 
 		// check if current month navigated to is current month
 		if (i < today && month === currentMonth && year === currentYear) {
@@ -6278,7 +6284,10 @@ function prevMonth() {
 		day.addEventListener("click", selectDate);
 		day.id = i + "-" + (month + 1) + "-" + currentYear;
 		day.classList.add("col-lg-1") + day.classList.add("text-center") + day.classList.add("animated") + day.classList.add("fadeIn");
-		day.innerHTML = i;
+		var dayNr = document.createElement("p");
+		dayNr.classList.add("dayNr");
+		dayNr.innerHTML = i;
+		day.appendChild(dayNr);
 
 		// check if current month navigated to is current month
 		if (i < today && month === currentMonth && year === currentYear) {
