@@ -6077,11 +6077,13 @@ function loadCalendarData() {
 					var dateID = document.getElementById(snapshot.val().date);
 					if (dateID != undefined || dateID != null) {
 						var cont = document.createElement("div");
+						cont.id = "calendarTask-" + child.key;
 						cont.classList.add("row") + cont.classList.add("col-lg-12") + cont.classList.add("calendarEvent");
 						var calendarTask = document.createElement("p");
 						calendarTask.classList.add("calendarTask");
 						cont.appendChild(calendarTask);
-						cont.setAttribute("draggable", true)
+						cont.setAttribute("draggable", true);
+						cont.addEventListener("dragstart", drag);
 						dateID.appendChild(cont);
 
 						var task = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/missions/" + category + "/" + missionID + "/tasks/" + child.key);
@@ -6177,16 +6179,21 @@ function calendar() {
 	loadCalendarData();
 }
 
-function allowDrop(event) {
-
+function allowDrop(e) {
+	e.preventDefault();
 }
 
-function drag(ev) {
-
+function drag(e) {
+	e.dataTransfer.setData("text", e.target.id);
+	console.log(e);
 }
 
 function drop(e) {
-
+	e.preventDefault();
+    var data = e.dataTransfer.getData("text");
+    //console.log(data);
+    console.log(e.target);
+    e.target.appendChild(document.getElementById(data));
 }
 
 // display next month
