@@ -4325,6 +4325,11 @@ input[type=number]::-webkit-inner-spin-button {
 	font-weight: 100;
 }
 
+.calendarTask {
+	font-size: 12px;
+	margin-bottom: 2px;
+}
+
 /****************************** END CALENDAR **************************************/
 
 /********************************* END TEAM **************************************/

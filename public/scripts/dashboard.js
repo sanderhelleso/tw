@@ -6078,9 +6078,15 @@ function loadCalendarData() {
 					if (dateID != undefined || dateID != null) {
 						var cont = document.createElement("div");
 						cont.classList.add("row") + cont.classList.add("col-lg-12");
-						cont.innerHTML = "Hello";
-
+						var calendarTask = document.createElement("p");
+						calendarTask.classList.add("calendarTask");
+						cont.appendChild(calendarTask);
 						dateID.appendChild(cont);
+
+						var task = firebase.database().ref("projects/" + projectId + "/teams/" + teamName + "/missions/" + category + "/" + missionID + "/tasks/" + child.key);
+						task.once("value", function(snapshot) {
+							calendarTask.innerHTML = snapshot.val().task_name;
+						});
 					}
 				}
 			});
