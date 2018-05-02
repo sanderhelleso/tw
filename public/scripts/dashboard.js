@@ -4923,6 +4923,7 @@ var currentTask;
 function missionTasks() {
 	// clear and reset
 	document.getElementById("tasksCont").innerHTML = "";
+	document.getElementById("calendarMain").innerHTML = "";
 
 	// init event for new mission
 	document.getElementById("addTask").addEventListener("click", newTask);
