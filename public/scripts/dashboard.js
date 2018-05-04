@@ -6148,8 +6148,6 @@ function calendar() {
 	for (var i = 1; i < getMonthDays; i++) {
 		count++;
 		var day = document.createElement("div");
-		day.addEventListener("drop", drop);
-		day.addEventListener("dragover", allowDrop);
 		day.addEventListener("click", selectDate);
 		day.id = i + "-" + (currentMonth + 1) + "-" + currentYear;
 		day.classList.add("col-lg-1") + day.classList.add("text-center") + day.classList.add("animated") + day.classList.add("fadeIn");
@@ -6161,6 +6159,8 @@ function calendar() {
 
 		else if (i >= today) {
 			day.classList.add("calendarDay");
+			day.addEventListener("drop", drop);
+			day.addEventListener("dragover", allowDrop);
 		}
 
 		var dayNr = document.createElement("p");
@@ -6180,13 +6180,13 @@ function calendar() {
 	loadCalendarData();
 }
 
+// drop task calendar functions
 function allowDrop(e) {
 	e.preventDefault();
 }
 
 function drag(e) {
 	e.dataTransfer.setData("text", e.target.id);
-	console.log(e);
 }
 
 function drop(e) {
@@ -6195,6 +6195,12 @@ function drop(e) {
     //console.log(data);
     console.log(e.target);
     e.target.appendChild(document.getElementById(data));
+
+    // style
+	if (document.getElementsByClassName("calendarActive")[0] != undefined) {
+		document.getElementsByClassName("calendarActive")[0].classList.remove("calendarActive");
+	}
+	e.target.classList.add("calendarActive");
 }
 
 // display next month
@@ -6274,6 +6280,7 @@ function nextMonth() {
 		}
 	}
 
+	// load calendar data
 	loadCalendarData();
 }
 
